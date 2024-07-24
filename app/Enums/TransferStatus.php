@@ -6,6 +6,6 @@ enum TransferStatus: string
 {
     case APPROVED = 'Approuvé';
     case REJECTED = 'Rejeté';
-    case PENDING = "En attente de validation";
+    case PENDING = "Pending";
 
 }

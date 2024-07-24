@@ -2,8 +2,15 @@
 
 namespace App\Providers;
 
+use App\Events\AccountRequestConfirmed;
 use App\Events\AccountRequested;
+use App\Events\AccountRequestRejected;
+use App\Events\UserCreatedEvent;
+use App\Listeners\AccountRequestConfirmedNotification;
+use App\Listeners\AccountRequestRejectedNotification;
+use App\Listeners\SendUserCreationMail;
 use App\Listeners\SendWaitingForConfirmationEmail;
+use App\Mail\UserCreated;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,6 +30,12 @@ class EventServiceProvider extends ServiceProvider
         AccountRequested::class => [
             SendWaitingForConfirmationEmail::class,
         ],
+        AccountRequestConfirmed::class=>[
+            AccountRequestConfirmedNotification::class
+        ],
+        AccountRequestRejected::class=>[
+            AccountRequestRejectedNotification::class
+        ]
     ];
 
     /**

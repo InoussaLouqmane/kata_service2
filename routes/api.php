@@ -22,8 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::POST('/register', [UserRegisterController::class, 'store']);
-Route::POST ('/ac-postulate', [AccountRequestController::class, 'store']);
-Route::POST('/ac-list', [AccountRequestController::class, 'list'])->middleware('auth:sanctum');
-Route::POST ('/validate', [AccountRequestController::class, 'validateAccountRequest'])->middleware('auth:sanctum');
 Route::POST('/login', [AuthController::class, 'login']);
+Route::POST('/register', [UserRegisterController::class, 'store']);
+Route::POST('/web-register', [UserRegisterController::class, 'storeWeb']);
+Route::POST ('/ac-postulate', [AccountRequestController::class, 'store']);
+Route::GET('/ac-list', [AccountRequestController::class, 'list']);
+Route::POST ('/ac-validate', [AccountRequestController::class, 'validateAccountRequest']);
+Route::POST ('/ac-reject', [AccountRequestController::class, 'rejectAccountRequest']);

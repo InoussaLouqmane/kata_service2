@@ -44,10 +44,10 @@ class AccountRequestSent extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view: 'hello',
+            view: 'mail.AccountRequestSent',
             with: [
-                'receiverAddress' => $this->Username,
-                'name' => $this->receiverAddress
+                'name' => $this->Username,
+                'receiverAddress' => $this->receiverAddress
             ],
         );
     }

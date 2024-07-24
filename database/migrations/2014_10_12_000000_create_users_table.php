@@ -13,7 +13,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create(User::TABLE_NAME, function (Blueprint $table) {
+
             $table->bigIncrements(User::ID);
+            $table->integer(User::FIRST_ATTEMPT)->default(1);
             $table->string(User::STATUS);
             $table->string(User::FIRST_NAME);
             $table->string(User::LAST_NAME);
@@ -29,10 +31,6 @@ return new class extends Migration
             $table->string(User::LICENSE_ID)->nullable();
             $table->rememberToken();
             $table->timestamps();
-
-
-
-
 
         });
     }

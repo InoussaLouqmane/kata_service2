@@ -22,10 +22,13 @@ class User extends Authenticatable
      */
 
     const TABLE_NAME = "users";
+
     const ID = 'id';
+    const FIRST_ATTEMPT = 'first_attempt';
     const STATUS = 'status';
     const FIRST_NAME = 'firstName';
     const LAST_NAME = 'lastName';
+    const UUID = "uuid";
     const EMAIL = 'email';
     const PHONE = 'phone';
     const EMAIL_VERIFIED_AT = 'email_verified_at';
@@ -40,6 +43,7 @@ class User extends Authenticatable
     protected $fillable = [
 
         self::ID,
+        self::FIRST_ATTEMPT,
         self::FIRST_NAME,
         self::LAST_NAME,
         self::EMAIL,

@@ -3,19 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Enums\RequestStatus;
+use App\Events\AccountRequestConfirmed;
 use App\Events\AccountRequested;
-use App\Mail\AccountRequestSent;
+
+use App\Http\Controllers\Auth\UserRegisterController;
 use App\Models\AccountRequest;
-use App\Models\User;
-use http\Env\Response;
+
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
+
+use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
+
 
 class AccountRequestController extends Controller
 {
+
+
+
+
     public function store(Request $request)
     {
 
@@ -37,6 +43,12 @@ class AccountRequestController extends Controller
 
 
         try {
+            $checker = AccountRequest::where('email', $request->input('email'))->first();
+            if ($checker != null && $checker->status == RequestStatus::PENDING) {
+                return response()->json([
+                    'message' => 'Vous avez déjà une demande en cours, veuillez patienter !',
+                ], 403);
+            }
             $accountRegistered = AccountRequest::create([
                 AccountRequest::FIRST_NAME => $request->input(AccountRequest::FIRST_NAME),
                 AccountRequest::LAST_NAME => $request->input(AccountRequest::LAST_NAME),
@@ -60,20 +72,32 @@ class AccountRequestController extends Controller
             return response()->json([
                 "message" => "Sent Successfully",
             ], 201);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
-                'message' => $e
+                'message' => "L'envoi à eu un pépin $e"
             ], 403);
         }
     }
 
     public function list(Request $request)
     {
-        $perPage = $request->input('per_page', 20);
-        $accountRequest = AccountRequest::paginate($perPage);
-        return response()->json([
-            'data' => $accountRequest
-        ], 200);
+        try{
+
+            $perPage = $request->input('per_page', 20);
+            $accountRequest = AccountRequest::paginate($perPage);
+            $accountRequest = AccountRequest::orderBy('created_at', 'desc')->paginate($perPage);
+
+            return response()->json([
+                'data' => $accountRequest
+            ], 200);
+
+        }catch (\Exception $e){
+            Log::error($e->getMessage());
+            return response()->json([
+                'message' => $e->getMessage()
+            ]);
+    }
+
     }
 
     public function show($id)
@@ -90,48 +114,56 @@ class AccountRequestController extends Controller
                 'error' => 'Aucun résultat trouvé',
             ], 404);
         } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
             return response()->json([
-                'error' => $exception,
-            ], 404);
+                'error' => 'Une erreur s\'est produite lors de la récupération de la demande de compte',
+            ], 500);
         }
     }
 
 
-    public function validateAccountRequest($id)
+
+    public function validateAccountRequest(Request $request)
     {
+
+        $id = $request->input('requestID');
+        $userController = new UserRegisterController();
         try {
-            $accountRequest = $this->show($id);
+            $accountRequest = AccountRequest::findOrFail($id);
             $accountRequest->status = RequestStatus::APPROVED;
-
-            $user = User::class;
-
-            $user->
-
             $accountRequest->save();
-            return response()->json([
-                'message' => "Approved Successfully"
-            ], 200);
-        } catch (\Exception $exception) {
-            return response()->json([
-                'error' => $exception
-            ], 401);
+
+            $userController->storeUserFromValidation($id);
+
+            return redirect()->back()->with('success', 'Validation réussie et utilisateur créé');
+
+        } catch (Exception $exception) {
+            Log::error("Validate request fucntion : $exception");
+            return redirect()->back()->with('fail', "Oops, une erreur s'est produite");
         }
     }
 
-    public function rejectAccountRequest($id)
+    public function rejectAccountRequest(Request $request)
     {
+        $id = $request->input('requestID');
+        $comment = $request->input('comment');
         try {
-            $accountRequest = $this->show($id);
+            $accountRequest = AccountRequest::where('id', $id)->first();
             $accountRequest->status = RequestStatus::REJECTED;
+            $accountRequest->comment = $comment;
             $accountRequest->save();
 
-            return response()->json([
+            return redirect()->back()->with('success', 'Validation réussie et utilisateur créé');
+
+            /*return response()->json([
                 'message' => "Rejected Successfully"
-            ], 200);
-        } catch (\Exception $exception) {
-            return response()->json([
+            ], 200);*/
+        } catch (Exception $exception) {
+            Log::info($exception);
+            return redirect()->back()->with('success', 'Validation réussie et utilisateur créé');
+           /* return response()->json([
                 'error' => $exception
-            ], 401);
+            ], 401);*/
         }
 
     }
