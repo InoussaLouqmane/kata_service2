@@ -62,7 +62,16 @@
                     <ul>
                         <li><a href="{{route('main.department.departments')}}">Liste des clubs</a></li>
                         <li><a href="{{route('main.department.add-department')}}">Ajouter un club</a></li>
-                        <li><a href="{{route('main.department.edit-department')}}">Editer un club</a></li>
+                        {{--<li><a href="{{route('main.department.edit-department')}}">Editer un club</a></li>--}}
+                    </ul>
+                </li>
+                <li class="submenu">
+                    <a href="#"><i class="fas fa-building"></i> <span> Dojos</span> <span
+                            class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="{{route('main.dojo.dojos')}}">Liste des Dojos</a></li>
+                        <li><a href="{{route('main.dojo.add-dojo')}}">Ajouter un Dojo</a></li>
+                        {{--<li><a href="{{route('main.department.edit-department')}}">Editer un club</a></li>--}}
                     </ul>
                 </li>
                 <li class="submenu">

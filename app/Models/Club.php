@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -33,12 +34,14 @@ class Club extends Model
     const WEBSITE_URL = 'websiteUrl';
     const DESCRIPTION = 'description';
     const LOGO_PATH = 'logoPath';
+    const ADDRESS = 'address';
 
     /**
      * @var array
      */
     protected $fillable = [
 
+            self::ADDRESS,
             self::NAME,
             self::IFU_NUMBER,
             self::MARTIAL_ART_TYPE,
@@ -51,10 +54,14 @@ class Club extends Model
         ];
 
     /**
-     * @return HasMany
+     * @return BelongsToMany
      */
-    public function dojos()
+    public function users(): BelongsToMany
     {
-        return $this->hasMany('App\Models\Dojo');
+        return $this->belongsToMany(User::class,'club_user', 'club_id', 'user_id');
     }
+
+    public function dojos() : HasMany{
+        return $this->hasMany(Dojo::class, 'club_id', 'id');
+}
 }

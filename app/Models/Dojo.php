@@ -21,8 +21,11 @@ class Dojo extends Model
     const TABLE_NAME = "dojos";
     const CLUB_ID = 'club_id';
     const NAME = 'name';
+    const MARTIAL_ART_TYPE ="martialArtType";
     const ADDRESS = 'address';
     const STATUS = 'status';
+    const LONGITUDE='longitude';
+    const LATITUDE = 'latitude';
     /**
      * Indicates if the IDs are auto-incrementing.
      *
@@ -34,6 +37,9 @@ class Dojo extends Model
      * @var array
      */
     protected $fillable = [
+        self::LATITUDE,
+        self::LONGITUDE,
+        self::MARTIAL_ART_TYPE,
         self::CLUB_ID,
         self::NAME,
         self::ADDRESS,
@@ -45,6 +51,6 @@ class Dojo extends Model
      */
     public function club()
     {
-        return $this->belongsTo('App\Models\Club');
+        return $this->belongsTo(Club::class, 'club_id');
     }
 }

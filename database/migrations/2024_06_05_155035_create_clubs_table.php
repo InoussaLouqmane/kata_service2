@@ -18,7 +18,7 @@ class CreateClubsTable extends Migration
             $table->string(Club::REGISTERED_BY)->nullable();
             $table->string(Club::NAME);
             $table->string(Club::IFU_NUMBER)->nullable();
-            $table->string(Club::MARTIAL_ART_TYPE);
+            $table->string(Club::ADDRESS)->nullable();
             $table->string(Club::EMAIL)->unique()->nullable();
             $table->string(Club::WEBSITE_URL)->nullable();
             $table->text(Club::DESCRIPTION)->nullable();

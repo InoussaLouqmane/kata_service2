@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\UserRegisterController;
 use App\Models\AccountRequest;
+use App\Models\Club;
+use App\Models\Dojo;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -202,11 +204,47 @@ Route::group(['prefix' => 'main/department', 'as' => 'main.department.'], functi
         return view('main.department.add-department');
     })->name('add-department');
 
-    Route::get('/edit-department', function () {
-        return view('main.department.edit-department');
+
+    Route::get('/edit-department/{id}', function (Request  $request) {
+
+        $selectedClub = Club::find($request->id);
+        return view('main.department.edit-department', ['selectedClub' => $selectedClub]);
+
     })->name('edit-department');
+
+    Route::get('/department-details/{id}', function (Request  $request) {
+
+        $selectedClub = Club::find($request->id);
+        return view('main.department.department-details', ['selectedClub' => $selectedClub]);
+
+    })->name('department-details');
 });
 
+
+Route::group(['prefix' => 'main/dojo', 'as' => 'main.dojo.'], function () {
+    Route::get('/dojos', function () {
+        return view('main.dojo.dojos');
+    })->name('dojos');
+
+    Route::get('/add-dojo', function () {
+        return view('main.dojo.add-dojo');
+    })->name('add-dojo');
+
+
+    Route::get('/edit-dojo/{id}', function (Request  $request) {
+
+        $selectedDojo = Dojo::find($request->id);
+        return view('main.dojo.edit-dojo', ['selectedDojo' => $selectedDojo]);
+
+    })->name('edit-dojo');
+
+    Route::get('/dojo-details/{id}', function (Request  $request) {
+
+        $selectedDojo = Dojo::find($request->id);
+        return view('main.dojo.dojo-details', ['selectedDojo' => $selectedDojo]);
+
+    })->name('dojo-details');
+});
 
 Route::group(['prefix' => 'main/subject', 'as' => 'main.subject.'], function () {
     Route::get('/subjects', function () {

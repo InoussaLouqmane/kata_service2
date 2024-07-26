@@ -48,14 +48,34 @@ class AccountRequest extends Model
     const COMMENT = 'comment';
     const CLUB_EMAIL = 'clubEmail';
     const CLUB_ADDRESS = 'clubAddress';
+    const CLUB_WEBSITE_URL = 'ClubWebsiteUrl';
+    const CLUB_PHOTO_PATH = 'clubLogoPath';
+    const CLUB_DESCRIPTION = 'clubDescription';
+    const CLUB_IFU_NUMBER = 'ClubIfuNumber';
     const USER_ID = 'user_id';
+    const CLUB_ID = 'club_id';
 
+
+    protected $casts=[
+
+        self::MARTIAL_ART_TYPE =>MartialArtType::class,
+        self::STATUS => RequestStatus::class,
+        self::USER_ID => 'integer',
+        self::GENRE =>Genre::class
+
+    ];
 
     /**
      * @var array
      */
     protected $fillable = [
 
+        self::CLUB_IFU_NUMBER,
+        self::CLUB_DESCRIPTION,
+        self::CLUB_PHOTO_PATH,
+        self::CLUB_WEBSITE_URL,
+
+        self::CLUB_ID,
         self::ROLE,
         self::FIRST_NAME,
         self::LAST_NAME,
@@ -71,14 +91,5 @@ class AccountRequest extends Model
         self::CLUB_EMAIL,
         self::USER_ID,
         self::CLUB_ADDRESS
-        ];
-
-    protected $casts=[
-
-        self::MARTIAL_ART_TYPE =>MartialArtType::class,
-        self::STATUS => RequestStatus::class,
-        self::USER_ID => 'integer',
-        self::GENRE =>Genre::class
-
     ];
 }

@@ -29,6 +29,13 @@ class CreateAccountRequestsTable extends Migration
             $table->string(AccountRequest::CLUB_EMAIL)->nullable();
             $table->string(AccountRequest::STATUS);
             $table->string(AccountRequest::COMMENT)->nullable();
+
+            $table->string(AccountRequest::CLUB_WEBSITE_URL)->nullable();
+            $table->string(AccountRequest::CLUB_PHOTO_PATH)->nullable();
+            $table->string(AccountRequest::CLUB_DESCRIPTION)->nullable();
+            $table->string(AccountRequest::CLUB_IFU_NUMBER)->nullable();
+
+            $table->unsignedbiginteger(AccountRequest::CLUB_ID)->nullable();
             $table->unsignedbiginteger(AccountRequest::USER_ID)->nullable();
             $table->timestamps();
         });

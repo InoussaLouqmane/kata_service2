@@ -1,11 +1,12 @@
-@php use App\Models\Club;
- use App\Models\User;
-
-@endphp
+@php use App\Models\User; @endphp
 @extends('partials.layout');
-@section('title', 'Club');
+@section('title', 'Clubs');
 
 @section('content')
+
+
+
+
     <div class="content container-fluid">
 
         @if(session('success'))
@@ -37,13 +38,12 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Editer un club</h3>
+                    <h3 class="page-title">Ajouter un dojo</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('main.department.departments')}}">Clubs</a>
                         </li>
-                        <li class="breadcrumb-item active">Editer un club</li>
+                        <li class="breadcrumb-item active">Ajouter un dojo</li>
                     </ul>
-
                 </div>
             </div>
         </div>
@@ -52,130 +52,94 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
-
-                        <form method="POST" action="/api/club-edit" enctype="multipart/form-data">
+                        <form method="POST" action="/api/dojo-register" enctype="multipart/form-data">
                             @csrf
-
                             <div class="row">
                                 <div class="col-12">
                                     <h5 class="form-title"><span>Détails</span></h5>
                                 </div>
-
                                 <div class="col-12 col-sm-4">
                                     <div class="form-group local-forms">
-
-                                        <label>Nom du club <span class="login-danger">*</span></label>
-                                        <input name="clubName" type="text" class="form-control" value="{{$selectedClub->name}}"
-                                               required>
+                                        <label>Nom du dojo <span class="login-danger">*</span></label>
+                                        <input name="clubName" type="text" class="form-control" required>
                                     </div>
                                 </div>
 
-                                {{--<div class="col-12 col-sm-4">
-                                    <div class="form-group local-forms">
-                                        <label>Dis <span class="login-danger">*</span></label>
-                                        <input type="text" class="form-control" required>
-                                    </div>
-                                </div>--}}
-                                <div class="col-12 col-sm-4">
-                                    <div class="form-group local-forms">
-
-                                        @php
-                                            $owner = User::find($selectedClub->RegisteredBy);
-                                            $ownerName = $owner->firstName ?? '';
-                                            $ownerName .= ' '. $owner->lastName ?? '';
-                                        @endphp
-                                        <label>Propriétaire</label>
-
-                                        <select id="ownerSelect" class="form-control" name="user_id">
-                                            <option value="{{$owner->id ?? ''}}">{{$ownerName ?? 'Non défini'}}</option>
-                                            @foreach(User::all() as $user)
-                                                @if($user->id != $owner->id)
-                                                    <option
-                                                        value="{{$user->id}}">{{$user->firstName}} {{$user->lastName}}</option>
-                                                @endif
-
-                                            @endforeach
-                                        </select>
-
-                                    </div>
-                                </div>
                                 {{-- <div class="col-12 col-sm-4">
                                      <div class="form-group local-forms">
-                                         <label>Propriétaire du club <span class="login-danger">*</span></label>
-                                         <input type="hidden" id="ClubResponsible" value="">
-                                         <input class="form-control" list="datalistOptions" id="exampleDataList"
-                                                placeholder="..." required>
-                                         <datalist id="datalistOptions">
-                                             @foreach(User::all() as $user)
-                                                 <option data-id="{{$user->id}}"
-                                                         value="{{$user->firstName}} {{$user->lastName}}">
-                                             @endforeach
-                                         </datalist>
-
+                                         <label>Dis <span class="login-danger">*</span></label>
+                                         <input type="text" class="form-control" required>
                                      </div>
-                                 </div>--}}
-
-
+                                 </div>
+ --}}
                                 {{--<div class="col-12 col-sm-4">
-                                    <div class="form-group local-forms calendar-icon">
-                                        <label>Department Start Date <span class="login-danger">*</span></label>
-                                        <input class="form-control datetimepicker" type="text" placeholder="DD-MM-YYYY">
+                                    <div class="form-group local-forms">
+                                        <label>Propriétaire du dojo <span class="login-danger">*</span></label>
+                                        <input type="hidden" id="ClubResponsible" value="">
+                                        <input class="form-control" list="datalistOptions" id="exampleDataList"
+                                               placeholder="..." required>
+                                        <datalist id="datalistOptions">
+                                            @foreach(User::all() as $user)
+                                                <option data-id="{{$user->id}}" value="{{$user->firstName}} {{$user->lastName}}">
+                                            @endforeach
+                                        </datalist>
+
                                     </div>
                                 </div>--}}
+
+
+                                {{-- <div class="col-12 col-sm-4">
+                                     <div class="form-group local-forms calendar-icon">
+                                         <label>Department Start Date <span class="login-danger">*</span></label>
+                                         <input class="form-control datetimepicker" type="text" placeholder="DD-MM-YYYY">
+                                     </div>
+                                 </div>--}}
                                 <div class="col-12 col-sm-4">
                                     <div class="form-group local-forms">
-
                                         <label>Email <span class="login-danger">*</span></label>
-                                        <input name="clubEmail" value="{{$selectedClub->email}}" type="text" class="form-control" required>
+                                        <input name="clubEmail" type="text" class="form-control" required>
                                     </div>
                                 </div>
 
                                 <div class="col-12 col-sm-4">
                                     <div class="form-group local-forms">
                                         <label>Adresse <span class="login-danger">*</span></label>
-                                        <input type="hidden" name="id" value="{{$selectedClub->id}}">
-                                        <input name="clubAddress" value="{{$selectedClub->address}}" type="text" class="form-control" required>
+                                        <input name="clubAddress" type="text" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-4">
                                     <div class="form-group local-forms">
                                         <label>Numéro IFU</label>
-                                        <input name="ClubIfuNumber" value="{{$selectedClub->ifuNumber}}" type="text" class="form-control">
+                                        <input name="ClubIfuNumber" type="text" class="form-control">
                                     </div>
                                 </div>
+
+
 
 
                                 <div class="col-12 col-sm-4">
                                     <div class="form-group local-forms">
                                         <label>Site web</label>
-                                        <input name="ClubWebsiteUrl" type="url" value="{{$selectedClub->websiteUrl}}" class="form-control">
+                                        <input name="ClubWebsiteUrl" type="url" class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-12 col-sm-4">
+                                {{--<div class="col-12 col-sm-4">
                                     <div class="form-group local-forms">
                                         <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                                        <textarea class="form-control" name="clubDescription"
-                                                  id="exampleFormControlTextarea1"
-                                                  value="{{$selectedClub->description}}"
+                                        <textarea class="form-control" name="clubDescription" id="exampleFormControlTextarea1"
                                                   rows="3"></textarea>
 
                                     </div>
-                                </div>
+                                </div>--}}
 
                                 <div class="col-12 col-sm-4">
                                     <div class="form-group students-up-files">
-                                        @php
-                                            if($selectedClub->logoPath){
-                                                 $fileName = basename($selectedClub->logoPath);
-                                            }
-                                        @endphp
-                                        <label>Upload Student Photo ( <span id="fileLabelText">1{{$fileName ?? '50px X 150px' }}</span> <i
+                                        <label>Upload Student Photo ( <span id="fileLabelText">150px X 150px</span> <i
                                                 id="checkIcon" class="fas fa-check-circle"
-                                                style="{{$selectedClub->logoPath ?? 'display: none;'}} color: green; background-color: white; border-radius: 50%; margin-left: 10px;"></i>)</label>
+                                                style="display: none; color: green; background-color: white; border-radius: 50%; margin-left: 10px;"></i>)</label>
                                         <div class="uplod">
                                             <label class="file-upload image-upbtn mb-0">
-                                                <span id="">Choose File</span> <input name="clubLogoPath"
-                                                                                      id="photoInput"
+                                                <span id="">Choose File</span> <input name="clubLogoPath" id="photoInput" name="photoPath"
                                                                                       type="file" accept="image/*"
                                                                                       style="display: none;">
 
@@ -201,5 +165,5 @@
             </div>
         </div>
     </div>
-@endsection
 
+@endsection

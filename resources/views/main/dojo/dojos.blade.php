@@ -1,4 +1,4 @@
-@php use App\Models\Club;use App\Models\Dojo;use App\Models\User;
+@php use App\Models\Dojo;use App\Models\User;
 @endphp
 
 @extends('partials.layout');
@@ -37,10 +37,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Clubs</h3>
+                    <h3 class="page-title">Dojos</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{route('main.adminDashboard')}}">Clubs</a></li>
-                        <li class="breadcrumb-item active">Clubs</li>
+                        <li class="breadcrumb-item"><a href="{{route('main.adminDashboard')}}">Dojos</a></li>
+                        <li class="breadcrumb-item active">Dojos</li>
                     </ul>
                 </div>
             </div>
@@ -78,13 +78,13 @@
                         <div class="page-header">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h3 class="page-title">Liste des clubs</h3>
+                                    <h3 class="page-title">Liste des Dojos</h3>
                                 </div>
                                 <div class="col-auto text-end float-end ms-auto download-grp">
                                     {{-- <a href="#" class="btn btn-outline-primary me-2"><i class="fas fa-download"></i>
                                          Download</a>--}}
-                                    <a href="{{route('main.department.add-department')}}" class="btn btn-primary"><i
-                                            class="fas fa-plus"></i> Ajouter un club</a>
+                                    <a href="{{route('main.dojo.add-dojo')}}" class="btn btn-primary"><i
+                                            class="fas fa-plus"></i> Ajouter un Dojo</a>
                                 </div>
                             </div>
                         </div>
@@ -101,19 +101,19 @@
                                     </div>
                                 </th>
 
-                                <th>Nom du club</th>
-                                <th>Propriétaire</th>
-                                <th>Email</th>
+                                <th>Nom du Dojo</th>
+                                <th>Club</th>
+                                <th>Discipline</th>
 
-                                <th class="text-start">Nbre de dojos</th>
-                                <th class="text-start">Effectif</th>
+                                <th class="text-start">Adresse</th>
+                                <th class="text-start">Status</th>
                                 <th class="text-end">Action</th>
                             </tr>
                             </thead>
                             <tbody>
 
 
-                            @foreach(Club::all() as $club)
+                            @foreach(Dojo::all() as $dojo)
 
                                 <tr>
                                     <td>
@@ -122,11 +122,16 @@
                                         </div>
                                     </td>
                                     @php
-                                        $owner = User::find($club->RegisteredBy)
+
+                                        $club = $dojo->club();
                                     @endphp
+
+                                    <td class="text-start">{{$dojo->name}}</td>
+
+
                                     <td class="text-start">
                                         <h2 class="table-avatar">
-                                            <a href="{{route('main.user.user-details',[$club->id])}}"
+                                            <a href="{{route('main.dojo.dojo-details',[$dojo->id])}}"
                                                class="avatar avatar-sm me-2">
 
                                                 @if($club->logoPath)
@@ -138,26 +143,19 @@
 
                                             </a>
                                         </h2>
-                                        <a href="{{route('main.user.user-details', [$club->id])}}">{{$club->name}}</a></td>
-                                    <td class="text-start">
-                                        <h2>
-                                            @if($owner)
-                                                <a href="{{route('main.user.user-details', [$owner->id])}}">{{$owner->firstName. ' '. $owner->lastName}}</a>
-                                            @else
-                                            <a>None</a>
-                                            @endif
-                                        </h2>
+                                        <a href="{{route('main.dojo.dojo-details', [$dojo->id])}}">{{$dojo->name}}</a>
                                     </td>
 
-                                    <td class="text-start">{{Dojo::where('club_id', $club->id)->count()}}</td>
-                                    <td class="text-start">{{$club->users()->count()}}</td>
-                                    <td class="text-start">{{$club->email}}</td>
+                                    <td class="text-start">{{$dojo->martialArtType}}</td>
+                                    <td class="text-start">{{$dojo->address}}</td>
+                                    <td class="text-start">{{$dojo->status}}</td>
+
                                     <td class="text-start">
                                         <div class="actions">
-                                            <a href="{{route('main.department.department-details', [$club->id])}}" class="btn btn-sm bg-success-light me-2">
+                                            <a href="{{route('main.department.department-details', [$dojo->id])}}" class="btn btn-sm bg-success-light me-2">
                                                 <i class="feather-eye"></i>
                                             </a>
-                                            <a href="{{route('main.department.edit-department', [$club->id])}}"
+                                            <a href="{{route('main.department.edit-department', [$dojo->id])}}"
                                                class="btn btn-sm bg-danger-light">
                                                 <i class="feather-edit"></i>
                                             </a>

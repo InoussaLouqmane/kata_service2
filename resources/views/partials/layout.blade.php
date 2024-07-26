@@ -56,7 +56,7 @@
 <script src="{{asset('/plugins/apexchart/chart-data.js')}}"></script>
 <script src="{{asset('/plugins/simple-calendar/jquery.simple-calendar.js')}}"></script>
 <script src="{{asset('/js/calander.js')}}"></script>
-<script src="{{asset('assets/js/circle-progress.min.js')}}"></script>
+<script src="{{asset('/js/circle-progress.min.js')}}"></script>
 <script src="{{asset('/plugins/alertify/alertify.min.js')}}"></script>
 {{--<script src="{{asset('/plugins/alertify/custom-alertify.min.js')}}"></script>--}}
 <script src="{{asset('/plugins/clipboard/clipboard.min.js')}}"></script>

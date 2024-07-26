@@ -7,6 +7,7 @@ use App\Enums\Genre;
 use App\Enums\MartialArtType;
 use App\Enums\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -80,4 +81,9 @@ class User extends Authenticatable
         self::PASSWORD=>'hashed'
 
     ];
+
+    public function clubs(): BelongsToMany
+    {
+        return $this->belongsToMany(Club::class, 'club_user', 'club_id', 'user_id');
+    }
 }

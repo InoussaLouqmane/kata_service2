@@ -19,7 +19,7 @@
             </button>
         </div>
     @endif
-    
+
     <div class="content container-fluid">
 
         <div class="page-header">
@@ -158,8 +158,12 @@
                                         <label>Upload Student Photo (150px X 150px)</label>
                                         <div class="uplod">
                                             <label class="file-upload image-upbtn mb-0">
-                                                Choose File <input name="photoPath" type="file">
+                                                Choose File <input id="photoInput" name="photoPath" type="file" accept="image/*">
                                             </label>
+                                        </div>
+                                        <!-- Ajout d'un élément pour afficher l'aperçu de l'image -->
+                                        <div id="photoPreview" style="margin-top: 10px;">
+                                            <img id="previewImg" src="#" alt="Selected Image" style="display: none; width: 50px; height: 50px;">
                                         </div>
                                     </div>
                                 </div>

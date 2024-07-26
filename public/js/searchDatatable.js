@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', function(){
-    const myTable = new DataTable('#requestTable');
+    const requestTable = new DataTable('#requestTable');
+    const clubTable = new DataTable('#clubTable');
     const myFilter = document.getElementById('requestFilter');
 
-    myTable.search('Pending');
-    myTable.draw();
+    requestTable.search('Pending');
+    requestTable.draw();
     console.log(myFilter.value);
 
 
@@ -11,11 +12,11 @@ document.addEventListener('DOMContentLoaded', function(){
         console.log("Changement de value : ", this.value);
 
         if (this.value === "All") {
-            myTable.search('');
+            requestTable.search('');
         }else{
             myTable.search(this.value);
         }
-        myTable.draw();
+        requestTable.draw();
     });
 
 })

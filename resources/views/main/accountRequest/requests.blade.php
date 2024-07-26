@@ -169,8 +169,8 @@
                                     </th>
                                     <th>Clubname</th>
                                     <th>Art Martial</th>
-                                    <th>Club address</th>
-                                    <th>Email address</th>
+                                    <th>Adresse du club</th>
+                                    <th>Email du club</th>
                                     <th>Téléphone</th>
                                     <th>LicenseId</th>
                                     <th>Status</th>

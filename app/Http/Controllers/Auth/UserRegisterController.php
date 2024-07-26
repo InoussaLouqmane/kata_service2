@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Enums\Genre;
-use App\Enums\MartialArtType;
-use App\Enums\Role;
 use App\Enums\UserStatus;
 use App\Events\AccountRequestConfirmed;
+use App\Http\Controllers\ClubController;
 use App\Http\Controllers\Controller;
 use App\Models\AccountRequest;
+use App\Models\Club;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -141,6 +140,21 @@ class UserRegisterController extends Controller implements ShouldQueue
                     User::MARTIAL_ART_TYPE => $request->martialArtType,
                     User::LICENSE_ID => $request->licenseId,
                 ]);
+
+                if($request->club_id){
+
+                    $user->clubs()->attach($request->club_id);
+
+                } else {
+
+                   $clubController = new ClubController();
+                   $clubController->store($request);
+
+                }
+                $request->user_id = $user->id;
+                $request->save();
+
+
 
 
                 event(new AccountRequestConfirmed($user, $password));
