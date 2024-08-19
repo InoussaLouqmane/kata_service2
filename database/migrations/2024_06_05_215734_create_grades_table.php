@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Grade;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -12,13 +13,14 @@ class CreateGradesTable extends Migration
      */
     public function up()
     {
-        Schema::create('grades', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('beltColor');
-            $table->integer('numberOfRedBar')->default(0);
-            $table->integer('numberOfWhiteBar')->default(0);
-            $table->integer('numberOfYellowBar')->default(0);
-            $table->string('beltPicturePath')->nullable();
+        Schema::create(Grade::TABLENAME, function (Blueprint $table) {
+            $table->bigIncrements(Grade::ID);
+            $table->string(Grade::BELTNAME);
+            $table->string(Grade::BELTCOLOR);
+            $table->integer(Grade::NUMBER_OF_RED_BAR)->default(0)->nullable();
+            $table->integer(Grade::NUMBER_OF_WHITE_BAR)->default(0)->nullable();
+            $table->integer(Grade::NUMBER_OF_YELLOW_BAR)->default(0)->nullable();
+            $table->string(Grade::BELT_PICTURE_PATH)->nullable();
             $table->timestamps();
         });
     }

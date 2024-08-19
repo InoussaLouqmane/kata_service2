@@ -7,6 +7,7 @@ use App\Enums\Genre;
 use App\Enums\MartialArtType;
 use App\Enums\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -40,10 +41,12 @@ class User extends Authenticatable
     const PASSWORD = 'password';
     const ROLE = 'role';
     const LICENSE_ID = 'licenseId';
+    const GRADE = 'grade';
 
     protected $fillable = [
 
         self::ID,
+        self::GRADE,
         self::FIRST_ATTEMPT,
         self::FIRST_NAME,
         self::LAST_NAME,
@@ -66,7 +69,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        self::PASSWORD,
+
     ];
 
     /**
@@ -84,6 +87,11 @@ class User extends Authenticatable
 
     public function clubs(): BelongsToMany
     {
-        return $this->belongsToMany(Club::class, 'club_user', 'club_id', 'user_id');
+        return $this->belongsToMany(Club::class, 'club_user', 'user_id', 'club_id');
+    }
+
+
+    public function grades(): BelongsToMany{
+        return $this->belongsToMany(Grade::class, 'grade_user', 'user_id', 'grade_id');
     }
 }

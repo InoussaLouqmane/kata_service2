@@ -102,9 +102,9 @@
                                 </th>
 
                                 <th>Nom du club</th>
+                                <th>Discipline</th>
                                 <th>Propriétaire</th>
                                 <th>Email</th>
-
                                 <th class="text-start">Nbre de dojos</th>
                                 <th class="text-start">Effectif</th>
                                 <th class="text-end">Action</th>
@@ -122,11 +122,11 @@
                                         </div>
                                     </td>
                                     @php
-                                        $owner = User::find($club->RegisteredBy)
+                                        $owner = User::find($club->RegisteredBy);
                                     @endphp
                                     <td class="text-start">
                                         <h2 class="table-avatar">
-                                            <a href="{{route('main.user.user-details',[$club->id])}}"
+                                            <a href="{{route('main.department.department-details',[$club->id])}}"
                                                class="avatar avatar-sm me-2">
 
                                                 @if($club->logoPath)
@@ -138,20 +138,21 @@
 
                                             </a>
                                         </h2>
-                                        <a href="{{route('main.user.user-details', [$club->id])}}">{{$club->name}}</a></td>
+                                        <a href="{{route('main.department.department-details', [$club->id])}}">{{$club->name}}</a></td>
+                                    <td class="text-start">{{$club->martialArtType ?? '-' }}</td>
                                     <td class="text-start">
                                         <h2>
                                             @if($owner)
-                                                <a href="{{route('main.user.user-details', [$owner->id])}}">{{$owner->firstName. ' '. $owner->lastName}}</a>
+                                                <a href="{{route('main.user.user-details', [$owner->id])}}"> {{$owner->firstName. ' '. $owner->lastName}}</a>
                                             @else
                                             <a>None</a>
                                             @endif
                                         </h2>
                                     </td>
 
-                                    <td class="text-start">{{Dojo::where('club_id', $club->id)->count()}}</td>
-                                    <td class="text-start">{{$club->users()->count()}}</td>
                                     <td class="text-start">{{$club->email}}</td>
+                                    <td class="text-start">{{Dojo::where('club_id', $club->id)->count()}}</td>
+                                    <td class="text-start">{{$club->users->count()}}</td>
                                     <td class="text-start">
                                         <div class="actions">
                                             <a href="{{route('main.department.department-details', [$club->id])}}" class="btn btn-sm bg-success-light me-2">

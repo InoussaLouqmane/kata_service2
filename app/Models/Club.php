@@ -58,7 +58,7 @@ class Club extends Model
      */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class,'club_user', 'club_id', 'user_id');
+        return $this->belongsToMany(User::class, 'club_user', 'club_id', 'user_id');
     }
 
     public function dojos() : HasMany{

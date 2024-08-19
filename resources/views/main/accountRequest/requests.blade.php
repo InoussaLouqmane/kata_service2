@@ -27,10 +27,10 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="page-sub-header">
-                        <h3 class="page-title">Students</h3>
+                        <h3 class="page-title">Demandes</h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('main.student.students')}}">Student</a></li>
-                            <li class="breadcrumb-item active">All Students</li>
+                            <li class="breadcrumb-item"><a href="{{route('main.adminDashboard')}}">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Liste</li>
                         </ul>
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                         <div class="page-header">
                             <div class="row align-items-center justify-content-between">
                                 <div class="col-4">
-                                    <h3 class="page-title">Students</h3>
+                                    <h3 class="page-title">Liste des demandes</h3>
                                 </div>
                                 <div
                                     class="col-3 text-center float-end ms-auto download-grp d-flex flex-row justify-content-end">
@@ -190,18 +190,18 @@
 
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a href="{{route('main.student.student-details',[$accountRequest->id])}}"
+                                                <a href="{{route('main.accountRequest.request-details',[$accountRequest->id])}}"
                                                    class="avatar avatar-sm me-2"><img class="avatar-img rounded-circle"
                                                                                       src="{{asset('/img/profiles/avatar-01.jpg')}}"
                                                                                       alt="User Image"></a>
                                             </h2>
-                                            <a href="{{route('main.student.student-details', [$accountRequest->id])}}">{{$accountRequest->clubName}}</a>
+                                            <a href="{{route('main.accountRequest.request-details', [$accountRequest->id])}}">{{$accountRequest->clubName}}</a>
                                         </td>
                                         <td>{{$accountRequest->martialArtType}}</td>
                                         <td>{{$accountRequest->clubAddress}}</td>
                                         <td>{{$accountRequest->email ?? '-'}}</td>
                                         <td>{{$accountRequest->phone}}</td>
-                                        <td>{{$accountRequest->licenseId}}</td>
+                                        <td>{{$accountRequest->licenseId}} id is {{$accountRequest->id}}</td>
                                         <td class="">
                                             @if($accountRequest->status == RequestStatus::PENDING)
                                                 <span
@@ -218,7 +218,7 @@
                                         </td>
                                         <td class="text-center">
                                             <div class="actions text-center justify-content-center">
-                                                <a href="{{route('main.student.student-details', [$accountRequest->id])}}"
+                                                <a href="{{route('main.accountRequest.request-details', [$accountRequest->id])}}"
                                                    class="btn btn-circle btn-sm bg-success-light me-2 ">
                                                     <i class="feather-eye"></i>
                                                 </a>
@@ -226,16 +226,15 @@
                                                 @if($accountRequest[AccountRequest::STATUS] == RequestStatus::PENDING)
                                                     <a
                                                         data-requestId="{{$accountRequest->id}}"
-                                                        id="reject-button"
-                                                       class="btn  btn-circle btn-sm bg-success-light me-2 "
+
+                                                       class="reject-button btn  btn-circle btn-sm bg-success-light me-2 "
                                                        type="button" data-bs-toggle="modal"
                                                        data-bs-target="#reject-modal">
                                                         <i class="feather-x-circle "></i>
                                                     </a>
                                                     <a data-requestId="{{$accountRequest->id}}"
                                                        type="button"
-                                                       id="check-button"
-                                                       class="btn  btn-circle btn-sm bg-success-light"
+                                                       class="check-button btn  btn-circle btn-sm bg-success-light"
                                                        data-bs-toggle="modal" data-bs-target="#confirm-modal">
                                                         <i class="feather-check"></i>
                                                     </a>
@@ -255,8 +254,8 @@
     </div>
 
     @push('scripts')
-        <script src="{{asset('/js/searchDatatable.js')}}"></script>
         <script src="{{asset('/js/accountRequestModal.js')}}"></script>
+        <script src="{{asset('/js/searchDatatable.js')}}"></script>
     @endpush
 
 @endsection

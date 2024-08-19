@@ -152,7 +152,7 @@
                 </div>
                 <a class="dropdown-item" href="{{route('partials.profile')}}">My Profile</a>
                 <a class="dropdown-item" href="{{route('partials.inbox')}}">Inbox</a>
-                <a class="dropdown-item" href="{{route('partials.login')}}">Logout</a>
+                <a class="dropdown-item" href="{{route('logout.web')}}">Logout</a>
             </div>
         </li>
 

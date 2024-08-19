@@ -1,26 +1,20 @@
-document.addEventListener('DOMContentLoaded', function(){
+$(document).ready(function() {
 
-    const confirmationModal = document.getElementById('check-button');
-    const hiddenInputConfirmationModal = document.getElementById('hiddenInputConfirmationModal');
-
-    const rejectionModal = document.getElementById('reject-button');
-    const hiddenInputRejectionModal = document.getElementById('hiddenInputRejectModal');
-
-
-    confirmationModal.addEventListener('click', (e) => {
-        hiddenInputConfirmationModal.value = confirmationModal.getAttribute('data-requestId');
-        console.log('la valeur actuelle du champ hidden : hiddenInputConfirmationModal', hiddenInputConfirmationModal.value);
+    $(document).on('click', '.delete-button', function() {
+        const hiddenInputConfirmationModal = $('#hiddenInputConfirmationModal');
+        hiddenInputConfirmationModal.val($(this).data('requestid'));
+        console.log('la valeur actuelle du champ hidden : ', hiddenInputConfirmationModal.val());
     });
 
-
-
-    rejectionModal.addEventListener('click', (e)=>{
-        hiddenInputRejectionModal.value = rejectionModal.getAttribute('data-requestId');
-        console.log("value de rejectionModal: ", hiddenInputRejectionModal.value);
+    $(document).on('click', '.check-button', function() {
+        const hiddenInputConfirmationModal = $('#hiddenInputConfirmationModal');
+        hiddenInputConfirmationModal.val($(this).data('requestid'));
+        console.log('la valeur actuelle du champ hidden : hiddenInputConfirmationModal', hiddenInputConfirmationModal.val());
     });
 
-
-
-
-
-})
+    $(document).on('click', '.reject-button', function() {
+        const hiddenInputRejectionModal = $('#hiddenInputRejectModal');
+        hiddenInputRejectionModal.val($(this).data('requestid'));
+        console.log("value de rejectionModal: ", hiddenInputRejectionModal.val());
+    });
+});

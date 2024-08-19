@@ -133,7 +133,7 @@ class AccountRequestController extends Controller
             $accountRequest->status = RequestStatus::APPROVED;
             $accountRequest->save();
 
-            $userController->storeUserFromValidation($id);
+            $userController->storeUserFromValidation($id, $request);
 
             return redirect()->back()->with('success', 'Validation réussie et utilisateur créé');
 
@@ -153,14 +153,14 @@ class AccountRequestController extends Controller
             $accountRequest->comment = $comment;
             $accountRequest->save();
 
-            return redirect()->back()->with('success', 'Validation réussie et utilisateur créé');
+            return redirect()->back()->with('success', "Tout s'est bien produit");
 
             /*return response()->json([
                 'message' => "Rejected Successfully"
             ], 200);*/
         } catch (Exception $exception) {
             Log::info($exception);
-            return redirect()->back()->with('success', 'Validation réussie et utilisateur créé');
+            return redirect()->back()->with('success', "Oops, une erreur produite");
            /* return response()->json([
                 'error' => $exception
             ], 401);*/

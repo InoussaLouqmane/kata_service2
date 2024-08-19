@@ -8,10 +8,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Ajouter discipline</h3>
+                    <h3 class="page-title">Ajouter grade</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="subjects.html">Discipline</a></li>
-                        <li class="breadcrumb-item active">Ajouter discipline</li>
+                        <li class="breadcrumb-item"><a href="subjects.html">Grade</a></li>
+                        <li class="breadcrumb-item active">Ajouter Grade</li>
                     </ul>
                 </div>
             </div>
@@ -21,19 +21,26 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                        <form method="POST" action="/api/discipline-register">
+                        <form method="POST" action="/api/grade">
                             @csrf
                             <div class="row">
                                 <div class="col-12">
-                                    <h5 class="form-title"><span>Détails de la discipline</span></h5>
+                                    <h5 class="form-title"><span>Détails du grade</span></h5>
                                 </div>
 
-                                <div class="col-12 col-sm-4">
+                                <div class="col-2 col-sm-1">
                                     <div class="form-group local-forms">
-                                        <label>Nom de la discipline <span class="login-danger">*</span></label>
-                                        <input name="name" type="text" class="form-control">
+                                        <label>Couleur <span class="login-danger">*</span></label>
+                                        <input name="beltColor" type="color" class="form-control form-control-color" required>
                                     </div>
                                 </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group local-forms">
+                                        <label>Intitulé du grade <span class="login-danger">*</span></label>
+                                        <input name="beltName" type="text" class="form-control" required>
+                                    </div>
+                                </div>
+
                                 <div class="col-12">
                                     <div class="student-submit">
                                         <button type="submit" class="btn btn-primary">Soumettre</button>

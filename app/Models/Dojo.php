@@ -31,7 +31,7 @@ class Dojo extends Model
      *
      * @var bool
      */
-    public $incrementing = false;
+
 
     /**
      * @var array
@@ -52,5 +52,9 @@ class Dojo extends Model
     public function club()
     {
         return $this->belongsTo(Club::class, 'club_id');
+    }
+    public function discipline()
+    {
+        return $this->belongsTo(Discipline::class, self::MARTIAL_ART_TYPE);
     }
 }

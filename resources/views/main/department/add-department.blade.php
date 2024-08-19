@@ -1,11 +1,8 @@
-@php use App\Models\User; @endphp
+@php use App\Models\Discipline;use App\Models\User; @endphp
 @extends('partials.layout');
 @section('title', 'Clubs');
 
 @section('content')
-
-
-
 
     <div class="content container-fluid">
 
@@ -52,7 +49,7 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                        <form method="POST" action="/api/club-register" enctype="multipart/form-data">
+                        <form method="POST" action="/api/club-register-form" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-12">
@@ -103,6 +100,21 @@
 
                                 <div class="col-12 col-sm-4">
                                     <div class="form-group local-forms">
+                                        <label>Discipline<span class="login-danger">*</span></label>
+
+                                        <select id="disciplineSelect" class="form-control" name="martialArtType">
+                                            @foreach(Discipline::all() as $discipline)
+
+                                                <option
+                                                    value="{{$discipline->id}}">{{$discipline->name}} </option>
+
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group local-forms">
                                         <label>Adresse <span class="login-danger">*</span></label>
                                         <input name="clubAddress" type="text" class="form-control" required>
                                     </div>
@@ -113,8 +125,6 @@
                                         <input name="ClubIfuNumber" type="text" class="form-control">
                                     </div>
                                 </div>
-
-
 
 
                                 <div class="col-12 col-sm-4">
@@ -139,7 +149,8 @@
                                                 style="display: none; color: green; background-color: white; border-radius: 50%; margin-left: 10px;"></i>)</label>
                                         <div class="uplod">
                                             <label class="file-upload image-upbtn mb-0">
-                                                <span id="">Choose File</span> <input name="clubLogoPath" id="photoInput" name="photoPath"
+                                                <span id="">Choose File</span> <input name="clubLogoPath"
+                                                                                      id="photoInput" name="photoPath"
                                                                                       type="file" accept="image/*"
                                                                                       style="display: none;">
 

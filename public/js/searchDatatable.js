@@ -1,22 +1,30 @@
-document.addEventListener('DOMContentLoaded', function(){
-    const requestTable = new DataTable('#requestTable');
-    const clubTable = new DataTable('#clubTable');
-    const myFilter = document.getElementById('requestFilter');
-
-    requestTable.search('Pending');
-    requestTable.draw();
-    console.log(myFilter.value);
+$(document).ready(function() {
 
 
-    myFilter.addEventListener('change', function(e) {
+    const requestTable = $('#requestTable').DataTable({
+        bDestroy: true,
+        dom: 'ltip',
+    });
+
+
+    const myFilter = $('#requestFilter');
+
+
+    requestTable.search("Pending").draw();
+
+    console.log(myFilter.val());
+
+
+    myFilter.on('change', function(e) {
         console.log("Changement de value : ", this.value);
 
         if (this.value === "All") {
-            requestTable.search('');
-        }else{
-            myTable.search(this.value);
+            requestTable.search('').draw();
+        } else {
+            requestTable.search(this.value).draw();
         }
-        requestTable.draw();
+
+        console.log(myFilter.val());
     });
 
-})
+});

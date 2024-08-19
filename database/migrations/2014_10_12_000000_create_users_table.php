@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string(User::PASSWORD);
             $table->string(User::ROLE);
             $table->string(User::LICENSE_ID)->nullable();
+            $table->integer(User::GRADE)->nullable();
             $table->rememberToken();
             $table->timestamps();
 

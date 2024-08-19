@@ -6,10 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 
 
-use Illuminate\Foundation\Application;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -35,10 +33,13 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
 
+
             if (Auth::user()->first_attempt == 1) {
                 return redirect()->intended(route('authentication.reset-password', [Auth::user()->id]));
             }
             return redirect()->intended(route('main.adminDashboard'));
+        }else{
+            Log::info('Something while login went wrong');
         }
 
         $validator['emailPassword'] = "Identifiants incorrects";
@@ -113,8 +114,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        redirect(route('authentication.login'));
-
+        return redirect()->route('authentication.login');
     }
 
 }

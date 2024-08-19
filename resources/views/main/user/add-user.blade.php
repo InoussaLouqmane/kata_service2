@@ -1,4 +1,4 @@
-@php use App\Enums\Genre;use App\Enums\Role; @endphp
+@php use App\Enums\Genre;use App\Enums\Role;use App\Models\Club;use App\Models\Discipline; @endphp
 @extends('partials.layout');
 @section('title', 'Ajouter un utilisateur')
 
@@ -40,7 +40,7 @@
             <div class="col-sm-12">
                 <div class="card comman-shadow">
                     <div class="card-body">
-                        <form method="POST" action="/api/web-register">
+                        <form method="POST" action="/api/web-register" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-12">
                                     <h5 class="form-title student-info">Student Information <span><a
@@ -80,7 +80,8 @@
                                 <div class="col-12 col-sm-4">
                                     <div class="form-group local-forms">
                                         <label>E-Mail <span class="login-danger">*</span></label>
-                                        <input name="email" class="form-control" type="text" placeholder="...">
+                                        <input name="email" id="emailField" class="form-control" type="text"
+                                               placeholder="...">
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-4">
@@ -97,10 +98,23 @@
                                 </div>
                                 <div class="col-12 col-sm-4">
                                     <div class="form-group local-forms">
-                                        <label>Rôle <span class="login-danger">*</span></label>
-                                        <select name="role" class="form-control select">
-                                            <option value="{{Role::SENSEI}}">Sensei</option>
+                                        <label id="roleLabel">Rôle <span class="login-danger">*</span></label>
+                                        <select name="role" class="form-control select" id="roleSelect"
+                                                aria-label="Default select example">
+                                            <option selected value="{{Role::SENSEI}}">Sensei</option>
                                             <option value="{{Role::ADMIN}}">Admin</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group local-forms">
+                                        <label>Discipline <span class="login-danger">*</span></label>
+                                        <select name="martialArtType" class="form-control select">
+                                            @foreach(Discipline::all() as $type)
+                                                <option value="{{$type->id}}">{{$type->name}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -118,6 +132,18 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group local-forms" id="clubContainer">
+                                        <label>Club <span class="login-danger">*</span></label>
+                                        <select name="club_id" class="form-control select" id="clubSelect">
+                                            @foreach(Club::all() as $club)
+                                                <option value="{{$club->id}}">{{$club->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
                                 {{--
                                                                 <div class="col-12 col-sm-4">
                                                                     <div class="form-group local-forms">
@@ -155,15 +181,17 @@
                                                                 </div>--}}
                                 <div class="col-12 col-sm-4">
                                     <div class="form-group students-up-files">
-                                        <label>Upload Student Photo (150px X 150px)</label>
+                                        <label>Ajouter une photo (150px X 150px)</label>
                                         <div class="uplod">
                                             <label class="file-upload image-upbtn mb-0">
-                                                Choose File <input id="photoInput" name="photoPath" type="file" accept="image/*">
+                                                Choose File <input id="photoInput" name="photoPath" type="file"
+                                                                   accept="image/*">
                                             </label>
                                         </div>
                                         <!-- Ajout d'un élément pour afficher l'aperçu de l'image -->
                                         <div id="photoPreview" style="margin-top: 10px;">
-                                            <img id="previewImg" src="#" alt="Selected Image" style="display: none; width: 50px; height: 50px;">
+                                            <img id="previewImg" src="#" alt="Selected Image"
+                                                 style="display: none; width: 50px; height: 50px;">
                                         </div>
                                     </div>
                                 </div>
@@ -179,4 +207,9 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+
+        <script src="{{asset('/js/add-userForm.js')}}"></script>
+
+    @endpush
 @endsection

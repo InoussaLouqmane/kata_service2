@@ -1,5 +1,5 @@
 @php
-    use App\Enums\RequestStatus;use App\Models\AccountRequest;use App\Models\Dojo;
+    use App\Enums\RequestStatus;use App\Models\AccountRequest;use App\Models\Club;use App\Models\Discipline;use App\Models\Dojo;
     use App\Models\User;use Illuminate\Support\Facades\Auth;
 @endphp
 @extends('partials.layout')
@@ -31,7 +31,7 @@
 
             <div class="col-xl-3 col-sm-6 col-12 d-flex">
 
-                <a href="{{route('main.student.students')}}" class="container-fluid">
+                <a href="{{route('main.accountRequest.requests')}}" class="container-fluid">
 
 
                     <div class="card bg-comman w-100">
@@ -52,49 +52,62 @@
 
             <div class="col-xl-3 col-sm-6 col-12 d-flex">
                 <div class="card bg-comman w-100">
-                    <div class="card-body">
-                        <div class="db-widgets d-flex justify-content-between align-items-center">
-                            <div class="db-info">
-                                <h6>Nombre de dojos</h6>
-                                <h3>{{Dojo::count()}}</h3>
-                            </div>
-                            <div class="db-icon">
-                                <img src="{{asset('/img/icons/dash-icon-02.svg')}}" alt="Dashboard Icon">
+                    <a  href="{{route('main.user.users')}}">
+
+                        <div class="card-body">
+                            <div class="db-widgets d-flex justify-content-between align-items-center">
+                                <div class="db-info">
+                                    <h6>Nombre d'utilisateurs</h6>
+                                    <h3>{{User::count()}}</h3>
+                                </div>
+                                <div class="db-icon">
+                                    <img src="{{asset('/img/icons/dash-icon-04.svg')}}" alt="Dashboard Icon">
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
             <div class="col-xl-3 col-sm-6 col-12 d-flex">
-                <div class="card bg-comman w-100">
-                    <div class="card-body">
-                        <div class="db-widgets d-flex justify-content-between align-items-center">
-                            <div class="db-info">
-                                <h6>Types d'arts Martiaux</h6>
-                                <h3>4</h3>
-                            </div>
-                            <div class="db-icon">
-                                <img src="{{asset('/img/icons/dash-icon-03.svg')}}" alt="Dashboard Icon">
+                <a href="{{route('main.department.departments')}}" class="container-fluid">
+
+                    <div class="card bg-comman w-100">
+                        <div class="card-body">
+                            <div class="db-widgets d-flex justify-content-between align-items-center">
+                                <div class="db-info">
+                                    <h6>Nombre de clubs</h6>
+                                    <h3>{{Club::count()}}</h3>
+                                </div>
+                                <div class="db-icon">
+                                    <img src="{{asset('/img/icons/dash-icon-02.svg')}}" alt="Dashboard Icon">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+
+                </a>
             </div>
             <div class="col-xl-3 col-sm-6 col-12 d-flex">
                 <div class="card bg-comman w-100">
+                    <a  href="{{route('main.subject.subjects')}}">
+
                     <div class="card-body">
-                        <div class="db-widgets d-flex justify-content-between align-items-center">
-                            <div class="db-info">
-                                <h6>Nombre d'utilisateurs</h6>
-                                <h3>{{User::count()}}</h3>
-                            </div>
-                            <div class="db-icon">
-                                <img src="{{asset('/img/icons/dash-icon-04.svg')}}" alt="Dashboard Icon">
+
+                            <div class="db-widgets d-flex justify-content-between align-items-center">
+                                <div class="db-info">
+                                    <h6>Nombre de disciplines</h6>
+                                    <h3>{{Discipline::count()}}</h3>
+                                </div>
+                                <div class="db-icon">
+                                    <img src="{{asset('/img/icons/dash-icon-03.svg')}}" alt="Dashboard Icon">
+                                </div>
                             </div>
                         </div>
-                    </div>
+
+                    </a>
                 </div>
             </div>
+
         </div>
 
         <div class="row">
@@ -330,52 +343,7 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-xl-3 col-sm-6 col-12">
-                <div class="card flex-fill fb sm-box">
-                    <div class="social-likes">
-                        <p>Like us on facebook</p>
-                        <h6>50,095</h6>
-                    </div>
-                    <div class="social-boxs">
-                        <img src="{{asset('/img/icons/social-icon-01.svg')}}" alt="Social Icon">
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6 col-12">
-                <div class="card flex-fill twitter sm-box">
-                    <div class="social-likes">
-                        <p>Follow us on twitter</p>
-                        <h6>48,596</h6>
-                    </div>
-                    <div class="social-boxs">
-                        <img src="{{asset('/img/icons/social-icon-02.svg')}}" alt="Social Icon">
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6 col-12">
-                <div class="card flex-fill insta sm-box">
-                    <div class="social-likes">
-                        <p>Follow us on instagram</p>
-                        <h6>52,085</h6>
-                    </div>
-                    <div class="social-boxs">
-                        <img src="{{asset('/img/icons/social-icon-03.svg')}}" alt="Social Icon">
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6 col-12">
-                <div class="card flex-fill linkedin sm-box">
-                    <div class="social-likes">
-                        <p>Follow us on linkedin</p>
-                        <h6>69,050</h6>
-                    </div>
-                    <div class="social-boxs">
-                        <img src="{{asset('/img/icons/social-icon-04.svg')}}" alt="Social Icon">
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
     </div>
 @endsection

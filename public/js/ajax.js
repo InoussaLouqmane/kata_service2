@@ -1,34 +1,36 @@
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function () {
 
-    let photoInputButton = document.getElementById('photoInput');
+    let $photoInputButton = $('#photoInput');
+    let $fileLabelText = $('#fileLabelText');
+    let $checkIcon = $('#checkIcon');
+    let $previewImg = $('#previewImg');
 
-
-    photoInputButton.addEventListener('change', function(event) {
+    $photoInputButton.on('change', function (event) {
         const file = event.target.files[0];
-        const fileLabelText = document.getElementById('fileLabelText');
-        const checkIcon = document.getElementById('checkIcon');
         if (file) {
-            fileLabelText.textContent = file.name;
-            checkIcon.style.display = 'inline';
+            $fileLabelText.text(file.name);
+            $checkIcon.show();
             const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('previewImg').src = e.target.result;
-                document.getElementById('previewImg').style.display = 'block';
+            reader.onload = function (e) {
+                $previewImg.attr('src', e.target.result);
+                $previewImg.show();
             };
             reader.readAsDataURL(file);
         } else {
-            fileLabelText.textContent = 'Choose File';
-            checkIcon.style.display = 'none';
-            document.getElementById('previewImg').style.display = 'none';
+            $fileLabelText.text('Choose File');
+            $checkIcon.hide();
+            $previewImg.hide();
         }
     });
 
-
-
-        $('#ownerSelect').select2({
-            placeholder: 'Select a user',
-
-        });
-
+    $('#ownerSelect').select2({
+        placeholder: 'Sélectionnez un utilisteur',
+    });
+    $('#clubSelect').select2({
+        placeholder: 'Sélectionnez un club',
+    });
+    $('#disciplineSelect').select2({
+        placeholder: 'Sélectionnez une discipline',
+    });
 
 });

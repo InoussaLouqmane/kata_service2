@@ -1,7 +1,7 @@
 @php
 
     use App\Enums\UserStatus;use App\Models\AccountRequest;
-    use App\Enums\RequestStatus;use App\Models\User;
+    use App\Enums\RequestStatus;use App\Models\Dojo;use App\Models\User;use Illuminate\Support\Facades\Log;
 
 @endphp
 
@@ -9,7 +9,6 @@
 @section('title', 'Utilisateurs');
 
 @section('content')
-
 
     <!--test-->
     <div class="content container-fluid">
@@ -34,21 +33,23 @@
                             <h4>Profil
                                 <div class="dropdown">
                                     <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                       <span> <i class="feather-more-vertical"></i></span>
+                                        <span> <i class="feather-more-vertical"></i></span>
                                     </button>
                                     <ul class="dropdown-menu">
 
                                         @if($selectedClub->status === 'Actif')
-                                            <li class="dropdown-item" id="activateAccountButton"><a href="{{route('desactivateAccount.web', [$selectedClub->id])}}"
-                                                                                                    class="d-flex justify-content-around gap-1">
+                                            <li class="dropdown-item" id="activateAccountButton"><a
+                                                    href="{{route('desactivateAccount.web', [$selectedClub->id])}}"
+                                                    class="d-flex justify-content-around gap-1">
                                                     <i class="feather-x-circle"> </i>
                                                     <span>Désactiver compte</span>
                                                 </a>
                                             </li>
                                         @endif
                                         @if($selectedClub->status === 'Inactif')
-                                            <li class="dropdown-item"><a href="{{route('activateAccount.web', [$selectedClub->id])}}"
-                                                                         class="d-flex justify-content-around gap-1">
+                                            <li class="dropdown-item"><a
+                                                    href="{{route('activateAccount.web', [$selectedClub->id])}}"
+                                                    class="d-flex justify-content-around gap-1">
                                                     <i class="feather-x-circle"> </i>
                                                     <span>Activer compte</span>
                                                 </a>
@@ -56,11 +57,11 @@
                                         @endif
 
 
-
-                                        <li class="dropdown-item"><a href="{{route('reinitializePassword.web', [$selectedClub->id])}}"
-                                                                     class="d-flex justify-content-around gap-1">
-                                                <i class="feather-lock"> </i>
-                                                <span>Réinitialiser mot de passe</span>
+                                        <li class="dropdown-item"><a
+                                                href="{{route('main.department.edit-department', [$selectedClub->id])}}"
+                                                class="d-flex justify-content-around gap-1">
+                                                <i class="feather-edit"> </i>
+                                                <span>Modifier</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -70,40 +71,80 @@
                         <div class="student-profile-head">
 
                             <div class="row">
-                                <div class="col-lg-4 col-md-4">
+                                <div class="col-lg-2 col-md-2">
                                     <div class="profile-user-box">
                                         <div class="profile-user-img">
-                                            <img src="{{asset('/img/profile-user.jpg')}}" alt="Profile">
-                                            <div class="form-group students-up-files profile-edit-icon mb-0">
-                                                <div class="uplod d-flex">
-                                                    <label class="file-upload profile-upbtn mb-0">
-                                                        <i class="feather-edit-3"></i><input type="file">
-                                                    </label>
-                                                </div>
-                                            </div>
+                                            @if($selectedClub->logoPath)
+                                                <img
+                                                    src="{{asset('/storage/'.$selectedClub->logoPath)}}"
+                                                    alt="Profile">
+                                            @else
+                                                <img src="{{asset('/img/profile-user.jpg')}}" alt="Profile">
+                                            @endif
+
                                         </div>
                                         <div class="names-profiles">
-                                            <h4>{{$selectedClub->firstName}} {{$selectedClub->lastName}}</h4>
+                                            <h4>{{$selectedClub->name}}</h4>
                                             <h5>{{$selectedClub->martialArtType}}</h5>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 col-md-4 d-flex align-items-center">
+                                @php
+                                    $owner = User::find($selectedClub->RegisteredBy);
+                                @endphp
+                                <div class="col-lg-8 col-md-8 d-flex align-items-center justify-content-between">
                                     <div class="follow-group">
 
+                                        <!--Propriétaire-->
                                         <div class="personal-activity">
                                             <div class="personal-icons">
                                                 <i class="feather-user"></i>
                                             </div>
                                             <div class="views-personal">
-                                                <h4 class="" >Role</h4>
-                                                <h5>{{$selectedClub->role ?? 'Non défini'}}</h5>
+                                                <h4 class="">Propriétaire</h4>
+
+                                                @if($owner)
+                                                    <h5>
+                                                        <a href="{{route('main.user.user-details', [$owner->id])}}"> {{$owner->firstName. ' '. $owner->lastName}}</a>
+                                                    </h5>
+                                                @else
+                                                    Non défini
+                                                @endif
+
                                             </div>
                                         </div>
 
+                                        {{--Nom du club--}}
                                         <div class="personal-activity">
                                             <div class="personal-icons">
-                                                <i class="feather-user"></i>
+                                                <i class="fas fa-building"></i>
+                                            </div>
+                                            <div class="views-personal">
+                                                <h4 class="">Nom du club</h4>
+
+                                                <h5>
+                                                    <a> {{$selectedClub->name}}</a>
+                                                </h5>
+
+                                            </div>
+                                        </div>
+
+
+                                        {{--Adresse du club--}}
+                                        <div class="personal-activity">
+                                            <div class="personal-icons">
+                                                <i class="fas fa-location"></i>
+                                            </div>
+                                            <div class="views-personal">
+                                                <h4>Adresse</h4>
+                                                <h5>{{$selectedClub->address ?? 'Non défini'}}</h5>
+                                            </div>
+                                        </div>
+
+                                        <!--Website-->
+                                        <div class="personal-activity">
+                                            <div class="personal-icons">
+                                                <i class="feather-mail"></i>
                                             </div>
                                             <div class="views-personal">
                                                 <h4>Email</h4>
@@ -111,18 +152,22 @@
                                             </div>
                                         </div>
 
-
-
+                                        <!--Description-->
                                         <div class="personal-activity">
                                             <div class="personal-icons">
-                                                <i class="feather-calendar"></i>
+                                                <i class="feather-message-square"></i>
                                             </div>
                                             <div class="views-personal">
-                                                <h4>Membre depuis</h4>
-                                                <h5>{{$selectedClub->created_at->format('d-M-Y') ?? 'Non défini'}}</h5>
+                                                <h4>Description</h4>
+
+
+                                                <a data-bs-toggle="modal"
+                                                   data-bs-target="#centermodal"
+                                                   class="btn btn-circle btn-sm bg-success-light me-2 ">
+                                                    Voir <i class="feather-eye"></i>
+                                                </a>
                                             </div>
                                         </div>
-
 
 
                                         {{--<div class="students-follows">
@@ -139,171 +184,12 @@
                                         </div>--}}
                                     </div>
                                 </div>
-                                <div class="col-lg-4 col-md-4 d-flex align-items-center">
-                                    <div class="follow-btn-group me-5">
-                                        @if($selectedClub->status === 'Actif')
 
-                                            <span
-                                                class="fs-5 badge bg-success">{{$selectedClub[User::STATUS]}}</span>
-
-                                        @elseif($selectedClub->status === 'Inactif')
-                                            <span
-                                                class="fs-5 badge bg-danger">{{$selectedClub[User::STATUS]}}</span>
-                                        @endif
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row justify-content-center">
-                    <div class="col-lg-6">
-                        <div class="student-personals-grp">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="heading-detail">
-                                        <h4>Personal Details :</h4>
-                                    </div>
-                                    <div class="d-flex flex-row justify-content-between">
-                                        <div class="personal-activity">
-                                            <div class="personal-icons">
-                                                <i class="feather-user"></i>
-                                            </div>
-                                            <div class="views-personal">
-                                                <h4>Nom</h4>
-                                                <h5>{{$selectedClub->firstName}} {{$selectedClub->lastName}}</h5>
-                                            </div>
-                                        </div>
 
-                                        <div class="personal-activity">
-                                            <div class="personal-icons">
-                                                <i class="feather-calendar"></i>
-                                            </div>
-                                            <div class="views-personal">
-                                                <h4>Numéro de license</h4>
-                                                <h5>{{$selectedClub->licenseId}}</h5>
-                                            </div>
-                                        </div>
-                                        <div class="personal-activity">
-                                            <div class="personal-icons">
-                                                <i class="feather-italic"></i>
-                                            </div>
-                                            <div class="views-personal">
-                                                <h4>Grade</h4>
-                                                <h5>Ceinture Noire ({{$selectedClub->grade}} Dan)</h5>
-                                            </div>
-                                        </div>
-                                        <div class="personal-activity">
-                                            <div class="personal-icons">
-                                                <i class="feather-map-pin"></i>
-                                            </div>
-                                            <div class="views-personal">
-                                                <h4>Adresse</h4>
-                                                <h5>Nothing here</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {{--<div class="personal-activity">
-                                        <div class="personal-icons">
-                                            <i class="feather-user"></i>
-                                        </div>
-                                        <div class="views-personal">
-                                            <h4>Name</h4>
-                                            <h5>Bruce Willis</h5>
-                                        </div>
-                                    </div>
-                                    <div class="personal-activity">
-                                        <div class="personal-icons">
-                                            <img src="{{asset('/img/icons/buliding-icon.svg')}}" alt>
-                                        </div>
-                                        <div class="views-personal">
-                                            <h4>Department </h4>
-                                            <h5>Computer Science</h5>
-                                        </div>
-                                    </div>
-                                    <div class="personal-activity">
-                                        <div class="personal-icons">
-                                            <i class="feather-phone-call"></i>
-                                        </div>
-                                        <div class="views-personal">
-                                            <h4>Mobile</h4>
-                                            <h5>+91 89657 48512</h5>
-                                        </div>
-                                    </div>
-                                    <div class="personal-activity">
-                                        <div class="personal-icons">
-                                            <i class="feather-mail"></i>
-                                        </div>
-                                        <div class="views-personal">
-                                            <h4>Email</h4>
-                                            <h5><a href="../cdn-cgi/l/email-protection.html" class="__cf_email__"
-                                                   data-cfemail="5d393c342e241d3a303c3431733e3230">[email&#160;protected]</a>
-                                            </h5>
-                                        </div>
-                                    </div>
-                                    <div class="personal-activity">
-                                        <div class="personal-icons">
-                                            <i class="feather-user"></i>
-                                        </div>
-                                        <div class="views-personal">
-                                            <h4>Gender</h4>
-                                            <h5>Male</h5>
-                                        </div>
-                                    </div>
-                                    <div class="personal-activity">
-                                        <div class="personal-icons">
-                                            <i class="feather-calendar"></i>
-                                        </div>
-                                        <div class="views-personal">
-                                            <h4>Date of Birth</h4>
-                                            <h5>22 Apr 1995</h5>
-                                        </div>
-                                    </div>
-                                    <div class="personal-activity">
-                                        <div class="personal-icons">
-                                            <i class="feather-italic"></i>
-                                        </div>
-                                        <div class="views-personal">
-                                            <h4>Language</h4>
-                                            <h5>English, French, Bangla</h5>
-                                        </div>
-                                    </div>
-                                    <div class="personal-activity mb-0">
-                                        <div class="personal-icons">
-                                            <i class="feather-map-pin"></i>
-                                        </div>
-                                        <div class="views-personal">
-                                            <h4>Address</h4>
-                                            <h5>480, Estern Avenue, New York</h5>
-                                        </div>
-                                    </div>--}}
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="student-personals-grp">
-                            <div class="card mb-0">
-                                <div class="card-body">
-                                    <div class="heading-detail">
-                                        <h4>About Me</h4>
-                                    </div>
-                                    <div class="hello-park">
-                                        <h5>Hello I am Daisy Parks</h5>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex commodo
-                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                            cillum dolore eu fugiat nulla pariatur. Excepteur officia deserunt mollit
-                                            anim id est laborum.</p>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -386,268 +272,27 @@
                 </div>
                 <div class="modal-body">
                     <h5>Motif du rejet</h5>
-                    <p>{{$selectedClub->comment ?? "Aucun commentaire pour l'instant"}}</p>
+                    <p>{{$selectedClub->comment ?? "Aucune description pour l'instant"}}</p>
                 </div>
             </div>
         </div>
     </div>
     {{--Modals--}}
 
-    {{--section cutted--}}
-    {{--<div class="content container-fluid">
-        <div class="page-header">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="page-sub-header">
-                        <h3 class="page-title">Détails sur la demande</h3>
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="students.blade.php">Student</a></li>
-                            <li class="breadcrumb-item active">Student Details</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="about-info d-flex flex-row justify-content-between">
-                            <h4>Informations générales<span><a href="javascript:;"></a></span></h4>
-                            <div class="col-lg-6 col-md-6 d-flex">
-
-
-                                <div class="follow-btn-group gap-3 justify-content-end  align-items-center">
-                                    <div class="d-flex flex-row justify-content-between align-items-center">
-
-                                        @if($selectedClub->status === 'Actif')
-
-                                            <span
-                                                class="fs-5 badge bg-success">{{$selectedClub[User::STATUS]}}</span>
-
-                                        @elseif($selectedClub->status === 'Inactif')
-                                            <span
-                                                class="fs-5 badge bg-danger">{{$selectedClub[User::STATUS]}}</span>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row justify-content-around">
-                    <div class="col-lg-12">
-                        <div class="student-personals-grp">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="heading-detail">
-                                        <h4>Infos du gérant</h4>
-                                    </div>
-
-                                    <div class="d-flex flex-row justify-content-between">
-                                        <div class="personal-activity">
-                                            <div class="personal-icons">
-                                                <i class="feather-user"></i>
-                                            </div>
-                                            <div class="views-personal">
-                                                <h4>Nom</h4>
-                                                <h5>{{$selectedClub->firstName}} {{$selectedClub->lastName}}</h5>
-                                            </div>
-                                        </div>
-                                        <div class="personal-activity">
-                                            <div class="personal-icons">
-                                                <img src="{{asset('/img/icons/buliding-icon.svg')}}" alt>
-                                            </div>
-                                            <div class="views-personal">
-                                                <h4>Discipline </h4>
-                                                <h5>{{$selectedClub->martialArtType}}</h5>
-                                            </div>
-                                        </div>
-                                        <div class="personal-activity">
-                                            <div class="personal-icons">
-                                                <i class="feather-phone-call"></i>
-                                            </div>
-                                            <div class="views-personal">
-                                                <h4>Téléphone</h4>
-                                                <h5>{{$selectedClub->phone}}</h5>
-                                            </div>
-                                        </div>
-                                        <div class="personal-activity">
-                                            <div class="personal-icons">
-                                                <i class="feather-mail"></i>
-                                            </div>
-                                            <div class="views-personal">
-                                                <h4>Email</h4>
-                                                <h5>
-                                                    {{$selectedClub->email}}
-                                                </h5>
-                                            </div>
-                                        </div>
-                                        <div class="personal-activity">
-                                            <div class="personal-icons">
-                                                <i class="feather-user"></i>
-                                            </div>
-                                            <div class="views-personal">
-                                                <h4>Genre</h4>
-                                                <h5>{{$selectedClub->genre ?? 'Non défini'}}</h5>
-                                            </div>
-                                        </div>
-                                        <div class="personal-activity">
-                                            <div class="personal-icons">
-                                                <i class="feather-calendar"></i>
-                                            </div>
-                                            <div class="views-personal">
-                                                <h4>Numéro de license</h4>
-                                                <h5>{{$selectedClub->licenseId}}</h5>
-                                            </div>
-                                        </div>
-                                        <div class="personal-activity">
-                                            <div class="personal-icons">
-                                                <i class="feather-italic"></i>
-                                            </div>
-                                            <div class="views-personal">
-                                                <h4>Grade</h4>
-                                                <h5>Ceinture Noire ({{$selectedClub->grade}} Dan)</h5>
-                                            </div>
-                                        </div>
-                                        <div class="personal-activity">
-                                            <div class="personal-icons">
-                                                <i class="feather-map-pin"></i>
-                                            </div>
-                                            <div class="views-personal">
-                                                <h4>Adresse</h4>
-                                                <h5>Nothing here</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="student-personals-grp">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="mb-3 col-6">
-                                        <div class="heading-detail">
-                                            <h4>Infos du club</h4>
-                                        </div>
-                                        <div class="d-flex flex-row justify-content-between gap-2">
-
-
-                                            <div class="personal-activity">
-                                                <div class="personal-icons">
-                                                    <i class="feather-user"></i>
-                                                </div>
-                                                <div class="views-personal">
-                                                    <h4>Nom du club</h4>
-                                                    <h5>NOthing here now--}}{{--{{$selectedClub->clubName}} {{$selectedClub->lastName}}--}}{{--</h5>
-                                                </div>
-                                            </div>
-
-                                            <div class="personal-activity">
-                                                <div class="personal-icons">
-                                                    <img src="{{asset('/img/icons/buliding-icon.svg')}}" alt>
-                                                </div>
-                                                <div class="views-personal">
-                                                    <h4>Adresse</h4>
-                                                    <h5>Nothing now--}}{{--{{$selectedClub->address}}--}}{{--</h5>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="personal-activity">
-                                                <div class="personal-icons">
-                                                    <i class="feather-mail"></i>
-                                                </div>
-                                                <div class="views-personal">
-                                                    <h4>Email</h4>
-                                                    <h5>
-                                                        NOthing here
-                                                        --}}{{--{{$selectedClub->email}}--}}{{--
-                                                    </h5>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-3 col-6">
-                                        <div class="heading-detail">
-                                            <h4>Autres informations</h4>
-                                        </div>
-                                        <div class="row">
-
-                                            <div class="d-flex flex-row justify-content-between gap-2">
-                                                <div class="personal-activity">
-                                                    <div class="personal-icons">
-                                                        <i class="feather-calendar"></i>
-                                                    </div>
-                                                    <div class="views-personal">
-                                                        <h4>Inscrit le :</h4>
-                                                        <h5>{{$selectedClub->created_at->format('d M y')}}</h5>
-                                                    </div>
-                                                </div>
-                                                <div class="personal-activity">
-                                                    <div class="personal-icons">
-                                                        <img src="{{asset('/img/icons/buliding-icon.svg')}}" alt>
-                                                    </div>
-                                                    <div class="views-personal">
-                                                        <h4>Statut</h4>
-                                                        <h5>{{($selectedClub->status)}}</h5>
-                                                    </div>
-                                                </div>
-
-                                                <div class="personal-activity">
-                                                    @if($selectedClub->status == UserStatus::INACTIVE)
-                                                        <div class="personal-icons">
-                                                            <i class="feather-mail"></i>
-                                                        </div>
-                                                        <div class="views-personal">
-
-
-                                                            <h4>Commentaire</h4>
-                                                            <a data-bs-toggle="modal"
-                                                               data-bs-target="#centermodal"
-                                                               class="btn btn-circle btn-sm bg-success-light me-2 ">
-                                                                Voir <i class="feather-eye"></i>
-                                                            </a>
-
-                                                        </div>
-                                                    @endif
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>--}}
-{{--    end of section cutted--}}
 
     <div class="row">
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="header-title mb-4">Tabs Bordered</h4>
+                    <h4 class="header-title mb-4">Autres informations</h4>
                     <ul class="nav nav-tabs nav-bordered">
                         <li class="nav-item">
-                            <a href="#home-b1" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                            <a href="#home-b1" data-bs-toggle="tab" aria-expanded="false" class="nav-link active">
                                 Dojos affiliés
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#profile-b1" data-bs-toggle="tab" aria-expanded="true" class="nav-link active">
+                            <a href="#profile-b1" data-bs-toggle="tab" aria-expanded="true" class="nav-link ">
                                 Membres
                             </a>
                         </li>
@@ -658,24 +303,213 @@
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane" id="home-b1">
+                        <div class="tab-pane active" id="home-b1">
 
-                            dd
+                            {{--dojo datatables--}}
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table
+                                        id="clubTable"
+                                        class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
+                                        <thead class="student-thread">
+
+                                        <tr>
+
+
+                                            <th>Nom du Dojo</th>
+
+                                            <th class="text-start">Adresse</th>
+                                            <th class="text-start">Status</th>
+                                            <th class="text-end">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+
+                                        @foreach(Dojo::all() as $dojo)
+                                            @php
+
+                                                $club = $dojo->club;
+                                            @endphp
+
+                                            @if($club->name == $selectedClub->name)
+
+                                                <tr>
+
+
+                                                    <td class="text-start">{{$dojo->name}}</td>
+
+
+
+                                                    <td class="text-start">{{$dojo->address}}</td>
+                                                    <td class="text-start">
+
+                                                        @if($dojo->status === 'Actif')
+
+                                                            <span
+                                                                class="fs-5 badge bg-success">{{$dojo[User::STATUS]}}</span>
+
+                                                        @elseif($dojo->status === 'Inactif')
+                                                            <span
+                                                                class="fs-5 badge bg-danger">{{$dojo[User::STATUS]}}</span>
+                                                        @endif
+
+                                                    </td>
+
+                                                    <td class="text-start">
+                                                        <div class="actions">
+                                                            <a href="{{route('main.department.department-details', [$dojo->id])}}"
+                                                               class="btn btn-sm bg-success-light me-2">
+                                                                <i class="feather-eye"></i>
+                                                            </a>
+                                                            <a href="{{route('main.department.edit-department', [$dojo->id])}}"
+                                                               class="btn btn-sm bg-danger-light">
+                                                                <i class="feather-edit"></i>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+
+                            {{--end dojo datatables--}}
+
                         </div>
-                        <div class="tab-pane show active" id="profile-b1">
-                        popover
+
+                        <div class="tab-pane" id="profile-b1">
+
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="table-responsive">
+                                        <table id="userTable"
+                                               class="w-100 table border-0 star-student table-hover table-center mb-0 datatable table table-striped">
+                                            <thead class="student-thread">
+                                            <tr>
+                                                <th>Nom</th>
+                                                <th>Adresse email</th>
+
+                                                <th>Genre</th>
+                                                <th>Rôle</th>
+                                                <th>Art martial</th>
+                                                <th>Status</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach(User::all() as $user)
+
+                                                @if($user->clubs->contains($selectedClub->id))
+                                                    <tr>
+
+
+                                                        <td>
+                                                            <h2 class="table-avatar">
+                                                                <a href="{{route('main.user.user-details', [$user->id])}}"
+                                                                   class="avatar avatar-sm me-2"><img
+                                                                        class="avatar-img rounded-circle"
+                                                                        src="{{asset('/img/profiles/avatar-01.jpg')}}"
+                                                                        alt="User Image"></a>
+                                                            </h2>
+                                                            <a href="{{route('main.user.user-details', [$user->id])}}">{{$user->firstName}} {{$user->lastName}}</a>
+                                                        </td>
+                                                        <td>{{$user->email}}</td>
+                                                        <td>{{$user->genre ?? '-'}}</td>
+                                                        <td>{{$user->role}}</td>
+                                                        <td>{{$user->martialArtType}}</td>
+                                                        <td class="">
+
+                                                            @if($user->status === 'Actif')
+                                                                <span
+                                                                    class="badge bg-success">{{$user->status}}</span>
+
+                                                            @elseif($user->status === 'Inactif')
+                                                                <span
+                                                                    class="badge bg-danger">{{$user->status}}</span>
+                                                            @endif
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div class="actions text-center justify-content-center">
+
+                                                                <div class="dropdown">
+                                                                    <button class="btn" type="button"
+                                                                            data-bs-toggle="dropdown"
+                                                                            aria-expanded="false">
+                                                                        <i class="feather-more-vertical"></i>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu">
+                                                                        <li class="dropdown-item"><a
+                                                                                href="{{route('main.user.user-details', [$user->id])}}"
+                                                                                class="d-flex justify-content-around gap-1">
+                                                                                <i class="feather-eye"> </i>
+                                                                                <span>Voir détails</span>
+                                                                            </a>
+                                                                        </li>
+
+                                                                        @if($user->status === 'Actif')
+                                                                            <li class="dropdown-item"
+                                                                                id="activateAccountButton"><a
+                                                                                    href="{{route('desactivateAccount.web', [$user->id])}}"
+                                                                                    class="d-flex justify-content-around gap-1">
+                                                                                    <i class="feather-x-circle"> </i>
+                                                                                    <span>Désactiver compte</span>
+                                                                                </a>
+                                                                            </li>
+                                                                        @endif
+                                                                        @if($user->status === 'Inactif')
+                                                                            <li class="dropdown-item"><a
+                                                                                    href="{{route('activateAccount.web', [$user->id])}}"
+                                                                                    class="d-flex justify-content-around gap-1">
+                                                                                    <i class="feather-x-circle"> </i>
+                                                                                    <span>Activer compte</span>
+                                                                                </a>
+                                                                            </li>
+                                                                        @endif
+
+
+                                                                        <li class="dropdown-item"><a
+                                                                                href="{{route('reinitializePassword.web', [$user->id])}}"
+                                                                                class="d-flex justify-content-around gap-1">
+                                                                                <i class="feather-lock"> </i>
+                                                                                <span>Réinitialiser mot de passe</span>
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endif
+
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+
                         <div class="tab-pane" id="messages-b1">
-                        louedn
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15860.399285257203!2d2.4256748!3d6.3811153!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x102355288ab00b25%3A0x1d8284e70561221a!2sJTEK%20SOLUTIONS!5e0!3m2!1sfr!2sbj!4v1722590950508!5m2!1sfr!2sbj"
+                                width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-    </div>
-    @push('scripts')
-        <script src="{{asset('/js/accountRequestModal.js')}}"></script>
+        </div>
+        @push('scripts')
+            <script src="{{asset('/js/accountRequestModal.js')}}"></script>
     @endpush
 @endsection
 

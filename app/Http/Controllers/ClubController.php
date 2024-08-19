@@ -2,39 +2,86 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccountRequest;
 use App\Models\Club;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Mockery\Exception;
 
-class ClubController extends Controller
+class ClubController extends Controller implements ShouldQueue
 {
     public function index()
     {
         return Club::all();
     }
 
+    public function storeFromValidation(AccountRequest $request)
+    {
+
+
+
+
+        try {
+
+            $club = new Club();
+
+            $this->extracted($request, $club);
+
+            if ($request->clubLogoPath) {
+                $path = $request->file('clubLogoPath')->store('images', 'public');
+                $club->logoPath = $path;
+            }
+
+            Log::info("Here is the club after extraction ".$club->all());
+
+            $club->save();
+
+            Log::error("Enregistrement du club réussi : ". $club->all());
+            return redirect(route('main.department.departments'))->with('success', 'Le club a bien été ajouté');
+
+        } catch (QueryException $e) {
+
+            Log::error("Enregistrement du club échoué : " . $e->getMessage());
+
+            return redirect()->back()->withErrors(['fail' => 'Oops, une erreur s\'est produite. Email déjà utilisé.']);
+
+        } catch (Exception $e) {
+
+            Log::error("Enregistrement du club échoué : " . $e->getMessage());
+            return redirect()->back()->withErrors(['fail' => 'Oops, une erreur s\'est produite.']);
+        }
+    }
     public function store(Request $request)
     {
 
 
         try {
-            $club = new Club();
-            $this->extracted($request, $club);
 
-            if ($request->hasFile('clubLogoPath')) {
+            $club = new Club();
+            $club->name = $request->clubName;
+            $club->ifuNumber = $request->ClubIfuNumber ?? null;
+            $this->extracted1($request, $club);
+
+            if ($request->clubLogoPath) {
                 $path = $request->file('clubLogoPath')->store('images', 'public');
                 $club->logoPath = $path;
             }
+
+            Log::info("Here is the club after extraction ".$club->all());
+
             $club->save();
 
+            Log::error("Enregistrement du club réussi : ". $club->all());
             return redirect(route('main.department.departments'))->with('success', 'Le club a bien été ajouté');
+
         } catch (QueryException $e) {
 
             Log::error("Enregistrement du club échoué : " . $e->getMessage());
+
             return redirect()->back()->withErrors(['fail' => 'Oops, une erreur s\'est produite. Email déjà utilisé.']);
 
         } catch (Exception $e) {
@@ -55,10 +102,20 @@ class ClubController extends Controller
             $club = Club::findOrFail($id);
 
 
-            $this->extracted($request, $club);
+            $club->name = $request->clubName;
+            $club->ifuNumber = $request->ClubIfuNumber ?? null;
+            $club->RegisteredBy = $request->user_id ?? null;
+            $club->martialArtType = $request->martialArtType ?? null;
+            $club->email = $request->clubEmail ?? null;
+            $club->description = $request->clubDescription ?? null;
+            $club->websiteUrl = $request->ClubWebsiteUrl ?? null;
+            $club->address = $request->clubAddress ?? null;
+
 
             if ($request->hasFile('clubLogoPath')) {
+
                  /*Supprimer l'ancien fichier s'il existe*/
+
                 if ($club->logoPath) {
                     Storage::disk('public')->delete($club->logoPath);
                 }
@@ -83,21 +140,29 @@ class ClubController extends Controller
         }
     }
 
-    /**
-     * @param Request $request
-     * @param $club
-     * @return void
-     */
-    public function extracted(Request $request, $club): void
+    public function extracted(AccountRequest $request, $club) : void
     {
+
         $club->name = $request->clubName;
         $club->ifuNumber = $request->ClubIfuNumber ?? null;
         $club->RegisteredBy = $request->user_id ?? null;
-        $club->martialArtType = $request->martialArtType ?? null;
+        $this->extracted1($request, $club);
+
+    }
+
+    /**
+     * @param AccountRequest $request
+     * @param $club
+     * @return void
+     */
+    public function extracted1(AccountRequest $request, $club): void
+    {
         $club->email = $request->clubEmail ?? null;
+        $club->martialArtType = $request->martialArtType ?? null;
         $club->description = $request->clubDescription ?? null;
         $club->websiteUrl = $request->ClubWebsiteUrl ?? null;
         $club->address = $request->clubAddress ?? null;
     }
+
 
 }

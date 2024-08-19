@@ -1,5 +1,5 @@
 @php use App\Models\Club;
- use App\Models\User;
+ use App\Models\Discipline;use App\Models\User;use Illuminate\Support\Facades\Log;
 
 @endphp
 @extends('partials.layout');
@@ -65,36 +65,63 @@
                                     <div class="form-group local-forms">
 
                                         <label>Nom du club <span class="login-danger">*</span></label>
-                                        <input name="clubName" type="text" class="form-control" value="{{$selectedClub->name}}"
+                                        <input name="clubName" type="text" class="form-control"
+                                               value="{{$selectedClub->name}}"
                                                required>
                                     </div>
                                 </div>
 
-                                {{--<div class="col-12 col-sm-4">
+                                <div class="col-12 col-sm-4">
                                     <div class="form-group local-forms">
-                                        <label>Dis <span class="login-danger">*</span></label>
-                                        <input type="text" class="form-control" required>
+                                        <label>Discipline<span class="login-danger">*</span></label>
+
+                                        <select id="disciplineSelect" class="form-control" name="martialArtType">
+                                            @foreach(Discipline::all() as $discipline)
+
+                                                <option
+                                                    value="{{$discipline->id}}">{{$discipline->name}} </option>
+
+                                            @endforeach
+                                        </select>
                                     </div>
-                                </div>--}}
+                                </div>
+
                                 <div class="col-12 col-sm-4">
                                     <div class="form-group local-forms">
 
                                         @php
                                             $owner = User::find($selectedClub->RegisteredBy);
-                                            $ownerName = $owner->firstName ?? '';
-                                            $ownerName .= ' '. $owner->lastName ?? '';
+
+                                            Log::info('Owner is : ' .$owner);
+
+                                            if($owner){
+                                                $ownerName = $owner->firstName ?? '';
+                                                $ownerName .= ' '. $owner->lastName ?? '';
+                                            }
+
                                         @endphp
                                         <label>Propriétaire</label>
 
-                                        <select id="ownerSelect" class="form-control" name="user_id">
-                                            <option value="{{$owner->id ?? ''}}">{{$ownerName ?? 'Non défini'}}</option>
-                                            @foreach(User::all() as $user)
-                                                @if($user->id != $owner->id)
+                                        <select id="ownerSelect" class="form-control" name="user_id" required>
+                                            @if($owner)
+                                                <option value="{{$owner->id}}">{{$ownerName ?? 'Non défini'}}</option>
+                                                @foreach(User::all() as $user)
+                                                    @if($user->id != $owner->id)
+                                                        <option
+                                                            value="{{$user->id}}">{{$user->firstName}} {{$user->lastName}}</option>
+                                                    @endif
+
+                                                @endforeach
+                                            @else
+                                                <option value="">Non défini</option>
+                                                @foreach(User::all() as $user)
+
                                                     <option
                                                         value="{{$user->id}}">{{$user->firstName}} {{$user->lastName}}</option>
-                                                @endif
 
-                                            @endforeach
+                                                @endforeach
+
+                                            @endif
                                         </select>
 
                                     </div>
@@ -126,7 +153,8 @@
                                     <div class="form-group local-forms">
 
                                         <label>Email <span class="login-danger">*</span></label>
-                                        <input name="clubEmail" value="{{$selectedClub->email}}" type="text" class="form-control" required>
+                                        <input name="clubEmail" value="{{$selectedClub->email}}" type="text"
+                                               class="form-control" required>
                                     </div>
                                 </div>
 
@@ -134,13 +162,15 @@
                                     <div class="form-group local-forms">
                                         <label>Adresse <span class="login-danger">*</span></label>
                                         <input type="hidden" name="id" value="{{$selectedClub->id}}">
-                                        <input name="clubAddress" value="{{$selectedClub->address}}" type="text" class="form-control" required>
+                                        <input name="clubAddress" value="{{$selectedClub->address}}" type="text"
+                                               class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-4">
                                     <div class="form-group local-forms">
                                         <label>Numéro IFU</label>
-                                        <input name="ClubIfuNumber" value="{{$selectedClub->ifuNumber}}" type="text" class="form-control">
+                                        <input name="ClubIfuNumber" value="{{$selectedClub->ifuNumber}}" type="text"
+                                               class="form-control">
                                     </div>
                                 </div>
 
@@ -148,7 +178,8 @@
                                 <div class="col-12 col-sm-4">
                                     <div class="form-group local-forms">
                                         <label>Site web</label>
-                                        <input name="ClubWebsiteUrl" type="url" value="{{$selectedClub->websiteUrl}}" class="form-control">
+                                        <input name="ClubWebsiteUrl" type="url" value="{{$selectedClub->websiteUrl}}"
+                                               class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-4">
@@ -169,7 +200,8 @@
                                                  $fileName = basename($selectedClub->logoPath);
                                             }
                                         @endphp
-                                        <label>Upload Student Photo ( <span id="fileLabelText">1{{$fileName ?? '50px X 150px' }}</span> <i
+                                        <label>Upload Student Photo ( <span
+                                                id="fileLabelText">1{{$fileName ?? '50px X 150px' }}</span> <i
                                                 id="checkIcon" class="fas fa-check-circle"
                                                 style="{{$selectedClub->logoPath ?? 'display: none;'}} color: green; background-color: white; border-radius: 50%; margin-left: 10px;"></i>)</label>
                                         <div class="uplod">

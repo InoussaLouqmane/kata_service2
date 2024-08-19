@@ -24,20 +24,8 @@
     @endif
     <div class="content container-fluid">
 
-        <div class="page-header">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="page-sub-header">
-                        <h3 class="page-title">Utilisateurs</h3>
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a
-                                    href="{{route('main.accountRequest.requests')}}">Utilisateurs</a></li>
-                            <li class="breadcrumb-item active">Tous</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+
 
         <div class="student-group-form">
             <div class="row">
@@ -77,17 +65,14 @@
                                     class="col-3 text-center float-end ms-auto download-grp d-flex flex-row justify-content-end">
 
 
-                                    <div class="col-8 d-flex flex-row align-items-center">
 
-                                        <div class="col-4">Trier par :</div>
-                                        <select class="form-select" id="requestFilter"
-                                                aria-label="Default select example">
-                                            <option selected value="Pending">Pending</option>
-                                            <option value="Approuvé">Approuvées</option>
-                                            <option value="Rejeté">Rejetées</option>
-                                            <option value="All">Toutes</option>
-                                        </select>
+                                    <div class="col-auto text-end float-end ms-auto download-grp">
+                                        {{-- <a href="#" class="btn btn-outline-primary me-2"><i class="fas fa-download"></i>
+                                             Download</a>--}}
+                                        <a href="{{route('main.user.add-user')}}" class="btn btn-primary"><i
+                                                class="fas fa-plus"></i> Ajouter un utilisateur</a>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -159,10 +144,10 @@
                             </div>
                         </div>
 
-                        {{--modals--}}
+                        {{-- end modals--}}
 
                         <div class="table-responsive">
-                            <table id="requestTable"
+                            <table id="userTable"
                                    class="table border-0 star-student table-hover table-center mb-0 datatable table table-striped">
                                 <thead class="student-thread">
                                 <tr>
@@ -192,12 +177,12 @@
 
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a href="{{route('main.accountRequest.request-details',[$user->id])}}"
+                                                <a href="{{route('main.user.user-details', [$user->id])}}"
                                                    class="avatar avatar-sm me-2"><img class="avatar-img rounded-circle"
                                                                                       src="{{asset('/img/profiles/avatar-01.jpg')}}"
                                                                                       alt="User Image"></a>
                                             </h2>
-                                            <a href="{{route('main.accountRequest.request-details', [$user->id])}}">{{$user->firstName}} {{$user->lastName}}</a>
+                                            <a href="{{route('main.user.user-details', [$user->id])}}">{{$user->firstName}} {{$user->lastName}}</a>
                                         </td>
                                         <td>{{$user->email}}</td>
                                         <td>{{$user->phone ?? '-'}}</td>
