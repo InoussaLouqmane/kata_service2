@@ -20,11 +20,16 @@ class Resource extends Model
     const DESCRIPTION = 'description';
     const VIDEO_LINK = 'videoLink';
     const IS_FAVORITE  = 'isfavorite';
+    const TITLE = "title";
+    const TYPE = 'type';
+
+    protected $primaryKey = self::ID;
     /**
      * @var array
      */
     protected $fillable = [
-
+        self::TITLE,
+        self::TYPE,
         self::DESCRIPTION,
         self::VIDEO_LINK,
         self::IS_FAVORITE
@@ -39,5 +44,9 @@ class Resource extends Model
     public function resourceUsers()
     {
         return $this->hasMany('App\Models\ResourceUser');
+    }
+
+    public function grades(){
+        return $this->belongsToMany(Grade::class, 'grade_resource', 'resource_id', 'grade_id');
     }
 }

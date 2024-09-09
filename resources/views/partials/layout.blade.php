@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title'){{" | KATA"}}</title>
+    <title>{{"KATA | "}}@yield('title')</title>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
     <link rel="shortcut icon" href="{{asset('/img/favicon.png')}}">
     <link rel="stylesheet" href="{{asset('/css/bootstrap.min.css')}}">
@@ -50,7 +50,11 @@
 <script src="{{asset('/js/feather.min.js')}}" ></script>
 <script src="{{asset('/plugins/slimscroll/jquery.slimscroll.min.js')}}" ></script>
 <script src="{{asset('/plugins/datatables/datatables.js')}}" ></script>
-
+<script>
+    $(function () {
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    });
+</script>
 @stack('scripts')
 
 <script src="{{asset('/plugins/apexchart/apexcharts.min.js')}}" ></script>
@@ -61,7 +65,7 @@
 <script src="{{asset('/js/circle-progress.min.js')}}"></script>
 <script src="{{asset('/plugins/alertify/alertify.min.js')}}"></script>
 <script src='{{asset('/plugins/fullcalendar/dist/index.global.js')}}'></script>
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+
 {{--<script src="{{asset('/plugins/alertify/custom-alertify.min.js')}}"></script>--}}
 <script src="{{asset('/plugins/clipboard/clipboard.min.js')}}"></script>
 <script src="{{asset('/plugins/toastr/toastr.min.js')}}"></script>
@@ -74,7 +78,7 @@
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
 <script src="{{asset('/js/script.js')}}" ></script>
 <script src="{{asset('/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js')}}"></script>
-
+<script src="https://cdn.kkiapay.me/k.js"></script>
 
 </body>
 

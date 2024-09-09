@@ -34,7 +34,7 @@ class AccountRequestSent extends Mailable implements ShouldQueue
             replyTo: [
                 new Address($this->receiverAddress, $this->Username),
             ],
-            subject: 'Account Request Sent',
+            subject: 'Accusé de réception de votre demande de création de compte',
         );
     }
 

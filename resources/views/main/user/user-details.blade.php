@@ -1,15 +1,15 @@
 @php
 
-    use App\Enums\UserStatus;use App\Models\AccountRequest;
-    use App\Enums\RequestStatus;use App\Models\User;
+    use App\Enums\Role;use App\Enums\UserStatus;use App\Models\AccountRequest;
+    use App\Enums\RequestStatus;use App\Models\User;use Illuminate\Support\Facades\Auth;
 
-@endphp
+    $authUser = Auth::user();
+    @endphp
 
 @extends('partials.layout');
 @section('title', 'Utilisateurs');
 
 @section('content')
-
 
     <!--test-->
     <div class="content container-fluid">
@@ -32,39 +32,45 @@
                     <div class="col-md-12">
                         <div class="about-info">
                             <h4>Profil
-                                <div class="dropdown">
-                                    <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                       <span> <i class="feather-more-vertical"></i></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
+                                @if($authUser->role != Role::STUDENT->value)
 
-                                        @if($selectedUser->status === 'Actif')
-                                            <li class="dropdown-item" id="activateAccountButton"><a href="{{route('desactivateAccount.web', [$selectedUser->id])}}"
-                                                                                                    class="d-flex justify-content-around gap-1">
-                                                    <i class="feather-x-circle"> </i>
-                                                    <span>Désactiver compte</span>
+                                    <div class="dropdown">
+                                        <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span> <i class="feather-more-vertical"></i></span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+
+                                            @if($selectedUser->status === 'Actif')
+                                                <li class="dropdown-item" id="activateAccountButton"><a
+                                                        href="{{route('desactivateAccount.web', [$selectedUser->id])}}"
+                                                        class="d-flex justify-content-around gap-1">
+                                                        <i class="feather-x-circle"> </i>
+                                                        <span>Désactiver compte</span>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if($selectedUser->status === 'Inactif')
+                                                <li class="dropdown-item"><a
+                                                        href="{{route('activateAccount.web', [$selectedUser->id])}}"
+                                                        class="d-flex justify-content-around gap-1">
+                                                        <i class="feather-x-circle"> </i>
+                                                        <span>Activer compte</span>
+                                                    </a>
+                                                </li>
+                                            @endif
+
+
+                                            <li class="dropdown-item"><a
+                                                    href="{{route('reinitializePassword.web', [$selectedUser->id])}}"
+                                                    class="d-flex justify-content-around gap-1">
+                                                    <i class="feather-lock"> </i>
+                                                    <span>Réinitialiser mot de passe</span>
                                                 </a>
                                             </li>
-                                        @endif
-                                        @if($selectedUser->status === 'Inactif')
-                                            <li class="dropdown-item"><a href="{{route('activateAccount.web', [$selectedUser->id])}}"
-                                                                         class="d-flex justify-content-around gap-1">
-                                                    <i class="feather-x-circle"> </i>
-                                                    <span>Activer compte</span>
-                                                </a>
-                                            </li>
-                                        @endif
+                                        </ul>
+                                    </div>
 
-
-
-                                        <li class="dropdown-item"><a href="{{route('reinitializePassword.web', [$selectedUser->id])}}"
-                                                                     class="d-flex justify-content-around gap-1">
-                                                <i class="feather-lock"> </i>
-                                                <span>Réinitialiser mot de passe</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                @endif
                             </h4>
                         </div>
                         <div class="student-profile-head">
@@ -74,21 +80,22 @@
                                     <div class="profile-user-box">
                                         <div class="profile-user-img">
                                             @if($selectedUser->photoPath)
-                                                <img src="{{asset('/storage/'.$selectedUser->photoPath)}}" alt="Profile">
+                                                <img src="{{asset('/storage/'.$selectedUser->photoPath)}}"
+                                                     alt="Profile">
                                             @else
-                                            <img src="{{asset('/img/profile-user.jpg')}}" alt="Profile">
+                                                <img src="{{asset('/img/profile-user.jpg')}}" alt="Profile">
                                             @endif
-                                           {{-- <div class="form-group students-up-files profile-edit-icon mb-0">
-                                                <div class="uplod d-flex">
-                                                    <label class="file-upload profile-upbtn mb-0">
-                                                        <i class="feather-edit-3"></i><input type="file">
-                                                    </label>
-                                                </div>
-                                            </div>--}}
+                                            {{-- <div class="form-group students-up-files profile-edit-icon mb-0">
+                                                 <div class="uplod d-flex">
+                                                     <label class="file-upload profile-upbtn mb-0">
+                                                         <i class="feather-edit-3"></i><input type="file">
+                                                     </label>
+                                                 </div>
+                                             </div>--}}
                                         </div>
                                         <div class="names-profiles">
                                             <h4>{{$selectedUser->firstName}} {{$selectedUser->lastName}}</h4>
-                                            <h5>{{$selectedUser->martialArtType}}</h5>
+                                            <h5>{{$selectedUser->discipline->name}}</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -100,7 +107,7 @@
                                                 <i class="feather-user"></i>
                                             </div>
                                             <div class="views-personal">
-                                                <h4 class="" >Role</h4>
+                                                <h4 class="">Role</h4>
                                                 <h5>{{$selectedUser->role ?? 'Non défini'}}</h5>
                                             </div>
                                         </div>
@@ -116,7 +123,6 @@
                                         </div>
 
 
-
                                         <div class="personal-activity">
                                             <div class="personal-icons">
                                                 <i class="feather-calendar"></i>
@@ -126,7 +132,6 @@
                                                 <h5>{{$selectedUser->created_at->format('d-M-Y') ?? 'Non défini'}}</h5>
                                             </div>
                                         </div>
-
 
 
                                         {{--<div class="students-follows">

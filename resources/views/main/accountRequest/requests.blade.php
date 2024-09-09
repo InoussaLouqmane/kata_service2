@@ -37,30 +37,6 @@
             </div>
         </div>
 
-        <div class="student-group-form">
-            <div class="row">
-                <div class="col-lg-3 col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search by ID ...">
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search by Name ...">
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search by Phone ...">
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="search-student-btn">
-                        <button type="btn" class="btn btn-primary">Search</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row">
             <div class="col-sm-12">
                 <div class="card card-table comman-shadow">
@@ -197,23 +173,23 @@
                                             </h2>
                                             <a href="{{route('main.accountRequest.request-details', [$accountRequest->id])}}">{{$accountRequest->clubName}}</a>
                                         </td>
-                                        <td>{{$accountRequest->martialArtType}}</td>
+                                        <td>{{$accountRequest->discipline()}}</td>
                                         <td>{{$accountRequest->clubAddress}}</td>
                                         <td>{{$accountRequest->email ?? '-'}}</td>
                                         <td>{{$accountRequest->phone}}</td>
-                                        <td>{{$accountRequest->licenseId}} id is {{$accountRequest->id}}</td>
+                                        <td>{{$accountRequest->licenseId}}</td>
                                         <td class="">
-                                            @if($accountRequest->status == RequestStatus::PENDING)
+                                            @if($accountRequest->status == RequestStatus::PENDING->value)
                                                 <span
-                                                    class="badge bg-primary">{{$accountRequest[AccountRequest::STATUS]}}</span>
+                                                    class="badge bg-primary">{{$accountRequest->status}}</span>
 
-                                            @elseif($accountRequest->status == RequestStatus::APPROVED)
+                                            @elseif($accountRequest->status == RequestStatus::APPROVED->value)
                                                 <span
-                                                    class="badge bg-success">{{$accountRequest[AccountRequest::STATUS]}}</span>
+                                                    class="badge bg-success">{{$accountRequest->status}}</span>
 
-                                            @elseif($accountRequest->status == RequestStatus::REJECTED)
+                                            @elseif($accountRequest->status == RequestStatus::REJECTED->value)
                                                 <span
-                                                    class="badge bg-danger">{{$accountRequest[AccountRequest::STATUS]}}</span>
+                                                    class="badge bg-danger">{{$accountRequest->status}}</span>
                                             @endif
                                         </td>
                                         <td class="text-center">
@@ -223,13 +199,13 @@
                                                     <i class="feather-eye"></i>
                                                 </a>
 
-                                                @if($accountRequest[AccountRequest::STATUS] == RequestStatus::PENDING)
+                                                @if($accountRequest[AccountRequest::STATUS] == RequestStatus::PENDING->value)
                                                     <a
                                                         data-requestId="{{$accountRequest->id}}"
 
-                                                       class="reject-button btn  btn-circle btn-sm bg-success-light me-2 "
-                                                       type="button" data-bs-toggle="modal"
-                                                       data-bs-target="#reject-modal">
+                                                        class="reject-button btn  btn-circle btn-sm bg-success-light me-2 "
+                                                        type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#reject-modal">
                                                         <i class="feather-x-circle "></i>
                                                     </a>
                                                     <a data-requestId="{{$accountRequest->id}}"

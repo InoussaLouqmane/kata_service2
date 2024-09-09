@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\EventType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property integer $id
@@ -26,6 +27,7 @@ class Event extends Model
 {
     const TABLE_NAME = "events";
     const ID = "id";
+    const UIID = "uiid";
     const USER_ID = 'user_id';
     const TITLE = 'title';
     const DESCRIPTION = 'description';
@@ -34,6 +36,7 @@ class Event extends Model
     const END_DATE = 'endDate';
     const ADDRESS = 'address';
     const TYPE = 'type';
+
 
     /**
      * @var array
@@ -55,6 +58,7 @@ class Event extends Model
     protected $casts=[
 
         Self::TYPE=>EventType::class,
+        Self::START_DATE => 'datetime'
     ];
 
     /**
@@ -79,5 +83,28 @@ class Event extends Model
     public function payments()
     {
         return $this->hasMany('App\Models\Payment');
+    }
+
+    public function examResults(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'examResults', 'exam_id', 'student_id')
+            ->withPivot('grade_id', 'noteKata', 'noteKihon', 'noteKumite', 'deliberation');
+    }
+
+    public function grades(): BelongsToMany
+    {
+        return $this->belongsToMany(Grade::class, 'exam_grade', 'exam_id', 'grade_id')
+            ->withPivot('cost');
+    }
+
+    public function getStartDate(){
+        return $this->startDate->format('d M Y à (H:i)');
+    }
+    public function getStartTime(){
+        return $this->startDate->format('H:i');
+    }
+
+    public function getLocation(){
+        return $this->address;
     }
 }

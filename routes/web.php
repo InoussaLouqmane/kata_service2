@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\UserRegisterController;
+use App\Http\Controllers\ExamControllerWeb;
 use App\Models\AccountRequest;
 use App\Models\Club;
 use App\Models\Discipline;
 use App\Models\Dojo;
+use App\Models\Exam;
+use App\Models\Fees;
 use App\Models\Grade;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -30,6 +33,8 @@ Route::get('/', function () {
 });
 Route::post('/sign-in', [AuthController::class, 'loginWeb'])->name('login.web');
 Route::post('/reset-password', [AuthController::class, 'resetPasswordWeb'])->name('resetPassword.web');/* Pour le formulaire de réinitialisation de mot de passe*/
+
+
 
 Route::middleware(['auth'])->group(function () {
 
@@ -300,17 +305,58 @@ Route::middleware(['auth'])->group(function () {
         return view('main.holiday.holiday');
     })->name('main.holiday.holiday');
 
-    Route::get('/main/fee', function () {
-        return view('main.fee.fees');
-    })->name('main.fee.fees');
+    Route::group(['prefix' => 'main/fee', 'as' => 'main.fee.'], function () {
 
-    Route::get('/main/exam', function () {
-        return view('main.exam.exam');
-    })->name('main.exam.exam');
+        Route::get('/', function () {
+            return view('main.fee.fees');
+        })->name('fees');
+
+        Route::get('/details/{id}', function ($id) {
+            $selectedFee = Fees::findOrFail($id);
+            return view('main.fee.fees-details', ['selectedFee' => $selectedFee]);
+        })->name('fees-details');
+
+        Route::get('/payments/', function () {
+            return view('main.fee.student-fees-details');
+        })->name('student-fees-details');
+
+    });
+
+
+    Route::group(['prefix' => 'main/exam', 'as' => 'main.exam.'], function () {
+        Route::get('/exams', function () {
+            return view('main.exam.exams');
+        })->name('exams');
+
+        Route::get('/add', function () {
+            return view('main.exam.add-exam');
+        })->name('add-exam');
+
+        Route::get('/edit-exam/{id}', function ($id) {
+            $selectedExam = Exam::find($id);
+            return view('main.exam.edit-exam', ['selectedExam'=> $selectedExam]);
+        })->name('edit-exam');
+
+        Route::get('/details/{id}', function ($id) {
+            $selectedExam = Exam::find($id);
+            return view('main.exam.exam-details', ['selectedExam'=> $selectedExam]);
+        })->name('exam-details');
+
+        Route::get('/validate/{id}', function ($id) {
+            $selectedExam = Exam::find($id);
+            return view('main.exam.exam-validation', ['selectedExam'=> $selectedExam]);
+        })->name('exam-validation');
+    });
+
+
 
     Route::get('/main/event', function () {
         return view('main.event.events');
     })->name('main.event.events');
+
+    Route::get('/main/transfer', function () {
+        return view('main.transfer.transfers');
+    })->name('main.transfer.transfers');
 
     Route::get('/main/event/add', function () {
         return view('main.event.add-events');

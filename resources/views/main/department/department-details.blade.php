@@ -1,8 +1,9 @@
 @php
 
-    use App\Enums\UserStatus;use App\Models\AccountRequest;
-    use App\Enums\RequestStatus;use App\Models\Dojo;use App\Models\User;use Illuminate\Support\Facades\Log;
+    use App\Enums\Role;use App\Enums\UserStatus;use App\Models\AccountRequest;
+    use App\Enums\RequestStatus;use App\Models\Dojo;use App\Models\User;use Illuminate\Support\Facades\Auth;use Illuminate\Support\Facades\Log;
 
+    $authUser = Auth::user();
 @endphp
 
 @extends('partials.layout');
@@ -32,9 +33,12 @@
                         <div class="about-info">
                             <h4>Profil
                                 <div class="dropdown">
-                                    <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span> <i class="feather-more-vertical"></i></span>
-                                    </button>
+                                    @if($authUser->role != Role::STUDENT->value)
+                                        <button class="btn" type="button" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                            <span> <i class="feather-more-vertical"></i></span>
+                                        </button>
+                                    @endif
                                     <ul class="dropdown-menu">
 
                                         @if($selectedClub->status === 'Actif')
@@ -70,7 +74,7 @@
                         </div>
                         <div class="student-profile-head">
 
-                            <div class="row">
+                            <div class="row justify-content-center">
                                 <div class="col-lg-2 col-md-2">
                                     <div class="profile-user-box">
                                         <div class="profile-user-img">
@@ -83,17 +87,43 @@
                                             @endif
 
                                         </div>
-                                        <div class="names-profiles">
-                                            <h4>{{$selectedClub->name}}</h4>
-                                            <h5>{{$selectedClub->martialArtType}}</h5>
-                                        </div>
+
                                     </div>
                                 </div>
                                 @php
                                     $owner = User::find($selectedClub->RegisteredBy);
                                 @endphp
-                                <div class="col-lg-8 col-md-8 d-flex align-items-center justify-content-between">
+                                <div class="col-lg-8 col-md-8 d-flex align-items-center justify-content-center mx-2">
                                     <div class="follow-group">
+
+                                        <div class="personal-activity">
+                                            <div class="personal-icons">
+                                                <i class="fas fa-building"></i>
+                                            </div>
+                                            <div class="views-personal">
+                                                <h4 class="">Nom du club</h4>
+
+                                                <h5>
+                                                    <a> {{$selectedClub->name}}</a>
+                                                </h5>
+
+                                            </div>
+                                        </div>
+
+                                        {{--Discipline du club--}}
+                                        <div class="personal-activity">
+                                            <div class="personal-icons">
+                                                <i class="fas feather-activity"></i>
+                                            </div>
+                                            <div class="views-personal">
+                                                <h4 class="">Discipline</h4>
+
+                                                <h5>
+                                                    <a> {{$selectedClub->discipline->name}}</a>
+                                                </h5>
+
+                                            </div>
+                                        </div>
 
                                         <!--Propriétaire-->
                                         <div class="personal-activity">
@@ -114,20 +144,7 @@
                                             </div>
                                         </div>
 
-                                        {{--Nom du club--}}
-                                        <div class="personal-activity">
-                                            <div class="personal-icons">
-                                                <i class="fas fa-building"></i>
-                                            </div>
-                                            <div class="views-personal">
-                                                <h4 class="">Nom du club</h4>
 
-                                                <h5>
-                                                    <a> {{$selectedClub->name}}</a>
-                                                </h5>
-
-                                            </div>
-                                        </div>
 
 
                                         {{--Adresse du club--}}
@@ -149,23 +166,6 @@
                                             <div class="views-personal">
                                                 <h4>Email</h4>
                                                 <h5>{{$selectedClub->email ?? 'Non défini'}}</h5>
-                                            </div>
-                                        </div>
-
-                                        <!--Description-->
-                                        <div class="personal-activity">
-                                            <div class="personal-icons">
-                                                <i class="feather-message-square"></i>
-                                            </div>
-                                            <div class="views-personal">
-                                                <h4>Description</h4>
-
-
-                                                <a data-bs-toggle="modal"
-                                                   data-bs-target="#centermodal"
-                                                   class="btn btn-circle btn-sm bg-success-light me-2 ">
-                                                    Voir <i class="feather-eye"></i>
-                                                </a>
                                             </div>
                                         </div>
 
@@ -321,7 +321,9 @@
 
                                             <th class="text-start">Adresse</th>
                                             <th class="text-start">Status</th>
-                                            <th class="text-end">Action</th>
+                                            @if($authUser->role != Role::STUDENT->value)
+                                                <th class="text-end">Action</th>
+                                            @endif
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -341,7 +343,6 @@
                                                     <td class="text-start">{{$dojo->name}}</td>
 
 
-
                                                     <td class="text-start">{{$dojo->address}}</td>
                                                     <td class="text-start">
 
@@ -357,18 +358,20 @@
 
                                                     </td>
 
-                                                    <td class="text-start">
-                                                        <div class="actions">
-                                                            <a href="{{route('main.department.department-details', [$dojo->id])}}"
-                                                               class="btn btn-sm bg-success-light me-2">
-                                                                <i class="feather-eye"></i>
-                                                            </a>
-                                                            <a href="{{route('main.department.edit-department', [$dojo->id])}}"
-                                                               class="btn btn-sm bg-danger-light">
-                                                                <i class="feather-edit"></i>
-                                                            </a>
-                                                        </div>
-                                                    </td>
+                                                    @if($authUser->role != Role::STUDENT->value)
+                                                        <td class="text-start">
+                                                            <div class="actions">
+
+
+                                                                <a href="{{route('main.department.edit-department', [$dojo->id])}}"
+                                                                   class="btn btn-sm bg-danger-light">
+                                                                    <i class="feather-edit"></i>
+                                                                </a>
+
+
+                                                            </div>
+                                                        </td>
+                                                    @endif
                                                 </tr>
                                             @endif
                                         @endforeach
@@ -397,7 +400,6 @@
 
                                                 <th>Genre</th>
                                                 <th>Rôle</th>
-                                                <th>Art martial</th>
                                                 <th>Status</th>
                                                 <th class="text-center">Action</th>
                                             </tr>
@@ -422,7 +424,6 @@
                                                         <td>{{$user->email}}</td>
                                                         <td>{{$user->genre ?? '-'}}</td>
                                                         <td>{{$user->role}}</td>
-                                                        <td>{{$user->martialArtType}}</td>
                                                         <td class="">
 
                                                             @if($user->status === 'Actif')
@@ -437,50 +438,42 @@
                                                         <td class="text-center">
                                                             <div class="actions text-center justify-content-center">
 
-                                                                <div class="dropdown">
-                                                                    <button class="btn" type="button"
-                                                                            data-bs-toggle="dropdown"
-                                                                            aria-expanded="false">
-                                                                        <i class="feather-more-vertical"></i>
-                                                                    </button>
-                                                                    <ul class="dropdown-menu">
-                                                                        <li class="dropdown-item"><a
-                                                                                href="{{route('main.user.user-details', [$user->id])}}"
-                                                                                class="d-flex justify-content-around gap-1">
-                                                                                <i class="feather-eye"> </i>
-                                                                                <span>Voir détails</span>
-                                                                            </a>
-                                                                        </li>
+                                                                <div class="actions">
+
+                                                                    <a
+                                                                        href="{{route('main.user.user-details', [$user->id])}}"
+                                                                        class="d-flex justify-content-around gap-1">
+                                                                        <i class="feather-eye"> </i>
+
+                                                                    </a>
+
+                                                                    @if($authUser->role != Role::STUDENT->value)
 
                                                                         @if($user->status === 'Actif')
-                                                                            <li class="dropdown-item"
-                                                                                id="activateAccountButton"><a
-                                                                                    href="{{route('desactivateAccount.web', [$user->id])}}"
-                                                                                    class="d-flex justify-content-around gap-1">
-                                                                                    <i class="feather-x-circle"> </i>
-                                                                                    <span>Désactiver compte</span>
-                                                                                </a>
-                                                                            </li>
+                                                                            <a
+                                                                                id="activateAccountButton"
+                                                                                href="{{route('desactivateAccount.web', [$user->id])}}"
+                                                                                class="d-flex justify-content-around gap-1">
+                                                                                <i class="feather-x-circle"> </i>
+
+                                                                            </a>
                                                                         @endif
                                                                         @if($user->status === 'Inactif')
-                                                                            <li class="dropdown-item"><a
+                                                                                <a
                                                                                     href="{{route('activateAccount.web', [$user->id])}}"
                                                                                     class="d-flex justify-content-around gap-1">
                                                                                     <i class="feather-x-circle"> </i>
-                                                                                    <span>Activer compte</span>
+
                                                                                 </a>
-                                                                            </li>
                                                                         @endif
 
-
-                                                                        <li class="dropdown-item"><a
+                                                                            <a
                                                                                 href="{{route('reinitializePassword.web', [$user->id])}}"
                                                                                 class="d-flex justify-content-around gap-1">
                                                                                 <i class="feather-lock"> </i>
-                                                                                <span>Réinitialiser mot de passe</span>
+
                                                                             </a>
-                                                                        </li>
-                                                                    </ul>
+                                                                    @endif
                                                                 </div>
 
                                                             </div>

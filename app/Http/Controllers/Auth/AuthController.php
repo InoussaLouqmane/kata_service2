@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 
@@ -31,16 +32,33 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         $remember = $request->has('remember');
 
-        if (Auth::attempt($credentials, $remember)) {
+        try {
+            if (Auth::attempt($credentials, $remember)) {
 
 
-            if (Auth::user()->first_attempt == 1) {
-                return redirect()->intended(route('authentication.reset-password', [Auth::user()->id]));
+                $user = Auth::user();
+                if ($user->first_attempt == 1) {
+                    return redirect()->intended(route('authentication.reset-password', [Auth::user()->id]));
+                }else{
+
+                    if($user->role == Role::ADMIN->value){
+                        return redirect()->intended(route('main.adminDashboard'));
+                    }elseif ($user->role == Role::SENSEI->value){
+                        return redirect()->intended(route('main.teacherDashboard'));
+                    }elseif ($user->role == Role::STUDENT->value){
+                        return redirect()->intended(route('main.studentDashboard'));
+                    }
+                }
+
+
+
+            }else{
+                Log::info('Something while login went wrong');
             }
-            return redirect()->intended(route('main.adminDashboard'));
-        }else{
-            Log::info('Something while login went wrong');
+        }catch (Exception $exception){
+            Log::error($exception->getMessage());
         }
+
 
         $validator['emailPassword'] = "Identifiants incorrects";
         return redirect(route('authentication.login',))->withErrors($validator);
@@ -64,18 +82,25 @@ class AuthController extends Controller
                 $user->password = Hash::make($password);
                 $user->first_attempt = 0;
                 $user->save();
-                return redirect(route('main.adminDashboard'))->with('success', 'Mot de passe changé avec succès!');
+
+
+                if($user->role == Role::ADMIN->value){
+                    return redirect()->intended(route('main.adminDashboard'));
+                }elseif ($user->role == Role::SENSEI->value){
+                    return redirect()->intended(route('main.teacherDashboard'));
+                }elseif ($user->role == Role::STUDENT->value){
+                    return redirect()->intended(route('main.studentDashboard'));
+                }
+            }else{
+
+                $validator['passwordDiff'] = "Les mots de passe ne sont pas identiques.";
+                return redirect(route('authentication.reset-password', [Auth::user()->id]))->withErrors($validator);
             }
-            $validator['passwordDiff'] = "Les mots de passe ne sont pas identiques.";
-            return redirect(route('authentication.reset-password', [Auth::user()->id]))->withErrors($validator);
 
         }catch (Exception $e){
             Log::info("Quelque chose s'est mal passé : {$e->getMessage()}");
             return redirect()->back();
         }
-
-
-
     }
 
 

@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -11,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $RegisteredBy
  * @property string $name
  * @property string $ifuNumber
- * @property string $martialArtType
+ * @property integer $martialArtType
  * @property string $email
  * @property string $websiteUrl
  * @property string $description
@@ -23,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Club extends Model
 
 {
+    use HasFactory;
 
     const ID = "id";
     const TABLE_NAME = "clubs";
@@ -63,5 +66,9 @@ class Club extends Model
 
     public function dojos() : HasMany{
         return $this->hasMany(Dojo::class, 'club_id', 'id');
+}
+public function discipline(): BelongsTo
+{
+        return $this->belongsTo(Discipline::class, 'martialArtType', 'id' );
 }
 }

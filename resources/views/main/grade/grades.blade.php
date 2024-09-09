@@ -164,8 +164,9 @@
                                                 </a>
                                                 <a href="{{route('main.grade.edit-grade', [$type->id])}}"
                                                    class="btn btn-sm bg-danger-light">
-                                                    <i class="feather-edit"></i>
+                                                    <i class="feather-x-circle"></i>
                                                 </a>
+
 
                                             </div>
                                         </td>

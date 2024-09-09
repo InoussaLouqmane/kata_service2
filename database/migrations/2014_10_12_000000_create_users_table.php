@@ -24,7 +24,6 @@ return new class extends Migration
             $table->timestamp(User::EMAIL_VERIFIED_AT)->nullable();
             $table->string(User::PHOTO_PATH)->nullable();
             $table->string(User::BIO_DESCRIPTION)->nullable();
-            $table->string(User::MARTIAL_ART_TYPE);
             $table->string(User::GENRE);
             $table->string(User::PASSWORD);
             $table->string(User::ROLE);

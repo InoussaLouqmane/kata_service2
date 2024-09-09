@@ -78,10 +78,6 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        self::MARTIAL_ART_TYPE => MartialArtType::class,
-        self::ROLE => Role::class,
-        self::GENRE => Genre::class,
-        self::PASSWORD=>'hashed'
 
     ];
 
@@ -94,4 +90,14 @@ class User extends Authenticatable
     public function grades(): BelongsToMany{
         return $this->belongsToMany(Grade::class, 'grade_user', 'user_id', 'grade_id');
     }
+
+    public function exams(): BelongsToMany{
+        return $this->belongsToMany(Exam::class, 'examResults', 'student_id', 'exam_id');
+    }
+
+
+    public function discipline(){
+        return $this->clubs()->first()->discipline();
+    }
+
 }

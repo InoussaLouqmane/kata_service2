@@ -31,11 +31,15 @@ class Exam_results extends Model
     const NOTE_KIHON = 'noteKihon';
     const NOTE_KUMITE = 'noteKumite';
     const DELIBERATION = 'deliberation';
+    const GRADE_ID = 'grade_id';
+
+    protected $table = 'examResults';
 
     /**
      * @var array
      */
     protected $fillable = [
+        self::GRADE_ID,
         self::EXAM_ID,
         self::STUDENT_ID,
         self::NOTE_KATA,
@@ -53,7 +57,7 @@ class Exam_results extends Model
      */
     public function exam()
     {
-        return $this->belongsTo(Exam::class, self::EXAM_ID, Exam::EVENT_ID);
+        return $this->belongsTo(Exam::class, Exam::EVENT_ID, self::EXAM_ID);
     }
 
     /**

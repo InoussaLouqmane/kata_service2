@@ -36,7 +36,7 @@ class ClubController extends Controller implements ShouldQueue
                 $club->logoPath = $path;
             }
 
-            Log::info("Here is the club after extraction ".$club->all());
+            Log::info("Here is the request after extraction ".$request->all());
 
             $club->save();
 
@@ -55,6 +55,44 @@ class ClubController extends Controller implements ShouldQueue
             return redirect()->back()->withErrors(['fail' => 'Oops, une erreur s\'est produite.']);
         }
     }
+
+
+
+    public function storeFromWebValidation(AccountRequest $request)
+    {
+
+
+        try {
+
+            $club = new Club();
+
+            $this->extracted($request, $club);
+
+            if ($request->clubLogoPath) {
+                $path = $request->file('clubLogoPath')->store('images', 'public');
+                $club->logoPath = $path;
+            }
+
+            Log::info("Here is the request after extraction ".$request->all());
+
+            $club->save();
+
+            Log::error("Enregistrement du club réussi : ". $club->all());
+            return $club->id;
+
+        } catch (QueryException | Exception $e) {
+
+            Log::error("Enregistrement du club échoué : " . $e->getMessage());
+
+            return response()->json(['fail' => 'Oops, une erreur s\'est produite.'],400);
+
+        }
+    }
+
+
+
+
+
     public function store(Request $request)
     {
 
@@ -64,7 +102,11 @@ class ClubController extends Controller implements ShouldQueue
             $club = new Club();
             $club->name = $request->clubName;
             $club->ifuNumber = $request->ClubIfuNumber ?? null;
-            $this->extracted1($request, $club);
+            $club->email = $request->clubEmail ?? null;
+            $club->martialArtType = $request->martialArtType ?? null;
+            $club->description = $request->clubDescription ?? null;
+            $club->websiteUrl = $request->ClubWebsiteUrl ?? null;
+            $club->address = $request->clubAddress ?? null;
 
             if ($request->clubLogoPath) {
                 $path = $request->file('clubLogoPath')->store('images', 'public');
@@ -146,7 +188,16 @@ class ClubController extends Controller implements ShouldQueue
         $club->name = $request->clubName;
         $club->ifuNumber = $request->ClubIfuNumber ?? null;
         $club->RegisteredBy = $request->user_id ?? null;
-        $this->extracted1($request, $club);
+        $club->email = $request->clubEmail ?? null;
+        $club->martialArtType = $request->martialArtType ?? null;
+        $club->description = $request->clubDescription ?? null;
+        $club->websiteUrl = $request->ClubWebsiteUrl ?? null;
+        $club->address = $request->clubAddress ?? null;
+
+
+
+
+
 
     }
 
@@ -155,14 +206,7 @@ class ClubController extends Controller implements ShouldQueue
      * @param $club
      * @return void
      */
-    public function extracted1(AccountRequest $request, $club): void
-    {
-        $club->email = $request->clubEmail ?? null;
-        $club->martialArtType = $request->martialArtType ?? null;
-        $club->description = $request->clubDescription ?? null;
-        $club->websiteUrl = $request->ClubWebsiteUrl ?? null;
-        $club->address = $request->clubAddress ?? null;
-    }
+
 
 
 }

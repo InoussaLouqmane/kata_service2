@@ -56,14 +56,7 @@ class AccountRequest extends Model
     const CLUB_ID = 'club_id';
 
 
-    protected $casts=[
 
-        self::MARTIAL_ART_TYPE =>MartialArtType::class,
-        self::STATUS => RequestStatus::class,
-        self::USER_ID => 'integer',
-        self::GENRE =>Genre::class
-
-    ];
 
     /**
      * @var array
@@ -92,4 +85,10 @@ class AccountRequest extends Model
         self::USER_ID,
         self::CLUB_ADDRESS
     ];
+
+
+    public function discipline(){
+        $discipline = Discipline::findOrFail($this->martialArtType);
+        return $discipline->name;
+    }
 }

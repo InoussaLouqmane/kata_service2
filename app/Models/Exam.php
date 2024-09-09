@@ -23,38 +23,45 @@ class Exam extends Model
     const EVENT_ID ="event_id";
     const EXAM_STATUS ="examStatus";
 
+    protected $primaryKey = 'event_id';
     /**
      * @var array
      */
     protected $fillable = [
         self::EVENT_ID,
-        self::EXAM_STATUS
+        self::EXAM_STATUS,
     ];
-    protected $casts=[
-        self::EXAM_STATUS=>ExamStatus::class
-    ];
+
 
     /**
      * @return HasMany
      */
-    public function examResults()
+    /*public function examResults()
     {
-        return $this->hasMany('App\Models\ExamResult', null, self::EVENT_ID);
-    }
+        return $this->hasMany(Exam_results::class, Exam_results::EXAM_ID, self::EVENT_ID);
+    }*/
 
     /**
      * @return BelongsTo
      */
-    public function event()
+    public function event(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Event');
+        return $this->belongsTo(Event::class, 'event_id', 'id');
     }
 
     /**
      * @return BelongsToMany
      */
-    public function users()
+    public function examResults(): BelongsToMany
     {
-        return $this->belongsToMany('App\Models\User', 'juryMembers');
+        return $this->belongsToMany(User::class, 'examResults', 'exam_id', 'student_id')
+            ->withPivot('grade_id');
     }
+
+    public function grades(): BelongsToMany
+    {
+        return $this->belongsToMany(Grade::class, 'exam_grade', 'exam_id', 'grade_id')
+            ->withPivot('cost');
+    }
+
 }

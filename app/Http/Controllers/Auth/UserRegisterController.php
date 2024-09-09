@@ -11,11 +11,16 @@ use App\Models\AccountRequest;
 use App\Models\Club;
 use App\Models\Discipline;
 use App\Models\User;
+use http\Env\Response;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -27,6 +32,13 @@ use Exception;
 class UserRegisterController extends Controller implements ShouldQueue
 {
 
+    public function showCurrentUser($id): JsonResponse
+    {
+        $user = User::findOrFail($id);
+        return response()->json([
+            'user' => $user,
+        ],200);
+    }
 
     /**
      * Handle an incoming registration request.
@@ -58,7 +70,6 @@ class UserRegisterController extends Controller implements ShouldQueue
                 User::PHOTO_PATH => $request->photoPath,
                 User::BIO_DESCRIPTION => $request->bioDescription,
                 User::ROLE => $request->role,
-                User::MARTIAL_ART_TYPE => $request->martialArtType,
                 User::LICENSE_ID => $request->licenseId,
                 User::GRADE=>  $request->grade,
             ]);
@@ -99,26 +110,30 @@ class UserRegisterController extends Controller implements ShouldQueue
                 User::GENRE => $request->genre,
                 User::BIO_DESCRIPTION => $request->bioDescription,
                 User::ROLE => $request->role,
-                User::MARTIAL_ART_TYPE => $request->martialArtType ?? null,
+
                 User::LICENSE_ID => $request->licenseId,
                 User::GRADE=>  $request->grade,
             ]);
 
-            Log::info('User created data : '.$request);
+
             if ($request->has('photoPath')) {
                 $path = $request->file('photoPath')->store('images', 'public');
                 $user->photoPath = $path;
             }
 
-            if($request->club_id)
-            $user->clubs()->attach($request->club_id);
+            if($request->club_id) {
+                Log::info('Here is '.$request->club_id);
+                $user->clubs()->attach($request->club_id);
+            }else{
+                Log::info('No club id '. $request->all());
+            }
+
 
             if($request->grade)
                 $user->grades()->attach($request->grade);
 
             $user->save();
 
-            Log::info('Le user que tu tentes de register est : '.$user->all());
 
             event(new AccountRequestConfirmed($user, $password));
 
@@ -155,7 +170,6 @@ class UserRegisterController extends Controller implements ShouldQueue
                 User::GENRE => $request->genre,
                 User::BIO_DESCRIPTION => $request->bioDescription,
                 User::ROLE => $request->role,
-                User::MARTIAL_ART_TYPE => $request->martialArtType ?? null, // Assumons que ça reste constant
                 User::LICENSE_ID => $request->licenseId,
                 User::GRADE => $request->grade,
             ]);
@@ -192,56 +206,64 @@ class UserRegisterController extends Controller implements ShouldQueue
 
 
 
-    public function storeUserFromValidation($id, Request $httpRequest) {
+    public function storeUserFromValidation($id) {
 
 
             $request = AccountRequest::where('id', $id)->first();
 
-
-
             try
             {
-                $password = Str::password(10);
-                $user = User::create([
-                    User::EMAIL => $request->email,
-                    User::PASSWORD => Hash::make($password),
-                    User::STATUS => UserStatus::ACTIVE,
-                    User::FIRST_NAME =>  $request->firstName,
-                    User::LAST_NAME => $request->lastName,
-                    User::PHONE => $request->phone,
-                    User::GENRE => $request->genre ?? null,
-                    User::PHOTO_PATH => $request->photoPath ?? null,
-                    User::BIO_DESCRIPTION => $request->bioDescription ?? null,
-                    User::ROLE => $request->role,
-                    User::MARTIAL_ART_TYPE => $request->martialArtType,
-                    User::LICENSE_ID => $request->licenseId,
-                    User::GRADE=>  $request->grade,
-
-                ]);
-
-                $request->user_id = $user->id;
-                $request->save();
-
-                if($request->club_id){
-
-                    $user->clubs()->attach($request->club_id);
-
-                } else {
-
-                   $clubController = new ClubController();
-                   $request->user_id = $user->id;
-                   $request->save();
-
-                   $clubController->storeFromValidation($request);
-
-                }
+                DB::transaction(function () use ($request) {
 
 
-                event(new AccountRequestConfirmed($user, $password));
-                return response([
-                    "message" => "Registered Successfully",
-                    "user" => $user,
-                ], 201);
+                    $password = Str::password(10);
+
+
+                    $user = User::create([
+                        User::EMAIL => $request->email,
+                        User::PASSWORD => Hash::make($password),
+                        User::STATUS => UserStatus::ACTIVE,
+                        User::FIRST_NAME =>  $request->firstName,
+                        User::LAST_NAME => $request->lastName,
+                        User::PHONE => $request->phone,
+                        User::GENRE => $request->genre ?? null,
+                        User::PHOTO_PATH => $request->photoPath ?? null,
+                        User::BIO_DESCRIPTION => $request->bioDescription ?? null,
+                        User::ROLE => $request->role,
+                        User::LICENSE_ID => $request->licenseId,
+                        User::GRADE=>  $request->grade,
+
+                    ]);
+
+                    $request->user_id = $user->id;
+                    $request->save();
+                    $clubController = new ClubController();
+                    $request->club_id = $clubController->storeFromWebValidation($request);
+
+                    if($request->club_id){
+
+                        Log::info('Oui, il y a un club id');
+                        $user->clubs()->attach($request->club_id);
+
+                    } else {
+
+                        Log::info('NOn, pas de un club id : '.$request->all());
+
+                        $request->user_id = $user->id;
+                        $request->save();
+
+
+
+                    }
+                    event(new AccountRequestConfirmed($user, $password));
+
+                    return response([
+                        "message" => "Registered Successfully",
+                        "user" => $user,
+                    ], 201);
+                });
+
+
             }
             catch (Exception $e){
                 Log::info("Store From USer function : {$e->getMessage()}");

@@ -1,5 +1,5 @@
 @php use App\Enums\RequestStatus;
- use App\Enums\UserStatus;use App\Models\AccountRequest;use App\Models\User;
+ use App\Enums\UserStatus;use App\Models\AccountRequest;use App\Models\User;use Illuminate\Support\Facades\Auth;
 
 @endphp
 
@@ -26,31 +26,6 @@
 
 
 
-
-        <div class="student-group-form">
-            <div class="row">
-                <div class="col-lg-3 col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search by ID ...">
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search by Name ...">
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search by Phone ...">
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="search-student-btn">
-                        <button type="btn" class="btn btn-primary">Search</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row">
             <div class="col-sm-12">
                 <div class="card card-table comman-shadow">
@@ -63,7 +38,6 @@
                                 </div>
                                 <div
                                     class="col-3 text-center float-end ms-auto download-grp d-flex flex-row justify-content-end">
-
 
 
                                     <div class="col-auto text-end float-end ms-auto download-grp">
@@ -168,84 +142,92 @@
                                 </thead>
                                 <tbody>
                                 @foreach(User::all() as $user)
-                                    <tr>
-                                        <td>
-                                            <div class="form-check check-tables">
-                                                <input class="form-check-input" type="checkbox" value="something">
-                                            </div>
-                                        </td>
+                                    @if($user->role != 'Admin')
+                                        <tr>
+                                            <td>
+                                                <div class="form-check check-tables">
+                                                    <input class="form-check-input" type="checkbox" value="something">
+                                                </div>
+                                            </td>
 
-                                        <td>
-                                            <h2 class="table-avatar">
-                                                <a href="{{route('main.user.user-details', [$user->id])}}"
-                                                   class="avatar avatar-sm me-2"><img class="avatar-img rounded-circle"
-                                                                                      src="{{asset('/img/profiles/avatar-01.jpg')}}"
-                                                                                      alt="User Image"></a>
-                                            </h2>
-                                            <a href="{{route('main.user.user-details', [$user->id])}}">{{$user->firstName}} {{$user->lastName}}</a>
-                                        </td>
-                                        <td>{{$user->email}}</td>
-                                        <td>{{$user->phone ?? '-'}}</td>
-                                        <td>{{$user->genre ?? '-'}}</td>
-                                        <td>{{$user->role}}</td>
-                                        <td>{{$user->martialArtType}}</td>
-                                        <td class="">
+                                            <td>
+                                                <h2 class="table-avatar">
+                                                    <a href="{{route('main.user.user-details', [$user->id])}}"
+                                                       class="avatar avatar-sm me-2"><img
+                                                            class="avatar-img rounded-circle"
+                                                            src="{{asset('/img/profiles/avatar-01.jpg')}}"
+                                                            alt="User Image"></a>
+                                                </h2>
+                                                <a href="{{route('main.user.user-details', [$user->id])}}">{{$user->firstName}} {{$user->lastName}}</a>
+                                            </td>
+                                            <td>{{$user->email}}</td>
+                                            <td>{{$user->phone ?? '-'}}</td>
+                                            <td>{{$user->genre ?? '-'}}</td>
+                                            <td>{{$user->role}}</td>
+                                            <td>{{$user->clubs->first()->discipline->name}}</td>
+                                            <td class="">
 
-                                            @if($user->status === 'Actif')
-                                                <span
-                                                    class="badge bg-success">{{$user->status}}</span>
+                                                @if($user->status === 'Actif')
+                                                    <span
+                                                        class="badge bg-success">{{$user->status}}</span>
 
-                                            @elseif($user->status === 'Inactif')
-                                                <span
-                                                    class="badge bg-danger">{{$user->status}}</span>
-                                            @endif
-                                        </td>
-                                        <td class="text-center">
-                                            <div class="actions text-center justify-content-center">
+                                                @elseif($user->status === 'Inactif')
+                                                    <span
+                                                        class="badge bg-danger">{{$user->status}}</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="actions text-center justify-content-center">
 
-                                                <div class="dropdown">
-                                                    <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="feather-more-vertical"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                            <li class="dropdown-item"><a href="{{route('main.user.user-details', [$user->id])}}"
-                                                                   class="d-flex justify-content-around gap-1">
+                                                    <div class="dropdown">
+                                                        <button class="btn" type="button" data-bs-toggle="dropdown"
+                                                                aria-expanded="false">
+                                                            <i class="feather-more-vertical"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li class="dropdown-item"><a
+                                                                    href="{{route('main.user.user-details', [$user->id])}}"
+                                                                    class="d-flex justify-content-around gap-1">
                                                                     <i class="feather-eye"> </i>
                                                                     <span>Voir détails</span>
                                                                 </a>
                                                             </li>
 
-                                                        @if($user->status === 'Actif')
-                                                            <li class="dropdown-item" id="activateAccountButton"><a href="{{route('desactivateAccount.web', [$user->id])}}"
-                                                                                         class="d-flex justify-content-around gap-1">
-                                                                    <i class="feather-x-circle"> </i>
-                                                                    <span>Désactiver compte</span>
+                                                            @if($user->status === 'Actif')
+                                                                <li class="dropdown-item" id="activateAccountButton"><a
+                                                                        href="{{route('desactivateAccount.web', [$user->id])}}"
+                                                                        class="d-flex justify-content-around gap-1">
+                                                                        <i class="feather-x-circle"> </i>
+                                                                        <span>Désactiver compte</span>
+                                                                    </a>
+                                                                </li>
+                                                            @endif
+                                                            @if($user->status === 'Inactif')
+                                                                <li class="dropdown-item"><a
+                                                                        href="{{route('activateAccount.web', [$user->id])}}"
+                                                                        class="d-flex justify-content-around gap-1">
+                                                                        <i class="feather-x-circle"> </i>
+                                                                        <span>Activer compte</span>
+                                                                    </a>
+                                                                </li>
+                                                            @endif
+
+
+                                                            <li class="dropdown-item"><a
+                                                                    href="{{route('reinitializePassword.web', [$user->id])}}"
+                                                                    class="d-flex justify-content-around gap-1">
+                                                                    <i class="feather-lock"> </i>
+                                                                    <span>Réinitialiser mot de passe</span>
                                                                 </a>
                                                             </li>
-                                                        @endif
-                                                        @if($user->status === 'Inactif')
-                                                            <li class="dropdown-item"><a href="{{route('activateAccount.web', [$user->id])}}"
-                                                                                         class="d-flex justify-content-around gap-1">
-                                                                    <i class="feather-x-circle"> </i>
-                                                                    <span>Activer compte</span>
-                                                                </a>
-                                                            </li>
-                                                        @endif
+                                                        </ul>
+                                                    </div>
 
-
-
-                                                        <li class="dropdown-item"><a href="{{route('reinitializePassword.web', [$user->id])}}"
-                                                                                     class="d-flex justify-content-around gap-1">
-                                                                <i class="feather-lock"> </i>
-                                                                <span>Réinitialiser mot de passe</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
                                                 </div>
+                                            </td>
+                                        </tr>
+                                    @endif
 
-                                            </div>
-                                        </td>
-                                    </tr>
                                 @endforeach
                                 </tbody>
                             </table>

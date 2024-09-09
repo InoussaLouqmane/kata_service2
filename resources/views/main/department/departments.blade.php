@@ -46,30 +46,7 @@
             </div>
         </div>
 
-        <div class="student-group-form">
-            <div class="row">
-                <div class="col-lg-3 col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search by ID ...">
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search by Name ...">
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search by Year ...">
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="search-student-btn">
-                        <button type="btn" class="btn btn-primary">Search</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <div class="row">
             <div class="col-sm-12">
                 <div class="card card-table">
@@ -139,7 +116,7 @@
                                             </a>
                                         </h2>
                                         <a href="{{route('main.department.department-details', [$club->id])}}">{{$club->name}}</a></td>
-                                    <td class="text-start">{{$club->martialArtType ?? '-' }}</td>
+                                    <td class="text-start">{{$club->discipline->name  ?? '-' }}</td>
                                     <td class="text-start">
                                         <h2>
                                             @if($owner)

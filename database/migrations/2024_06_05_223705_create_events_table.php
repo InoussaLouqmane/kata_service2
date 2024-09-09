@@ -15,16 +15,18 @@ class CreateEventsTable extends Migration
     public function up()
     {
         Schema::create(Event::TABLE_NAME, function (Blueprint $table) {
-            $table->unsignedBigInteger(Event::ID);
-            $table->primary(Event::ID);
+            $table->bigIncrements(Event::ID);
+
+
+            $table->string(Event::UIID)->nullable();
             $table->string(Event::TITLE);
             $table->text(Event::DESCRIPTION)->nullable();
-            $table->integer(Event::COST);
-            $table->date(Event::START_DATE);
-            $table->date(Event::END_DATE);
+            $table->integer(Event::COST)->default(0);
+            $table->timestamp(Event::START_DATE);
+            $table->timestamp(Event::END_DATE);
             $table->string(Event::ADDRESS);
-            $table->string(Event::TYPE);
-            $table->unsignedBigInteger(Event::USER_ID);
+            $table->string(Event::TYPE)->nullable();
+            $table->unsignedBigInteger(Event::USER_ID)->nullable();
             $table->foreign(Event::USER_ID)
                 ->references(User::ID)
                 ->on(User::TABLE_NAME)

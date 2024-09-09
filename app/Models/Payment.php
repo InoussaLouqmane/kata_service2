@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PaymentMethod;
-use App\Enums\PaymentStatus;
+use App\Enums\TransactionStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -20,12 +20,12 @@ class Payment extends Model
 
 {
 
-    const TABLE_NAME = "payments";
-    const EVENT_ID='event_id';
-    const USER_ID = 'user_id';
-    const COMMENT = 'comment';
-    const PAYMENT_METHOD = 'paymentMethod';
-    const PAYMENT_STATUS = 'paymentStatus';
+    const TABLE_NAME = 'payments';
+    const ID = 'id';
+
+    const FEE_ID = 'fee_id';
+
+    const PAYMENT_STATUS = 'payment_status';
 
 
     /**
@@ -34,34 +34,31 @@ class Payment extends Model
 
     protected $fillable = [
 
-        self::EVENT_ID,
-        self::USER_ID,
-        self::COMMENT,
-        self::PAYMENT_METHOD,
-        self::PAYMENT_STATUS
+        self::PAYMENT_STATUS,
+        self::FEE_ID,
 
-        ];
-    protected $casts=[
-        self::PAYMENT_STATUS=>PaymentStatus::class,
-        self::PAYMENT_METHOD=>PaymentMethod::class
     ];
+    protected $primaryKey = self::ID;
+
+
+    protected $table = self::TABLE_NAME;
 
 
     /**
      * @return BelongsTo
      */
-    public function event()
-    {
-        return $this->belongsTo('App\Models\Event');
+
+
+
+    public function fee(){
+        return $this->belongsTo(Fees::class, self::FEE_ID);
     }
-
-
     /**
      * @return BelongsTo
      */
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User');
+    public function transactions(){
+        return $this->hasMany(Transaction::class, Transaction::PAYMENT_ID, self::ID);
     }
+
 
 }

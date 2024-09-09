@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Transfer extends Model
 {
+    const ID = 'id';
     const APPROVING_SENSEI_ID = 'ApprovingSensei_id';
     const INITIATING_SENSEI_ID = 'InitiatingSensei_id';
     const TRANSFER_STATUS = 'transferStatus';
@@ -41,7 +42,7 @@ class Transfer extends Model
      */
     public function ApprovingSensei()
     {
-        return $this->belongsTo('App\Models\User', 'ApprovingSensei_id');
+        return $this->belongsTo(User::class, 'ApprovingSensei_id');
     }
 
     /**
@@ -49,7 +50,7 @@ class Transfer extends Model
      */
     public function InitiatingSensei()
     {
-        return $this->belongsTo('App\Models\User', 'InitiatingSensei_id');
+        return $this->belongsTo(User::class, 'InitiatingSensei_id');
     }
 
     /**
@@ -57,6 +58,6 @@ class Transfer extends Model
      */
     public function Student()
     {
-        return $this->belongsTo('App\Models\User', 'Student_id');
+        return $this->belongsTo(User::class, 'student_id');
     }
 }

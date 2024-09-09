@@ -17,7 +17,9 @@ class CreateResourcesTable extends Migration
             $table->bigIncrements(Resource::ID);
             $table->text(Resource::DESCRIPTION)->nullable();
             $table->string(Resource::VIDEO_LINK);
-            $table->integer(Resource::IS_FAVORITE)->default(0);
+            $table->string(Resource::TITLE);
+            $table->string(Resource::TYPE);
+            $table->integer(Resource::IS_FAVORITE)->default(0)->nullable();
             $table->timestamps();
         });
     }

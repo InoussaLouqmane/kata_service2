@@ -132,7 +132,9 @@
                     <img class="rounded-circle" src="{{asset('/img/profiles/avatar-01.jpg')}}" width="31"
                          alt="Ryan Taylor">
                     @auth
-                        <div class="user-text">
+                        <div
+                            data-user-id="{{$user->id}}"
+                            class="user-credentials user-text">
                             <h6>{{$user->firstName}} {{$user->lastName}}</h6>
                             <p class="text-muted mb-0">{{$user->role}}</p>
                         </div>
