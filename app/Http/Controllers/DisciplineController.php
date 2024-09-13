@@ -12,6 +12,17 @@ use Mockery\Exception;
 
 class DisciplineController extends Controller
 {
+    public function list(){
+        try {
+
+            $disciplines = Discipline::all();
+            return response()->json($disciplines);
+        }catch (QueryException | \HttpSocketException | Exception $e){
+            return response()->json([
+                'error' => $e->getMessage()
+            ],400);
+        }
+    }
     public function store(Request $request)
     {
         $request->validate([

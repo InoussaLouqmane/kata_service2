@@ -72,8 +72,7 @@
                 width: 100%!important;
                 max-width: 100%!important;
             }
-        }
-    </style>
+        }</style>
     <!--[if gte mso 9]>
     <xml>
         <o:OfficeDocumentSettings>
@@ -85,7 +84,6 @@
 </head>
 <body style="margin: 0px; padding: 0px; background-color: #f8f8f8;">
 <span class="preheader" style="display: none !important; visibility: hidden; opacity: 0; color: #F8F8F8; height: 0; width: 0; font-size: 1px;">&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌</span>
-
 <table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-size: 1px; line-height: normal;"
        bgcolor="#F8F8F8">
     <tr em="group">
@@ -139,7 +137,7 @@
                                     <table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom">
                                         <tr>
                                             <td style="padding-right: 0px; padding-left: 0px; padding-bottom: 20px;">
-                                                <div class="em-font-Inter-Bold" style="font-family: Helvetica, Arial, sans-serif; font-size: 18px; line-height: 24px; color: #555555;" align="center"><strong>Coucou,
+                                                <div class="em-font-Inter-Bold" style="font-family: Helvetica, Arial, sans-serif; font-size: 18px; line-height: 24px; color: #555555;" align="center"><strong>Cher,
                                                         {{$name}} !</strong></div>
                                             </td>
                                         </tr>
@@ -147,17 +145,29 @@
                                     <table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom">
                                         <tr>
                                             <td style="padding-bottom: 20px;" align="left">
-                                                <div style="font-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 18px; color: #595959;" class="em-font-Inter-Regular" align="center">Nous avons bien reçu ta requête, nous te reviendrons sous peu.<br></div>
+                                                <div style="font-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 18px; color: #595959;" class="em-font-Inter-Regular" align="center">Nous avons bien reçu votre demande de création de compte sur notre plateforme.<br></div>
+                                            </td>
+                                        </tr>
+                                    </table><table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom">
+                                        <tr>
+                                            <td style="padding-bottom: 20px;" align="left">
+                                                <div style="font-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 18px; color: #595959;" class="em-font-Inter-Regular" align="center">Votre demande est actuellement en cours de traitement. Une fois validée, vous recevrez un mail de confirmation avec les détails de votre compte.<br></div>
+                                            </td>
+                                        </tr>
+                                    </table><table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom">
+                                        <tr>
+                                            <td style="padding-bottom: 20px;" align="left">
+                                                <div style="font-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 18px; color: #595959;" class="em-font-Inter-Regular" align="center">En attendant, n'hésitez pas à nous contacter si vous avez des questions.<br></div>
                                             </td>
                                         </tr>
                                     </table>
                                     <table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom"><tr><td style="padding-bottom: 10px;" align="center">
-                                                <div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #595959;" class="em-font-Mulish-Regular"><strong>Merci et à très vite !</strong></div>
+                                                <div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #595959;" class="em-font-Mulish-Regular"><strong>Merci de votre confiance.</strong></div>
                                             </td></tr></table>
                                     <table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom">
                                         <tr>
                                             <td align="center">
-                                                <div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #595959;" class="em-font-Mulish-Regular">Kata</div>
+                                                <div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #595959;" class="em-font-Mulish-Regular">Cordialement,<br>Kata</div>
                                             </td>
                                         </tr>
                                     </table></td>

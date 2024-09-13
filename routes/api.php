@@ -41,6 +41,9 @@ Route::POST('/login', [AuthController::class, 'login']);
 Route::POST('/register', [UserRegisterController::class, 'store']);
 Route::POST('/web-register', [UserRegisterController::class, 'storeWeb']);
 Route::PATCH('/web-register', [UserRegisterController::class, 'update']);
+
+Route::POST('/password-reset', [AuthController::class, 'resetPasswordApi']);
+
 Route::POST ('/ac-postulate', [AccountRequestController::class, 'store']);
 Route::GET('/ac-list', [AccountRequestController::class, 'list']);
 Route::POST ('/ac-validate', [AccountRequestController::class, 'validateAccountRequest']);
@@ -51,6 +54,7 @@ Route::post ('/club-register-form', [ClubController::class, 'store']);
 
 Route::post ('/club-edit', [ClubController::class, 'updateClubInformation']);
 
+Route::GET('/discipline/all', [DisciplineController::class, 'list']);
 Route::POST ('/discipline-register', [DisciplineController::class, 'store']);
 Route::PUT ('/discipline-register', [DisciplineController::class, 'update']);
 Route::DELETE ('/discipline-register', [DisciplineController::class, 'desactivateDiscipline']);

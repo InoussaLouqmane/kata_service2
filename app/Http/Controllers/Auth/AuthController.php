@@ -102,6 +102,31 @@ class AuthController extends Controller
             return redirect()->back();
         }
     }
+    public function resetPasswordApi(Request $request)
+    {
+
+        $request->validate(['userId' => 'required|string', 'password' => 'required|string']);
+        $id = $request->userId;
+        $password = $request->password;
+
+        try{
+
+            $user = User::where('id', $id)->first();
+            $user->password = Hash::make($password);
+            $user->first_attempt = 0;
+            $user->save();
+
+            return response()->json([
+                'success' => 'Mot de passe changé avec succès'
+            ],200);
+
+        }catch (Exception $e){
+            Log::info("Quelque chose s'est mal passé : {$e->getMessage()}");
+            return response()->json([
+                'success' => 'Mot de passe changé avec succès'
+            ],200);
+        }
+    }
 
 
     public function login(Request $request)

@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\UserRegisterController;
 use App\Models\AccountRequest;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Log;
@@ -44,17 +45,18 @@ class AccountRequestController extends Controller
 
         try {
             $checker = AccountRequest::where('email', $request->input('email'))->first();
-            if ($checker != null && $checker->status == RequestStatus::PENDING) {
+            if ($checker != null && ($checker->status == 'Pending' || $checker->status == 'Approuvé') ) {
                 return response()->json([
-                    'message' => 'Vous avez déjà une demande en cours, veuillez patienter !',
+                    'message' => 'Adresse mail déjà utilisée',
                 ], 403);
             }
+            $genre = ($request->genre == 0) ? 'Femme' : 'Homme';
             $accountRegistered = AccountRequest::create([
                 AccountRequest::FIRST_NAME => $request->input(AccountRequest::FIRST_NAME),
                 AccountRequest::LAST_NAME => $request->input(AccountRequest::LAST_NAME),
                 AccountRequest::PHONE => $request->input(AccountRequest::PHONE),
-                AccountRequest::GENRE => $request->input(AccountRequest::GENRE),
-                AccountRequest::EMAIL => $request->input(AccountRequest::EMAIL),
+                AccountRequest::GENRE => $genre,
+                AccountRequest::EMAIL => strtolower($request->email),
                 AccountRequest::LICENSE_ID => $request->input(AccountRequest::LICENSE_ID),
                 AccountRequest::MARTIAL_ART_TYPE => $request->input(AccountRequest::MARTIAL_ART_TYPE),
                 AccountRequest::GRADE => $request->input(AccountRequest::GRADE),
@@ -72,7 +74,7 @@ class AccountRequestController extends Controller
             return response()->json([
                 "message" => "Sent Successfully",
             ], 201);
-        } catch (Exception $e) {
+        } catch (Exception | QueryException $e ) {
             return response()->json([
                 'message' => "L'envoi à eu un pépin $e"
             ], 403);
