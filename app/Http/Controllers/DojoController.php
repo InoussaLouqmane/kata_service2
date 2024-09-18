@@ -28,12 +28,12 @@ class DojoController extends Controller
 
             $dojo->save();
 
-            return redirect()->back()->with('success', 'Dojo créé avec succès');
+            return redirect()->route('main.dojo.dojos')->with('success', 'Dojo créé avec succès');
 
 
         } catch (Exception $exception) {
             Log::info("Une erreur s'est produit : ".$exception->getMessage());
-            return redirect()->back()->with('fail', 'Oops, une erreur est survenue');
+            return redirect()->route('main.dojo.dojos')->with('fail', 'Oops, une erreur est survenue');
         }
 
     }
@@ -63,10 +63,10 @@ class DojoController extends Controller
         }
         } catch (QueryException $exception) {
             Log::error("Mise à jour du Dojo échouée : " . $exception->getMessage());
-            return redirect()->back()->withErrors(['fail' => 'Oops, une erreur s\'est produite. Veuillez réessayer']);
+            return redirect()->route('main.dojo.dojos')->withErrors(['fail' => 'Oops, une erreur s\'est produite. Veuillez réessayer']);
         } catch (Exception $exception) {
             Log::error("Mise à jour du Dojo échouée : " . $exception->getMessage());
-            return redirect()->back()->withErrors(['fail' => 'Oops, une erreur s\'est produite.']);
+            return redirect()->route('main.dojo.dojos')->withErrors(['fail' => 'Oops, une erreur s\'est produite.']);
         }
 
 

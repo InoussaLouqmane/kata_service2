@@ -138,15 +138,11 @@
                                    class="table border-0 star-student table-hover table-center mb-0 datatable table table-striped">
                                 <thead class="student-thread">
                                 <tr>
-                                    <th>
-                                        <div class="form-check check-tables">
-                                            <input class="form-check-input" type="checkbox" value="something">
-                                        </div>
-                                    </th>
-                                    <th>Clubname</th>
+
+                                    <th>Nom et prénoms</th>
+                                    <th>Adresse mail</th>
+                                    <th>Nom du club</th>
                                     <th>Art Martial</th>
-                                    <th>Adresse du club</th>
-                                    <th>Email du club</th>
                                     <th>Téléphone</th>
                                     <th>LicenseId</th>
                                     <th>Status</th>
@@ -158,11 +154,7 @@
                                 <tbody>
                                 @foreach(AccountRequest::all() as $accountRequest)
                                     <tr>
-                                        <td>
-                                            <div class="form-check check-tables">
-                                                <input class="form-check-input" type="checkbox" value="something">
-                                            </div>
-                                        </td>
+
 
                                         <td>
                                             <h2 class="table-avatar">
@@ -171,11 +163,11 @@
                                                                                       src="{{asset('/img/profiles/avatar-01.jpg')}}"
                                                                                       alt="User Image"></a>
                                             </h2>
-                                            <a href="{{route('main.accountRequest.request-details', [$accountRequest->id])}}">{{$accountRequest->clubName}}</a>
+                                            <a href="{{route('main.accountRequest.request-details', [$accountRequest->id])}}">{{$accountRequest->firstName. ' '.$accountRequest->lastName}}</a>
                                         </td>
+                                        <td>{{$accountRequest->email}}</td>
+                                        <td>{{$accountRequest->clubName}}</td>
                                         <td>{{$accountRequest->discipline()}}</td>
-                                        <td>{{$accountRequest->clubAddress}}</td>
-                                        <td>{{$accountRequest->email ?? '-'}}</td>
                                         <td>{{$accountRequest->phone}}</td>
                                         <td>{{$accountRequest->licenseId}}</td>
                                         <td class="">
@@ -196,7 +188,7 @@
                                             <div class="actions text-center justify-content-center">
                                                 <a href="{{route('main.accountRequest.request-details', [$accountRequest->id])}}"
                                                    class="btn btn-circle btn-sm bg-success-light me-2 ">
-                                                    <i class="feather-eye"></i>
+                                                    <i class="feather-eye text-dark"></i>
                                                 </a>
 
                                                 @if($accountRequest[AccountRequest::STATUS] == RequestStatus::PENDING->value)
@@ -206,13 +198,13 @@
                                                         class="reject-button btn  btn-circle btn-sm bg-success-light me-2 "
                                                         type="button" data-bs-toggle="modal"
                                                         data-bs-target="#reject-modal">
-                                                        <i class="feather-x-circle "></i>
+                                                        <i class="feather-x-circle text-danger"></i>
                                                     </a>
                                                     <a data-requestId="{{$accountRequest->id}}"
                                                        type="button"
                                                        class="check-button btn  btn-circle btn-sm bg-success-light"
                                                        data-bs-toggle="modal" data-bs-target="#confirm-modal">
-                                                        <i class="feather-check"></i>
+                                                        <i class="feather-check-circle text-success"></i>
                                                     </a>
                                                 @endif
 

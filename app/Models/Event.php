@@ -80,15 +80,15 @@ class Event extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function payments()
+    public function payment()
     {
-        return $this->hasMany('App\Models\Payment');
+       return $this->hasOne(Payment::class, 'event_id');
     }
 
     public function examResults(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'examResults', 'exam_id', 'student_id')
-            ->withPivot('grade_id', 'noteKata', 'noteKihon', 'noteKumite', 'deliberation');
+            ->withPivot('grade_id', 'noteKata', 'noteKihon', 'noteKumite', 'deliberation', 'convocation');
     }
 
     public function grades(): BelongsToMany
@@ -107,4 +107,6 @@ class Event extends Model
     public function getLocation(){
         return $this->address;
     }
+
+
 }

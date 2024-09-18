@@ -267,10 +267,16 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         },
 
-        eventClick: function (info) {
+        eventClick: function (info){
 
 
             var event = info.event;
+            eventDate = new Date(info.dateStr);
+
+            if (eventDate > new Date()){
+                $('.cancelEvent').hide();
+                $('.modifyEvent').hide();
+            }
 
             $("#showInformations-modal").modal("toggle");
             $("#hiddenIDInput").val(event.id);
@@ -280,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function () {
             $("#startTimeDescription").text(`${event.start.toLocaleTimeString([], {
                 hour: '2-digit',
                 minute: '2-digit'
-            })}  ${event.end ? event.end.toLocaleTimeString([], {
+            })}  ${event.end ? ' - '+event.end.toLocaleTimeString([], {
                 hour: '2-digit',
                 minute: '2-digit'
             }) : ''}`);

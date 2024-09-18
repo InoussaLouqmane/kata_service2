@@ -17,6 +17,7 @@ return new class extends Migration
 
             $table->id();
             $table->string(Discipline::NAME)->unique();
+            $table->string(Discipline::DESCRIPTION)->nullable();
             $table->string(Discipline::STATUS)->default(DojoStatus::ACTIVE);
             $table->timestamps();
         });

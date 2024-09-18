@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Discipline;
 use App\Models\Grade;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -17,9 +18,8 @@ class CreateGradesTable extends Migration
             $table->bigIncrements(Grade::ID);
             $table->string(Grade::BELTNAME);
             $table->string(Grade::BELTCOLOR);
-            $table->integer(Grade::NUMBER_OF_RED_BAR)->default(0)->nullable();
-            $table->integer(Grade::NUMBER_OF_WHITE_BAR)->default(0)->nullable();
-            $table->integer(Grade::NUMBER_OF_YELLOW_BAR)->default(0)->nullable();
+            $table->unsignedBigInteger(Grade::DISCIPLINE_ID);
+            $table->foreign(Grade::DISCIPLINE_ID)->references(Grade::ID)->on(Discipline::TABLE_NAME)->onDelete('cascade')->onUpdate('cascade');
             $table->string(Grade::BELT_PICTURE_PATH)->nullable();
             $table->timestamps();
         });

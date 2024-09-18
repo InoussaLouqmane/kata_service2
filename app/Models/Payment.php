@@ -24,6 +24,7 @@ class Payment extends Model
     const ID = 'id';
 
     const FEE_ID = 'fee_id';
+    const EVENT_ID = 'event_id';
 
     const PAYMENT_STATUS = 'payment_status';
 
@@ -36,6 +37,7 @@ class Payment extends Model
 
         self::PAYMENT_STATUS,
         self::FEE_ID,
+        self::EVENT_ID
 
     ];
     protected $primaryKey = self::ID;
@@ -58,6 +60,10 @@ class Payment extends Model
      */
     public function transactions(){
         return $this->hasMany(Transaction::class, Transaction::PAYMENT_ID, self::ID);
+    }
+
+    public function event(){
+        return $this->belongsTo(Event::class, self::EVENT_ID);
     }
 
 

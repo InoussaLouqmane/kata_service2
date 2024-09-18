@@ -16,7 +16,9 @@
     <link rel="stylesheet" href="{{asset('/plugins/simple-calendar/simple-calendar.css')}}">
     <link rel="stylesheet" href="{{asset('/plugins/datatables/datatables.css')}}">
     <link rel="stylesheet" href="{{asset('/plugins/select2/css/select2.min.css')}}">
-    <link rel="stylesheet" href="{{asset('/plugins/alertify/alertify.min.css')}}">
+    <link rel="stylesheet" href="{{asset('/plugins/alertifyjs/css/alertify.min.css')}}">
+
+
     <link rel="stylesheet" href="{{asset('/plugins/dragula/css/dragula.min.css')}}">
     <link rel="stylesheet" href="{{asset('/plugins/toastr/toatr.css')}}">
 
@@ -46,7 +48,10 @@
 
 
 <script src="{{asset('/js/jquery-3.7.1.min.js')}}" ></script>
+<script src="{{asset('/plugins/jqueryvalidator/jquery.validate.min.js')}}"></script>
 <script src="{{asset('/js/bootstrap.bundle.js')}}" ></script>
+<script src="{{asset('/plugins/alertifyjs/alertify.min.js')}}"></script>
+
 <script src="{{asset('/js/feather.min.js')}}" ></script>
 <script src="{{asset('/plugins/slimscroll/jquery.slimscroll.min.js')}}" ></script>
 <script src="{{asset('/plugins/datatables/datatables.js')}}" ></script>
@@ -63,7 +68,7 @@
 
 <script src="{{asset('/js/calander.js')}}"></script>
 <script src="{{asset('/js/circle-progress.min.js')}}"></script>
-<script src="{{asset('/plugins/alertify/alertify.min.js')}}"></script>
+{{--<script src="{{asset('/plugins/alertify/alertify.min.js')}}"></script>--}}
 <script src='{{asset('/plugins/fullcalendar/dist/index.global.js')}}'></script>
 
 {{--<script src="{{asset('/plugins/alertify/custom-alertify.min.js')}}"></script>--}}

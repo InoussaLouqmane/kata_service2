@@ -47,12 +47,12 @@ class ClubController extends Controller implements ShouldQueue
 
             Log::error("Enregistrement du club échoué : " . $e->getMessage());
 
-            return redirect()->back()->withErrors(['fail' => 'Oops, une erreur s\'est produite. Email déjà utilisé.']);
+            return redirect()->route('main.department.departments')->withErrors(['fail' => 'Oops, une erreur s\'est produite. Email déjà utilisé.']);
 
         } catch (Exception $e) {
 
             Log::error("Enregistrement du club échoué : " . $e->getMessage());
-            return redirect()->back()->withErrors(['fail' => 'Oops, une erreur s\'est produite.']);
+            return redirect()->route('main.department.departments')->withErrors(['fail' => 'Oops, une erreur s\'est produite.']);
         }
     }
 
@@ -124,12 +124,12 @@ class ClubController extends Controller implements ShouldQueue
 
             Log::error("Enregistrement du club échoué : " . $e->getMessage());
 
-            return redirect()->back()->withErrors(['fail' => 'Oops, une erreur s\'est produite. Email déjà utilisé.']);
+            return redirect()->route('main.department.departments')->withErrors(['fail' => 'Oops, une erreur s\'est produite. Email déjà utilisé.']);
 
         } catch (Exception $e) {
 
             Log::error("Enregistrement du club échoué : " . $e->getMessage());
-            return redirect()->back()->withErrors(['fail' => 'Oops, une erreur s\'est produite.']);
+            return redirect()->route('main.department.departments')->withErrors(['fail' => 'Oops, une erreur s\'est produite.']);
         }
     }
 
@@ -175,10 +175,10 @@ class ClubController extends Controller implements ShouldQueue
             }
         } catch (QueryException $e) {
             Log::error("Mise à jour du club échouée : " . $e->getMessage());
-            return redirect()->back()->withErrors(['fail' => 'Oops, une erreur s\'est produite. Email déjà utilisé.']);
+            return redirect()->route('main.department.departments')->withErrors(['fail' => 'Oops, une erreur s\'est produite. Email déjà utilisé.']);
         } catch (Exception $e) {
             Log::error("Mise à jour du club échouée : " . $e->getMessage());
-            return redirect()->back()->withErrors(['fail' => 'Oops, une erreur s\'est produite.']);
+            return redirect()->route('main.department.departments')->withErrors(['fail' => 'Oops, une erreur s\'est produite.']);
         }
     }
 

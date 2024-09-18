@@ -385,14 +385,7 @@
                             <li><a href="{{route('main.student.add-student')}}">Ajouter un élève</a></li>
                         </ul>
                     </li>
-                    <li class="submenu">
-                        <a href="#"><i class="fas fa-graduation-cap"></i> <span> Grades </span> <span
-                                class="menu-arrow"></span></a>
-                        <ul>
-                            <li><a href="{{route('main.grade.grades')}}">Liste des grades</a></li>
-                            <li><a href="{{route('main.grade.add-grade')}}">Ajouter un grade</a></li>
-                        </ul>
-                    </li>
+
 
                     {{--<li class="submenu">
                         <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Sensei</span> <span

@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
+use Illuminate\Support\Facades\DB;
 
 class DisciplineController extends Controller
 {
@@ -26,49 +27,124 @@ class DisciplineController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string'
+            'name' => 'required|string',
+            'description' => 'nullable|string',
+            'grades' => 'required'
         ]);
 
 
-        $discipline = new Discipline();
+        try{
 
-        try {
-            $discipline->name = $request->input('name');
-            $discipline->save();
+            DB::transaction(function () use ($request) {
 
-            return redirect()->route('main.subject.subjects')->with('success', 'Discipline créée avec succès');
-        } catch (QueryException $exception) {
-            return redirect()->back()->with('Oops, une erreur s\'est produite :', $exception->getMessage());
-        } catch (Exception $exception) {
-            return redirect()->back()->with('Oops, une erreur est survenue : ', $exception->getMessage());
+                $discipline = new Discipline();
+                $discipline->name = $request->name;
+                $discipline->description = $request->description;
+                $discipline->save();
+
+                foreach ($request->grades as $grade) {
+                    $discipline->grades()->create([
+                        'beltColor' => $grade['beltColor'],
+                        'beltName' => $grade['beltName'],
+                    ]);
+                }
+            });
+            return response()->json([
+                'message' => 'Discipline added successfully'
+            ],201);
+        }catch (QueryException | \HttpSocketException | Exception $e){
+            Log::error($e->getMessage());
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 400);
         }
+
     }
 
-    public function update(Request $request): RedirectResponse
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string'
+            'name' => 'required|string',
+            'description' => 'nullable|string',
+            'grades' => 'required'
         ]);
 
-        $discipline = Discipline::findOrFail($request->id);
 
         try {
 
-            $discipline->name = $request->name ?? $discipline->name;
-            $discipline->save();
-            return redirect()->route('main.subject.subjects')->with('success', 'Discipline créée avec succès');
+            DB::transaction(function () use ($request, $id) {
 
-        } catch (QueryException $exception) {
-            Log::error('Error lors de la modification de la discipline : ' . $exception->getMessage());
-            return redirect()->route('main.subject.subjects')->with('Oops, une erreur s\'est produite :', $exception->getMessage());
-        } catch (Exception $exception) {
-            Log::error('Error lors de la désactivation de la discipline : ' . $exception->getMessage());
-            return redirect()->back()->with('Oops, une erreur s\'est produite :', $exception->getMessage());
+                $discipline = Discipline::findOrFail($id);
+                $discipline->update([
+                    'name'=> $request->name,
+                    'description'=> $request->description,
+                ]);
 
+                $discipline->grades()->delete();
+                foreach ($request->grades as $grade) {
+
+                    $discipline->grades()->create([
+                        'beltColor' => $grade['beltColor'],
+                        'beltName' => $grade['beltName'],
+                    ]);
+                }
+
+
+            });
+            return response()->json([
+                'message' => 'Discipline updated successfully'
+            ],200);
+        }catch (QueryException | \HttpSocketException | Exception $e){
+            Log::error($e->getMessage());
+            return response()->json([
+                'error' => $e->getMessage()
+            ],400);
         }
+
+
 
     }
 
+    public function show($id){
+
+
+        try{
+
+            $discipline = Discipline::findOrFail($id);
+            $grades = $discipline->grades;
+
+            return response()->json([
+                $grades,
+            ],200);
+        }catch (QueryException | \HttpSocketException | Exception $e){
+            return response()->json([
+                'error' => $e->getMessage()
+            ],400);
+        }
+    }
+
+    public function destroy($id){
+
+        try {
+            DB::transaction(function () use ($id) {
+                $discipline = Discipline::findOrFail($id);
+
+                $discipline->grades()->delete();
+                $discipline->delete();
+            });
+
+
+            return response()->json([
+                'message' => 'Discipline deleted successfully'
+            ],200);
+        }catch (QueryException | \HttpSocketException | Exception $e){
+            return response()->json([
+                'error' => $e->getMessage()
+            ],400);
+        }
+
+
+    }
     public function activateDiscipline(Request $request)
     {
 

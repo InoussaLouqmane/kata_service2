@@ -19,6 +19,7 @@ class Discipline extends Model
 
     protected $table='disciplines';
     const TABLE_NAME = 'disciplines';
+    const DESCRIPTION = 'description';
     const ID = 'id';
     const NAME = 'name';
     const STATUS = 'status';
@@ -26,7 +27,8 @@ class Discipline extends Model
 
     protected $fillable = [
       self::NAME,
-      self::STATUS
+      self::STATUS,
+        self::DESCRIPTION,
     ];
 
     public function dojos()
@@ -37,5 +39,10 @@ class Discipline extends Model
     public function clubs(): HasMany
     {
         return $this->hasMany(Club::class, 'martialArtType', 'id');
+    }
+
+    public function grades()
+    {
+        return $this->hasMany(Grade::class, Grade::DISCIPLINE_ID, self::ID);
     }
 }

@@ -39,11 +39,11 @@ class GradeController extends Controller
                 $grade->beltPicturePath = $path;
             }
             $grade->save();
-            return redirect()->back()->with('success', 'Grade créé avec succès');
+            return redirect()->route('main.grade.grades')->with('success', 'Grade créé avec succès');
 
         } catch (Exception $exception) {
             Log::info("Une erreur s'est produite au niveau des grades : " . $exception->getMessage());
-            return redirect()->back()->with('fail', 'Oops, une erreur est survenue');
+            return redirect()->route('main.grade.grades')->with('fail', 'Oops, une erreur est survenue');
         }
     }
 

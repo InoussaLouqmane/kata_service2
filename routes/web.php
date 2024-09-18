@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\UserRegisterController;
 use App\Http\Controllers\ExamControllerWeb;
+use App\Http\Controllers\pdfController;
 use App\Models\AccountRequest;
 use App\Models\Club;
 use App\Models\Discipline;
@@ -243,9 +244,19 @@ Route::middleware(['auth'])->group(function () {
         })->name('add-subject');
 
         Route::get('/edit-subject/{id}', function (Request $request) {
+
             $selectedDiscipline = Discipline::find($request->id);
-            return view('main.subject.edit-subject', ['selectedDiscipline'=> $selectedDiscipline]);
+            return view('main.subject.add-subject',['selectedDiscipline'=> $selectedDiscipline]);
         })->name('edit-subject');
+    });
+
+
+    Route::group(['prefix' => 'pdfs', 'as' => 'generatedPdf.'], function () {
+        Route::get('/convocation', function () {
+            return view('generatedPdf.examconvocation');
+        })->name('convocation');
+
+        Route::get('/gen-convocation', [pdfController::class, 'generateConvocation'])->name('gen-convocation');
     });
 
     Route::group(['prefix' => 'main/invoice', 'as' => 'main.invoice.'], function () {
@@ -334,8 +345,13 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/edit-exam/{id}', function ($id) {
             $selectedExam = Exam::find($id);
-            return view('main.exam.edit-exam', ['selectedExam'=> $selectedExam]);
+            return view('main.exam.add-exam',  ['selectedExam' => $selectedExam]);
         })->name('edit-exam');
+
+        /*Route::get('/edit-exam/{id}', function ($id) {
+            $selectedExam = Exam::find($id);
+            return view('main.exam.edit-exam', ['selectedExam'=> $selectedExam]);
+        })->name('edit-exam');*/
 
         Route::get('/details/{id}', function ($id) {
             $selectedExam = Exam::find($id);

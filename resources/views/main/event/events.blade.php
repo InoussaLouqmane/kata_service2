@@ -73,8 +73,9 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fermer
                         </button>
-                        <button type="submit" class="btn btn-danger cancelEvent">Annuler l'évènement</button>
-                        <button type="submit" class="btn btn-primary modifyEvent">Modifier</button>
+                            <button type="submit" class="btn btn-danger cancelEvent">Annuler l'évènement</button>
+                            <button type="submit" class="btn btn-primary modifyEvent">Modifier</button>
+
                     </div>
 
                 @endif

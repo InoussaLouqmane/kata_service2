@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\GradColor;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
@@ -26,34 +27,34 @@ class Grade extends Model
     const BELTCOLOR = 'beltColor';
     const ID = "id";
     const BELTNAME = 'beltName';
-    const NUMBER_OF_RED_BAR = 'numberOfRedBar';
-    const NUMBER_OF_WHITE_BAR = 'numberOfWhiteBar';
-    const NUMBER_OF_YELLOW_BAR = 'numberOfYellowBar';
     const BELT_PICTURE_PATH = 'beltPicturePath';
+    const DISCIPLINE_ID = 'disciplineId';
 
 
     protected $fillable = [
         self::BELTNAME,
-      self::BELTCOLOR,
-      self::NUMBER_OF_RED_BAR,
-      self::NUMBER_OF_WHITE_BAR,
-      self::NUMBER_OF_YELLOW_BAR,
-      self::BELT_PICTURE_PATH,
+        self::BELTCOLOR,
+        self::DISCIPLINE_ID,
+        self::BELT_PICTURE_PATH,
     ];
-
-
 
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
 
-    public function users(): BelongsToMany{
+    public function users(): BelongsToMany
+    {
         return $this->belongsToMany(User::class, 'grade_user', 'grade_id', 'user_id');
     }
 
 
-    public function exams(): BelongsToMany{
+    public function exams(): BelongsToMany
+    {
         return $this->belongsToMany(Exam::class, 'exam_grade', 'grade_id', 'exam_id');
+    }
+
+    public function discipline(): BelongsTo{
+        return $this->belongsTo(Discipline::class);
     }
 }

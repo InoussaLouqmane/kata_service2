@@ -33,7 +33,10 @@ class Exam_results extends Model
     const DELIBERATION = 'deliberation';
     const GRADE_ID = 'grade_id';
 
+    const CONVOCATION = 'convocation';
+
     protected $table = 'examResults';
+
 
     /**
      * @var array
@@ -45,7 +48,8 @@ class Exam_results extends Model
         self::NOTE_KATA,
         self::NOTE_KIHON,
         self::NOTE_KUMITE,
-        self::DELIBERATION
+        self::DELIBERATION,
+        self::CONVOCATION
     ];
     protected $casts=[
 

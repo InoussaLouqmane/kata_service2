@@ -5,7 +5,11 @@
     use App\Models\Discipline;
     use App\Models\Grade;use App\Models\User;use Illuminate\Support\Facades\Auth;
 
-    $sensei = User::find(Auth::user()->id);
+    $sensei = Auth::user();
+    $club = $sensei->clubs()->first();
+    $discipline = $club->discipline;
+    $ClubGrades = Grade::where(Grade::DISCIPLINE_ID, $discipline->id)->get();
+
 @endphp
 @extends('partials.layout');
 @section('title', 'Eleve')
@@ -108,7 +112,7 @@
                                     <div class="form-group local-forms">
                                         <label>Grade <span class="login-danger">*</span></label>
                                         <select name="grade" class="form-control select">
-                                            @foreach(Grade::all() as $grade)
+                                            @foreach($ClubGrades as $grade)
                                                 <option value="{{$grade->id}}"> {{$grade->beltName}}</option>
                                             @endforeach
                                         </select>

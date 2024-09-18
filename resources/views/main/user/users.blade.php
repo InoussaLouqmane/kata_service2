@@ -179,49 +179,35 @@
                                             <td class="text-center">
                                                 <div class="actions text-center justify-content-center">
 
-                                                    <div class="dropdown">
-                                                        <button class="btn" type="button" data-bs-toggle="dropdown"
-                                                                aria-expanded="false">
-                                                            <i class="feather-more-vertical"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li class="dropdown-item"><a
-                                                                    href="{{route('main.user.user-details', [$user->id])}}"
-                                                                    class="d-flex justify-content-around gap-1">
-                                                                    <i class="feather-eye"> </i>
-                                                                    <span>Voir détails</span>
-                                                                </a>
-                                                            </li>
 
-                                                            @if($user->status === 'Actif')
-                                                                <li class="dropdown-item" id="activateAccountButton"><a
-                                                                        href="{{route('desactivateAccount.web', [$user->id])}}"
-                                                                        class="d-flex justify-content-around gap-1">
-                                                                        <i class="feather-x-circle"> </i>
-                                                                        <span>Désactiver compte</span>
-                                                                    </a>
-                                                                </li>
-                                                            @endif
-                                                            @if($user->status === 'Inactif')
-                                                                <li class="dropdown-item"><a
-                                                                        href="{{route('activateAccount.web', [$user->id])}}"
-                                                                        class="d-flex justify-content-around gap-1">
-                                                                        <i class="feather-x-circle"> </i>
-                                                                        <span>Activer compte</span>
-                                                                    </a>
-                                                                </li>
-                                                            @endif
+                                                    <a
+                                                        href="{{route('main.user.user-details', [$user->id])}}"
+                                                        class="d-flex justify-content-around gap-1">
+                                                        <i class="feather-eye text-primary"> </i>
+                                                    </a>
+
+                                                    @if($user->status === 'Actif')
+
+                                                        <a
+                                                            href="{{route('desactivateAccount.web', [$user->id])}}"
+                                                            class="d-flex justify-content-around gap-1">
+                                                            <i class="feather-x-circle text-danger"> </i>
+                                                        </a>
+                                                    @endif
+                                                    @if($user->status === 'Inactif')
+                                                        <a
+                                                            href="{{route('activateAccount.web', [$user->id])}}"
+                                                            class="d-flex justify-content-around gap-1">
+                                                            <i class="feather-check-circle text-success"> </i>
+                                                        </a>
+                                                    @endif
+                                                    <a
+                                                        href="{{route('reinitializePassword.web', [$user->id])}}"
+                                                        class="d-flex justify-content-around gap-1">
+                                                        <i class="feather-lock text-dark"> </i>
+                                                    </a>
 
 
-                                                            <li class="dropdown-item"><a
-                                                                    href="{{route('reinitializePassword.web', [$user->id])}}"
-                                                                    class="d-flex justify-content-around gap-1">
-                                                                    <i class="feather-lock"> </i>
-                                                                    <span>Réinitialiser mot de passe</span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
 
                                                 </div>
                                             </td>

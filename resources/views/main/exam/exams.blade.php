@@ -94,6 +94,9 @@
                                                 @if($authUser->role != Role::STUDENT->value)
 
                                                     @if($exam->examStatus=== 'A venir')
+                                                        <a href="{{route("main.exam.edit-exam", [$exam->event_id])}}"
+                                                           class="btn btn-sm bg-success-light me-2">
+                                                            <i class="feather-edit"></i></a>
 
                                                         <a href="edit-exam.html" class="btn btn-sm bg-danger-light me-2">
                                                             <i class="feather-x-circle text-danger"></i>

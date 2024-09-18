@@ -9,36 +9,37 @@ use App\Models\Event;
 use App\Models\Exam;
 use App\Models\Payment;
 use App\Models\Transaction;
-use HttpSocketException;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Http\Request;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
 
-class storeExamProcess implements ShouldQueue
+class updateExamProcess implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
      */
+    protected $examId;
     protected $startDateTime;
     protected $location;
     protected $payload;
     public function __construct(
+        String $examId,
         String $startDateTime,
         String $location,
-        $payload)
+               $payload)
     {
         $this->startDateTime = $startDateTime;
         $this->location = $location;
         $this->payload = $payload;
+        $this->examId = $examId;
     }
 
     /**
@@ -46,16 +47,17 @@ class storeExamProcess implements ShouldQueue
      */
     public function handle(): void
     {
+        $examId = $this->examId;
         $startDateTime = $this->startDateTime;
         $location = $this->location;
         $payload = $this->payload;
 
-        $pdfController = new pdfController();
+
         try{
 
-            DB::transaction(function () use($startDateTime, $location, $payload) {
+            DB::transaction(function () use($examId, $startDateTime, $location, $payload) {
 
-                $event = new Event();
+                $event = Event::findOrFail($examId);
 
                 $event->title = 'Examen';
                 $event->startDate = $startDateTime;
@@ -63,22 +65,13 @@ class storeExamProcess implements ShouldQueue
                 $event->address = $location;
                 $event->save();
 
-                $exam = new Exam();
-                $exam->event()->associate($event);
-                $exam->examStatus = ExamStatus::INITIATED;
-                $exam->save();
-
-
                 $payloads = $payload;
 
                 $grades = [];
                 $students = [];
                 $studentIds = [];
 
-                $payment = Payment::create([
-                    Payment::FEE_ID => 2,
-                    Payment::EVENT_ID => $event->id,
-                ]);
+                $event->payment->transactions()->delete();
 
                 foreach ($payloads as $payload) {
                     $grades[$payload['grade_id']] = ['cost' => $payload['cost']];
@@ -90,11 +83,11 @@ class storeExamProcess implements ShouldQueue
                         Transaction::create([
                             Transaction::PAYER_ID => $student['id'],
                             Transaction::COST => $payload['cost'],
-                            Transaction::PAYMENT_ID => $payment->id,
+                            Transaction::PAYMENT_ID => $event->payment->id,
                             Transaction::TRANSACTION_STATUS => TransactionStatus::UNPAID,
                         ]);
 
-                       /* $pdfController->generateConvocation($student['id'], $event->id, $payload['cost'],  $payload['grade_id']);*/
+                        /* $pdfController->generateConvocation($student['id'], $event->id, $payload['cost'],  $payload['grade_id']);*/
 
                         $studentIds[] = $student['id'];
 
@@ -108,11 +101,11 @@ class storeExamProcess implements ShouldQueue
                     }
                 }
 
-                $event->examResults()->attach($students);
-                $event->grades()->attach($grades);
+                $event->examResults()->sync($students);
+                $event->grades()->sync($grades);
 
 
-                ConvocationMailingProcess::dispatch($event->id, 'create');
+                ConvocationMailingProcess::dispatch($event->id, 'update');
 
             });
 
@@ -122,5 +115,4 @@ class storeExamProcess implements ShouldQueue
 
         }
     }
-
 }

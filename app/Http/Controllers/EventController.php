@@ -78,6 +78,7 @@ class EventController extends Controller
                 'data' => 'Supprimé avec succès',
             ], 200);
         }catch (QueryException | HttpSocketException | Exception $e ) {
+            Log::error($e->getMessage());
             return response()->json([
                 'error' => $e->getMessage()
             ], 400);

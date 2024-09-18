@@ -55,8 +55,10 @@ Route::post ('/club-register-form', [ClubController::class, 'store']);
 Route::post ('/club-edit', [ClubController::class, 'updateClubInformation']);
 
 Route::GET('/discipline/all', [DisciplineController::class, 'list']);
-Route::POST ('/discipline-register', [DisciplineController::class, 'store']);
-Route::PUT ('/discipline-register', [DisciplineController::class, 'update']);
+Route::GET('/discipline/filter/{id}', [DisciplineController::class, 'show']);
+Route::POST ('/discipline/store', [DisciplineController::class, 'store']);
+Route::PATCH ('/discipline/update/{id}', [DisciplineController::class, 'update']);
+Route::DELETE ('/discipline/delete/{id}', [DisciplineController::class, 'destroy']);
 Route::DELETE ('/discipline-register', [DisciplineController::class, 'desactivateDiscipline']);
 Route::PATCH ('/discipline-register', [DisciplineController::class, 'activateDiscipline']);
 
@@ -68,7 +70,7 @@ Route::POST ('/grade', [GradeController::class, 'store']);
 Route::PATCH ('/grade', [GradeController::class, 'update']);
 Route::DELETE ('/grade', [GradeController::class, 'delete']);
 
-Route::GET('/event/', [EventController::class, 'indexApi']);
+Route::GET('/event', [EventController::class, 'indexApi']);
 Route::GET('/event/show/{id}', [EventController::class, 'show']);
 Route::POST('/event/create', [EventController::class, 'storeEventApi']);
 Route::PATCH('/event/update/{id}', [EventController::class, 'updateApi']);
@@ -76,6 +78,7 @@ Route::DELETE('/event/delete/{id}', [EventController::class, 'deleteApi']);
 
 Route::POST('/exams/create', [ExamControllerWeb::class, 'store']);
 Route::PATCH('/exams/update/{id}', [ExamControllerWeb::class, 'update']);
+Route::PATCH('/exams/modify/{id}',[ExamControllerWeb::class, 'modify']);
 Route::POST('/exams/delete', [ExamControllerWeb::class, 'deleteSomeone']);
 Route::POST('/exams/close/{id}', [ExamControllerWeb::class, 'archiveExam']);
 Route::PATCH('/exams/add-student', [ExamControllerWeb::class, 'addSomeOne']);
@@ -84,6 +87,7 @@ Route::PATCH('/exams/update-student', [ExamControllerWeb::class, 'updateSomeone'
 
 
 Route::GET('/grades', [GradeControllerApi::class, 'index']);
+Route::POST('/grades/show/{id}', [GradeControllerApi::class, 'show']);
 
 
 Route::POST('/resources/create', [ResourceApiController::class, 'store']);
@@ -96,6 +100,7 @@ Route::PATCH('transfer/reject/{id}', [TransferController::class, 'refuseTransfer
 Route::PATCH('transfer/cancel/{id}', [TransferController::class, 'cancelTransfer']);
 
 Route::GET('user/{id}', [UserRegisterController::class , 'showCurrentUser']);
+
 
 
 Route::GET('/fees', [feesController::class,'list']);

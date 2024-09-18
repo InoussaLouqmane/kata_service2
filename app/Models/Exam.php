@@ -55,7 +55,7 @@ class Exam extends Model
     public function examResults(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'examResults', 'exam_id', 'student_id')
-            ->withPivot('grade_id');
+            ->withPivot('grade_id', 'noteKata', 'noteKihon', 'noteKumite', 'deliberation', 'convocation');
     }
 
     public function grades(): BelongsToMany

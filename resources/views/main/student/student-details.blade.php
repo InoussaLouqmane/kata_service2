@@ -310,11 +310,11 @@
 
 
                                                         <h4>Commentaire</h4>
-                                                        <a data-bs-toggle="modal"
-                                                           data-bs-target="#centermodal"
-                                                           class="btn btn-circle btn-sm bg-success-light me-2 ">
-                                                            Voir  <i class="feather-eye"></i>
-                                                        </a>
+                                                            <a data-bs-toggle="modal"
+                                                               data-bs-target="#centermodal"
+                                                               class="btn btn-circle btn-sm bg-success-light me-2 ">
+                                                                Voir  <i class="feather-eye"></i>
+                                                            </a>
 
                                                     </div>
                                                     @endif

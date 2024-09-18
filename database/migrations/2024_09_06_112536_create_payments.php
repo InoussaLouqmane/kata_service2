@@ -20,12 +20,13 @@ return new class extends Migration
             $table->bigIncrements(Payment::ID);
 
             $table->unsignedBigInteger(Payment::FEE_ID)->index();
+            $table->unsignedBigInteger(Payment::EVENT_ID)->index()->nullable();
 
 
             $table->timestamps();
 
             $table->foreign(Payment::FEE_ID)->references(Fees::ID)->on(Fees::TABLE_NAME)->onDelete('cascade')->onUpdate('cascade');
-
+            $table->foreign(Payment::EVENT_ID)->references(Event::ID)->on(Event::TABLE_NAME)->onDelete('cascade')->onUpdate('cascade');
             });
     }
 

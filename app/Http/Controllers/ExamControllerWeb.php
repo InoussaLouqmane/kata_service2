@@ -7,6 +7,7 @@ use App\Enums\PaymentStatus;
 use App\Enums\TransactionStatus;
 use App\Jobs\endExamProcess;
 use App\Jobs\storeExamProcess;
+use App\Jobs\updateExamProcess;
 use App\Models\Event;
 use App\Models\Exam;
 use App\Models\Exam_results;
@@ -32,7 +33,25 @@ class ExamControllerWeb extends Controller
            'payload' => 'required',
        ]);
 
+
        storeExamProcess::dispatch($request->startDateTime,$request->location, $request->payload);
+
+           return response()->json([
+               'success'   => true
+           ],201);
+
+   }
+   public function modify(Request $request){
+
+       $request->validate([
+           'event_id' => 'required',
+           'startDateTime' => 'required',
+           'location' => 'required',
+           'payload' => 'required',
+       ]);
+
+
+       updateExamProcess::dispatch($request->event_id,$request->startDateTime,$request->location, $request->payload);
 
            return response()->json([
                'success'   => true

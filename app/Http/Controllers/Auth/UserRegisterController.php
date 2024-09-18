@@ -77,6 +77,11 @@ class UserRegisterController extends Controller implements ShouldQueue
             event(new Registered($user));
             event(new AccountRequestConfirmed($user, $password));
 
+            if($request->grade)
+                $user->grades()->attach($request->grade);
+            $user->save();
+
+
             return response([
                 "message" => "Registered Successfully",
                 "user" => $user,
@@ -137,7 +142,7 @@ class UserRegisterController extends Controller implements ShouldQueue
 
             event(new AccountRequestConfirmed($user, $password));
 
-            return redirect()->back()->with('success', "L'utilisateur a été créé avec succès");
+            return redirect()->route('main.student.students')->with('success', "L'utilisateur a été créé avec succès");
         }
         catch (QueryException|\Mockery\Exception $e){
             Log::info('QueryExcept  : '.$e);
@@ -240,6 +245,10 @@ class UserRegisterController extends Controller implements ShouldQueue
                     $clubController = new ClubController();
                     $request->club_id = $clubController->storeFromWebValidation($request);
 
+                    if($request->grade)
+                        $user->grades()->attach($request->grade);
+
+
                     if($request->club_id){
 
                         Log::info('Oui, il y a un club id');
@@ -250,11 +259,10 @@ class UserRegisterController extends Controller implements ShouldQueue
                         Log::info('NOn, pas de un club id : '.$request->all());
 
                         $request->user_id = $user->id;
-                        $request->save();
-
-
 
                     }
+
+                    $request->save();
                     event(new AccountRequestConfirmed($user, $password));
 
                     return response([
