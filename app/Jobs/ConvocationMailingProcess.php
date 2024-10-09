@@ -28,6 +28,7 @@ class ConvocationMailingProcess implements ShouldQueue
      */
 
     protected String $event_id;
+    protected String $action;
 
     public function __construct($event_id, $action)
 {
@@ -48,6 +49,7 @@ class ConvocationMailingProcess implements ShouldQueue
 
             $event = Event::findOrFail($this->event_id);
 
+
             foreach ($event->examResults as $user) {
 
                 $pdf = Pdf::loadView('generatedPdf.examconvocation', ['user_id' => $user->id, 'event_id' => $event->id]);
@@ -64,11 +66,11 @@ class ConvocationMailingProcess implements ShouldQueue
                 if($this->action == 'create'){
 
                     Mail::to($user->email)
-                        ->send(new ConvocationSent($user, $filename));
+                        ->send(new ConvocationSent($user, $filename, $user->pivot->grade_id));
 
                 }elseif ($this->action == 'update'){
                     Mail::to($user->email)
-                        ->send(new ConvocationSent($user, $filename));
+                        ->send(new ConvocationSent($user, $filename, $user->pivot->grade_id));
                 }
             }
 

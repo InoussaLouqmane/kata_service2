@@ -29,11 +29,13 @@ class EndExamProcess implements ShouldQueue
 
     public function handle()
     {
+
         try {
             DB::transaction(function () {
                 $exam = Exam::find($this->examId);
 
                 foreach ($this->payload as $student_id => $notes) {
+
                     $exam->event->examResults()->updateExistingPivot($student_id, [
                         'noteKata' => $notes[0],
                         'noteKumite' => $notes[1],
@@ -59,4 +61,5 @@ class EndExamProcess implements ShouldQueue
             Log::error('Erreur lors de la clôture de l\'examen : ' . $exception->getMessage());
         }
     }
+
 }

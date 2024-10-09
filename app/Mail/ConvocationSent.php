@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Grade;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,7 +23,8 @@ class ConvocationSent extends Mailable implements ShouldQueue
      */
     public function __construct(
         public User $user,
-        public String $filename
+        public String $filename,
+        public String $gradeId
     )
     {
 
@@ -33,12 +35,13 @@ class ConvocationSent extends Mailable implements ShouldQueue
      */
     public function envelope(): Envelope
     {
+        $grade = Grade::findOrFail($this->gradeId);
         return new Envelope(
             from : new Address('inoussalouqmane@gmail.com', 'Louqmane INOUSSA'),
             replyTo: [
               new Address($this->user->email, $this->user->firstName.' '.$this->user->lastName)
             ],
-            subject: 'Convocation à l\'examen',
+            subject: "Convocation à l'examen de la ceinture ".$grade->beltName,
         );
     }
 

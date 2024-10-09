@@ -176,7 +176,7 @@
                                                 <div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #595959;" class="em-font-Mulish-Regular">&nbsp;</div>
                                             </td>
                                             <td align="center" valign="top">
-                                                <div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #595959;" class="em-font-Mulish-Regular">Mot de passe : ]kY6%7Yh</div>
+                                                <div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #595959;" class="em-font-Mulish-Regular">Mot de passe : {{$password}}</div>
                                             </td>
                                         </tr></table>
                                     <table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom"><tr><td height="20"></td></tr></table><table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom">

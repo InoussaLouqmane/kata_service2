@@ -6,6 +6,7 @@ use App\Enums\ExamStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\TransactionStatus;
 use App\Jobs\endExamProcess;
+use App\Jobs\ExamAchievementProcess;
 use App\Jobs\storeExamProcess;
 use App\Jobs\updateExamProcess;
 use App\Models\Event;
@@ -291,11 +292,38 @@ class ExamControllerWeb extends Controller
             'payload' => 'required',
         ]);
 
-        EndExamProcess::dispatch($request->examId, $request->payload);
 
-        return response()->json([
-            'message' => 'L\'examen est en cours de clôture.'
-        ], 200);
+        try {
+
+            DB::transaction(function () use ($request) {
+                $exam = Exam::find($request->examId);
+
+                foreach ($request->payload as $student_id => $notes) {
+
+                    $exam->event->examResults()->updateExistingPivot($student_id, [
+                        'noteKata' => $notes[0],
+                        'noteKumite' => $notes[1],
+                        'noteKihon' => $notes[2],
+                        'deliberation' => $notes[3]
+                    ]);
+
+                    $student = User::findOrFail($student_id);
+                    $average = (($notes[0] + $notes[1] + $notes[2]) / 3) >= 10;
+
+                    if ($average && $notes[4]) {
+                        $student->grades()->sync([$notes[4]]);
+                        Log::info('L\'étudiant a réussi, grade mis à jour');
+                    } else {
+                        Log::info('L\'étudiant a échoué ou grade non trouvé');
+                    }
+                }
+
+                $exam->examStatus = ExamStatus::ENDED;
+                $exam->save();
+            });
+        } catch (QueryException | Exception $exception) {
+            Log::error('Erreur lors de la clôture de l\'examen : ' . $exception->getMessage());
+        }
     }
 
 
@@ -307,6 +335,7 @@ class ExamControllerWeb extends Controller
             $exam->examStatus = ExamStatus::ARCHIEVED;
             $exam->save();
 
+            ExamAchievementProcess::dispatch($exam);
             return response()->json([
                 'success' => true,
             ], 200);

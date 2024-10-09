@@ -162,6 +162,7 @@
                 <th scope="row">Montant</th>
                 <td>{{isset($cost) ? $cost : '4500 ' }} Francs CFA</td>
             </tr>
+
         </table>
 
     </section>
