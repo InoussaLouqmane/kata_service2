@@ -90,11 +90,15 @@
 
                                         <td class="text-center">
                                             <div class="actions d-flex justify-content-center">
-                                                <a class="EditFeesButton btn btn-sm bg-success-light me-2">
-                                                    <i class="feather-download"></i>
-                                                </a>
+
+                                                @if($transaction->transaction_status == TransactionStatus::PAID->value)
+                                                    <a href="{{asset($transaction->bill)}}" download class=" btn btn-sm bg-success-light me-2">
+                                                        <i class="feather-download"></i>
+                                                    </a>
+                                                @endif
+
                                                @if($transaction->transaction_status == TransactionStatus::UNPAID->value)
-                                                    <a data-amount="{{$transaction->payment->fee->cost}}"
+                                                    <a data-amount="{{$transaction->cost}}"
                                                        class="paybutton btn btn-sm bg-danger-light">
                                                         <i class="feather-check text-success"></i>
                                                     </a>

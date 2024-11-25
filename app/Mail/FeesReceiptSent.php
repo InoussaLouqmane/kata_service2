@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -11,9 +10,8 @@ use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
-class ExamAttestationSent extends Mailable
+class FeesReceiptSent extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -23,7 +21,7 @@ class ExamAttestationSent extends Mailable
     public function __construct(
         public $user,
         public String $filename,
-        public String $gradeId
+
     )
     {
         //
@@ -39,7 +37,7 @@ class ExamAttestationSent extends Mailable
             replyTo: [
                 new Address($this->user->email, $this->user->firstName.' '.$this->user->lastName)
             ],
-            subject: "Résultats de l'examen et envoi de votre bulletin",
+            subject: "Facture de paiement KATA",
 
         );
     }
@@ -50,7 +48,7 @@ class ExamAttestationSent extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.examResultMail',
+            view: 'mail.FeesReceptMailView',
             with: [
                 'user' => $this->user,
             ]
@@ -64,10 +62,9 @@ class ExamAttestationSent extends Mailable
      */
     public function attachments(): array
     {
-        Log::info(storage_path('app/public/bulletins/' . $this->filename));
         return [
-            Attachment::fromPath(storage_path('app/public/bulletins/' . $this->filename))
-                ->as('bulletin.pdf')
+            Attachment::fromPath(storage_path('app/public/facture/' . $this->filename))
+                ->as('facture.pdf')
                 ->withMime('application/pdf'),
         ];
     }

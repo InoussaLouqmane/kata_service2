@@ -335,7 +335,7 @@ class ExamControllerWeb extends Controller
             $exam->examStatus = ExamStatus::ARCHIEVED;
             $exam->save();
 
-            ExamAchievementProcess::dispatch($exam);
+            ExamAchievementProcess::dispatch($id);
             return response()->json([
                 'success' => true,
             ], 200);

@@ -11,6 +11,7 @@ use App\Models\Dojo;
 use App\Models\Exam;
 use App\Models\Fees;
 use App\Models\Grade;
+use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -259,6 +260,22 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/gen-convocation', [pdfController::class, 'generateConvocation'])->name('gen-convocation');
     });
 
+    Route::group(['prefix' => 'pdfs', 'as' => 'generatedPdf.'], function () {
+        Route::get('/bulletin', function () {
+            return view('generatedPdf.exambulletin');
+        })->name('bulletin');
+
+        Route::get('/gen-bulletin', [pdfController::class, 'generateBulletin'])->name('gen-bulletin');
+    });
+
+    Route::group(['prefix' => 'pdfs', 'as' => 'generatedPdf.'], function () {
+        Route::get('/facture', function () {
+            return view('generatedPdf.FeesRecept');
+        })->name('facture');
+
+        Route::get('/gen-facture', [pdfController::class, 'generateFacture'])->name('gen-facture');
+    });
+
     Route::group(['prefix' => 'main/invoice', 'as' => 'main.invoice.'], function () {
         Route::get('/invoices', function () {
             return view('main.invoice.invoices');
@@ -327,9 +344,15 @@ Route::middleware(['auth'])->group(function () {
             return view('main.fee.fees-details', ['selectedFee' => $selectedFee]);
         })->name('fees-details');
 
-        Route::get('/payments/', function () {
-            return view('main.fee.student-fees-details');
+        Route::get('/payments/{id}', function ($id) {
+            $selectedPayment = Payment::findOrFail($id);
+            return view('main.fee.student-fees-details', ['selectedPayment' => $selectedPayment]);
         })->name('student-fees-details');
+
+        Route::get('/transactions/{id}', function ($id) {
+            $selectedPayment = Payment::findOrFail($id);
+            return view('main.fee.sensei-fees-details', ['selectedPayment' => $selectedPayment]);
+        })->name('sensei-fees-details');
 
     });
 
@@ -387,6 +410,8 @@ Route::middleware(['auth'])->group(function () {
     })->name('main.library.library');
 
     Route::group(['prefix' => 'main/blog', 'as' => 'main.blog.'], function () {
+
+
         Route::get('/blog', function () {
             return view('main.blog.blog');
         })->name('blog');

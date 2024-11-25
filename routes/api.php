@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountRequestController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\StudentApiController;
 use App\Http\Controllers\Auth\UserRegisterController;
 use App\Http\Controllers\ClubController;
 use App\Http\Controllers\DisciplineController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\ExamControllerWeb;
 use App\Http\Controllers\feesController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\GradeControllerApi;
+use App\Http\Controllers\pdfController;
 use App\Http\Controllers\ResourceApiController;
 use App\Http\Controllers\ResourceWebController;
 use App\Http\Controllers\TransactionController;
@@ -61,6 +63,19 @@ Route::PATCH ('/discipline/update/{id}', [DisciplineController::class, 'update']
 Route::DELETE ('/discipline/delete/{id}', [DisciplineController::class, 'destroy']);
 Route::DELETE ('/discipline-register', [DisciplineController::class, 'desactivateDiscipline']);
 Route::PATCH ('/discipline-register', [DisciplineController::class, 'activateDiscipline']);
+
+
+Route::group(['prefix' => 'students'], function (){
+    Route::get('/all/{id}', [StudentApiController::class, 'list']);
+});
+
+Route::group(['prefix' => 'pdfs', 'as' => 'generatedPdf.'], function () {
+    Route::get('/facture', function () {
+        return view('generatedPdf.FeesRecept');
+    })->name('facture');
+
+    Route::get('/gen-facture', [pdfController::class, 'generateFacture'])->name('gen-facture');
+});
 
 Route::POST ('/dojo-register', [DojoController::class, 'store']);
 Route::PATCH ('/dojo-register', [DojoController::class, 'updateDojoInformations']);

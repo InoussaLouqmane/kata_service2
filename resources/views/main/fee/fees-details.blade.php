@@ -81,14 +81,8 @@
 
                                         <td class="text-center">
                                             <div class="actions d-flex justify-content-center">
-                                                <a class="DetailsFeesButton btn btn-sm bg-success-light me-2">
+                                                <a href="{{route('main.fee.sensei-fees-details', [$payment->id])}}" class="DetailsFeesButton btn btn-sm bg-success-light me-2">
                                                     <i class="feather-eye"></i>
-                                                </a>
-                                                <a class="EditFeesButton btn btn-sm bg-success-light me-2">
-                                                    <i class="feather-edit"></i>
-                                                </a>
-                                                <a class="deleteFeesButton btn btn-sm bg-danger-light">
-                                                    <i class="feather-trash"></i>
                                                 </a>
                                             </div>
                                         </td>

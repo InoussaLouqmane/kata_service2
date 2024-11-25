@@ -18,12 +18,12 @@
         </a>
     </div>
 
-    <div class="top-nav-search">
+    {{--<div class="top-nav-search">
         <form>
             <input type="text" class="form-control" placeholder="Search here">
             <button class="btn" type="submit"><i class="fas fa-search"></i></button>
         </form>
-    </div>
+    </div>--}}
 
 
     <a class="mobile_btn" id="mobile_btn">
@@ -32,7 +32,7 @@
 
 
     <ul class="nav user-menu">
-        <li class="nav-item dropdown language-drop me-2">
+       {{-- <li class="nav-item dropdown language-drop me-2">
             <a href="#" class="dropdown-toggle nav-link header-nav-list" data-bs-toggle="dropdown">
                 <img src="{{asset('/img/icons/header-icon-01.svg')}}" alt>
             </a>
@@ -41,7 +41,7 @@
                 <a class="dropdown-item" href="javascript:void(0);"><i class="flag flag-bl me-2"></i>Francais</a>
                 <a class="dropdown-item" href="javascript:void(0);"><i class="flag flag-cn me-2"></i>Turkce</a>
             </div>
-        </li>
+        </li>--}}
 
         <li class="nav-item dropdown noti-dropdown me-2">
             <a href="#" class="dropdown-toggle nav-link header-nav-list" data-bs-toggle="dropdown">

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->unsignedBigInteger(Transaction::PAYMENT_ID);
 
             $table->string(Transaction::TRANSACTION_STATUS)->default(TransactionStatus::UNPAID);
+            $table->string(Transaction::BILL)->nullable();
             $table->string(Transaction::REFERENCE)->nullable();
             $table->float(Transaction::COST)->default(0);
 

@@ -14,11 +14,15 @@ $(document).ready(function () {
             contentType: "application/json",
             data: JSON.stringify(transactionData),
             success: function(response){
-                alert('Paiement effectué avec succès !');
-                location.reload();
+                console.log('réponse '+response);
+                alertify.success('Paiement effectué avec succès !');
+                setTimeout(()=>{
+                    location.reload();
+                }, "2000" )
+
             },
             error: function(xhr, status, error) {
-                alert("Une erreur s'est produite :", error);
+                alertify.error("Une erreur s'est produite :", error);
                 console.log(xhr.responseJSON);
             }
         });

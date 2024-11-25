@@ -17,6 +17,7 @@ class Resource extends Model
 {
     const TABLE_NAME = "resources";
     const ID = 'id';
+
     const DESCRIPTION = 'description';
     const VIDEO_LINK = 'videoLink';
     const IS_FAVORITE  = 'isfavorite';

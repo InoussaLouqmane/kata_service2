@@ -179,7 +179,7 @@
         Veuillez agréer, Monsieur / Madame, nos salutations distinguées.
     </section>
 
-    <section class="signature">
+    <section class="signature"  style="text-align:end;">
         Signature
     </section>
 

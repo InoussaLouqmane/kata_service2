@@ -29,6 +29,7 @@ class CreateExamResultsTable extends Migration
             $table->float(Exam_results::NOTE_KIHON)->default(0);
             $table->float(Exam_results::NOTE_KUMITE)->default(0);
             $table->string(Exam_results::CONVOCATION)->nullable();
+            $table->string(Exam_results::BULLETIN)->nullable();
             $table->string(Exam_results::DELIBERATION)->nullable();
 
         });

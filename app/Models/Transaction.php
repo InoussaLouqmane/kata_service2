@@ -16,6 +16,7 @@ class Transaction extends Model
     const INVOICE_ID = 'invoice_id';
     const TRANSACTION_STATUS = 'transaction_status';
     const REFERENCE = 'reference';
+    const BILL='bill';
     const COST = 'cost';
 
     protected $primaryKey = self::ID;
@@ -27,6 +28,7 @@ class Transaction extends Model
         self::PAYER_ID,
         self::REFERENCE,
         self::COST,
+        self::BILL,
 
     ];
 

@@ -264,6 +264,7 @@
                                         <th>Nom du participant</th>
 
                                         <th class="text-start">Grade visé</th>
+
                                         @if($selectedExam->examStatus == ExamStatus::ENDED->value)
                                             <th class="text-start">Note Kata</th>
                                             <th class="text-start">Note Kihon</th>
@@ -409,9 +410,15 @@
                                             <th class="text-start">Actions {{$selectedExam->status}}</th>
                                         @endif
 
+                                        @if($selectedExam->examStatus == ExamStatus::ARCHIEVED->value)
+                                            <th class="text-start">Actions </th>
+                                        @endif
+
+
                                     </tr>
                                     </thead>
                                     <tbody>
+
 
 
                                     @foreach($selectedExam->event->examResults as $result)
@@ -473,6 +480,17 @@
 
                                                         class="modifyNotesButton btn btn-circle btn-sm bg-success-light me-2 ">
                                                         <i class="feather-edit"></i>
+                                                    </a>
+
+                                                </td>
+                                            @endif
+                                            @if($selectedExam->examStatus == ExamStatus::ARCHIEVED->value)
+                                                <td>
+                                                    
+                                                    <a
+                                                        href="{{ asset($result->pivot->bulletin) }}"
+                                                        class=" btn btn-circle btn-sm bg-success-light me-2 " download>
+                                                        <i class="feather-download"></i>
                                                     </a>
 
                                                 </td>
@@ -734,7 +752,7 @@
     @push('scripts')
         <script src="{{asset('/js/accountRequestModal.js')}}"></script>
         <script src="{{asset('/js/exam-details.js')}}"></script>
-        <script src="{{asset('/js/exam-datatables.js')}}"></script>
+        <script src="{{asset('/js/exam-datables.js')}}"></script>
     @endpush
 @endsection
 

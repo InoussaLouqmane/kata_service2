@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger(Payment::EVENT_ID)->index()->nullable();
 
 
+
             $table->timestamps();
 
             $table->foreign(Payment::FEE_ID)->references(Fees::ID)->on(Fees::TABLE_NAME)->onDelete('cascade')->onUpdate('cascade');

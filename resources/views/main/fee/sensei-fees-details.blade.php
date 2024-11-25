@@ -1,11 +1,18 @@
 @php
 
-    use App\Models\Fees;
-    use Illuminate\Support\Facades\Auth;
+    use App\Enums\TransactionStatus;use App\Models\Fees;
+    use App\Models\Payment;use App\Models\Transaction;use Illuminate\Support\Facades\Auth;use Kkiapay\Kkiapay;
 
     $authUser= Auth::user();
     $userClub = $authUser->clubs->first()->id;
     $fees = Fees::where('club_id', $userClub)->get();
+    $studentTransactions = Transaction::where(Transaction::PAYER_ID, $authUser->id)->get();
+
+    if(isset($selectedPayment)){
+        $Transactions = $selectedPayment->transactions()->get();
+    }
+
+
 
 @endphp
 
@@ -14,17 +21,20 @@
 @section('content')
     <div class="content container-fluid">
 
+
+
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Frais</h3>
+                    <h3 class="page-title">{{$selectedPayment->fee->name}}</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="../index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Frais</li>
+                        <li class="breadcrumb-item active">Paiements</li>
                     </ul>
                 </div>
             </div>
         </div>
+
 
         <div class="row">
             <div class="col-sm-12">
@@ -34,80 +44,90 @@
                         <div class="page-header">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h3 class="page-title">Liste des frais</h3>
+                                    <h3 class="page-title">Paiements émis le {{$selectedPayment->created_at->format('d M. Y')}}</h3>
                                 </div>
-                                <div class="col-auto text-end float-end ms-auto download-grp">
-                                <a class="addFeePlusButton btn btn-primary"><i class="fas fa-plus"></i></a>
+
                             </div>
                         </div>
-                    </div>
 
-                    <div class="table-responsive">
-                        <table
-                            class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
-                            <thead class="student-thread">
-                            <tr>
-                                <th class="text-center">Désignation</th>
-                                <th class="text-center">Montant</th>
-                                <th class="text-center">Périodicité</th>
-                                <th class="text-center">Date d'ajout</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($fees as $fee)
-                                <tr data-fee-id="{{$fee->id}}">
 
-                                    <td class="text-center designation">
-                                        <h2>
-                                            <a>{{$fee->name}}</a>
-                                        </h2>
-                                    </td>
-                                    <td class="text-center amount">
-                                        @if($fee->cost == 0)
-                                            Spécifique *
-                                        @else
-                                            {{$fee->cost}}
-                                        @endif
-                                    </td>
-                                    <td class="text-center frequency" data-frequency="{{$fee->frequency}}">
-                                        @if($fee->frequency == 0)
-                                            Non récurrent
-                                        @elseif($fee->frequency == 1)
-                                            Mensuel
-                                        @elseif($fee->frequency == 3)
-                                            Trimestriel
-                                        @else
-                                            Annuel
-                                        @endif
-                                    </td>
-                                    <td class="text-center">{{$fee->created_at->format('d M Y')}}</td>
-
-                                    <td class="text-center">
-                                        <div class="actions d-flex justify-content-center">
-                                            <a
-                                                href="{{route('main.fee.fees-details', [$fee->id])}}"
-                                                class="btn btn-sm bg-success-light me-2">
-                                                <i class="feather-eye"></i>
-                                            </a>
-                                            <a class="EditFeesButton btn btn-sm bg-success-light me-2">
-                                                <i class="feather-edit"></i>
-                                            </a>
-                                            <a class="deleteFeesButton btn btn-sm bg-danger-light">
-                                                <i class="feather-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
+                        <div class="table-responsive">
+                            <table
+                                class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
+                                <thead class="student-thread">
+                                <tr>
+                                    <th class="text-start">Nom et prénoms</th>
+                                    <th class="text-center">Montant</th>
+                                    <th class="text-center">Date de paiement</th>
+                                    <th class="text-center">Statut</th>
+                                    <th class="text-center">Actions</th>
                                 </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+
+
+                                @foreach($Transactions as $transaction)
+
+                                    <tr data-transaction-id="{{$transaction->id}}">
+
+                                        <td class="text-start payment_date">
+
+                                            <h2>
+                                                <a>{{$transaction->user->firstName.' '.$transaction->user->lastName}}</a>
+                                            </h2>
+                                        </td>
+
+                                        <td class="text-center payment_date">
+                                            <a>{{$transaction->cost}}</a>
+
+                                        </td>
+                                        <td class="text-center amount">
+                                            {{($transaction->transaction_status == TransactionStatus::PAID->value) ?
+                                                $transaction->created_at->format('d M Y à H:m') : '-'
+                                            }}
+                                        </td>
+                                        <td class="text-center paid">
+                                            @if($transaction->transaction_status == TransactionStatus::PAID->value)
+
+                                                <span
+                                                    class="fs-5 badge bg-success">{{TransactionStatus::PAID->value}}</span>
+
+                                            @elseif($transaction->transaction_status == TransactionStatus::UNPAID->value)
+                                                <span
+                                                    class="fs-5 badge bg-danger">{{TransactionStatus::UNPAID}}</span>
+                                            @endif
+                                        </td>
+
+                                        <td class="text-center">
+                                            <div class="actions d-flex justify-content-center">
+
+                                                @if($transaction->transaction_status == TransactionStatus::PAID->value)
+                                                    <a class="EditFeesButton btn btn-sm bg-success-light me-2">
+                                                        <i class="feather-download"></i>
+                                                    </a>
+                                                @endif
+                                                @if($transaction->transaction_status == TransactionStatus::UNPAID->value)
+
+                                                    <a data-amount="{{$transaction->cost}}"
+                                                       class="btn btn-sm bg-danger-light">
+                                                        <i class="feather-check text-success"></i>
+                                                    </a>
+
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+
 
 
     {{--modals in use--}}
@@ -154,13 +174,13 @@
                                     <select class="form-select fees-frequency"
                                             id="frequencySelect">
 
-                                        <option value="0"> Non récurent </option>
+                                        <option value="0"> Non récurent</option>
 
-                                        <option value="1"> Mensuellement </option>
+                                        <option value="1"> Mensuellement</option>
 
-                                        <option value="3"> Trimestriellement </option>
+                                        <option value="3"> Trimestriellement</option>
 
-                                        <option value="12"> Annuellement </option>
+                                        <option value="12"> Annuellement</option>
                                     </select>
                                     <input type="hidden" value="{{$userClub}}" id="club_id">
                                 </div>
@@ -173,7 +193,7 @@
                         <button type="button" class="btn btn-light waves-effect"
                                 data-bs-dismiss="modal">Annuler
                         </button>
-                            <button type="submit" id="feesSubmitButton"
+                        <button type="submit" id="feesSubmitButton"
                                 class="btn btn-primary waves-effect waves-light">
                             Confirmer
                         </button>
@@ -297,4 +317,7 @@
     {{--Modals--}}
 
 
+    @push('scripts')
+        <script src="{{asset('/js/kkia.js')}}"></script>
+    @endpush
 @endsection

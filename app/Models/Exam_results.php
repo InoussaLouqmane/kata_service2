@@ -34,6 +34,7 @@ class Exam_results extends Model
     const GRADE_ID = 'grade_id';
 
     const CONVOCATION = 'convocation';
+    const BULLETIN = 'bulletin';
 
     protected $table = 'examResults';
 
@@ -49,7 +50,8 @@ class Exam_results extends Model
         self::NOTE_KIHON,
         self::NOTE_KUMITE,
         self::DELIBERATION,
-        self::CONVOCATION
+        self::CONVOCATION,
+        self::BULLETIN,
     ];
     protected $casts=[
 

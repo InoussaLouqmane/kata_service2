@@ -37,9 +37,7 @@
     <div class="page-wrapper">
         @yield('content')
 
-        <footer>
-            <p>COPYRIGHT © 2024 DREAMSTECHNOLOGIES.</p>
-        </footer>
+
     </div>
 
 </div>
@@ -72,6 +70,7 @@
 <script src='{{asset('/plugins/fullcalendar/dist/index.global.js')}}'></script>
 
 {{--<script src="{{asset('/plugins/alertify/custom-alertify.min.js')}}"></script>--}}
+<script src="{{asset('js/fees.js')}}"></script>
 <script src="{{asset('/plugins/clipboard/clipboard.min.js')}}"></script>
 <script src="{{asset('/plugins/toastr/toastr.min.js')}}"></script>
 <script src="{{asset('/plugins/toastr/toastr.js')}}"></script>

@@ -1,29 +1,17 @@
 @php
 
-    use App\Models\Event;use App\Models\Exam;use App\Models\Exam_results;use App\Models\Grade;use App\Models\User;use Illuminate\Support\Facades\Log;
+   use App\Models\Transaction;
+   use App\Models\User;
 
-   if(isset($user_id) && isset($event_id)){
-
-
-          $event = Event::find($event_id);
-
-          $student = $event->examResults()->wherePivot('student_id', $user_id)->first();
-
-          Log::info($student->id);
-          $gradeId = $student->pivot->grade_id;
-
-          $grade = $event->grades()->wherePivot('grade_id', $gradeId)->first();
-          $cost = $grade->pivot->cost;
-
-          $club = $student->clubs()->first();
-
-          $totalNote = $student->pivot->noteKa + $student->pivot->noteKihon + $student->pivot->noteKumite;
-          $verdict = $totalNote / 3;
-
-
-
+   if(isset($transaction_id)){
+            $transaction= Transaction::findOrFail($transaction_id);
+            $reference = $transaction->reference;
+            $montant = $transaction->cost;
+            $motif = $transaction->payment->fee->name;
+            $date_payment = $transaction->created_at->format('d M. Y');
+            $student = User::findOrFail($transaction->payer_id);
+            $club = $student->clubs()->first();
    }
-
 @endphp
 
 
@@ -55,7 +43,8 @@
             padding: 8px;
             text-align: left;
         }
-        th, .verdict{
+
+        th, .verdict {
             background-color: #e3dcd4;
         }
 
@@ -115,7 +104,7 @@
 
     <div>
         <img src="{{ public_path('img/logo-center.png') }}" alt="logo">
-        <p style="font-family: Montserrat; font-size: 16px; color:#3d3b3a;">BULLETIN DE NOTES</p>
+        <p style="font-family: Montserrat; font-size: 16px; color:#3d3b3a;">FACTURE DE PAIEMENT</p>
         <p>Document proposé par Kata</p>
     </div>
 </header>
@@ -123,7 +112,7 @@
 
 <main>
     <section class="clubinfos">
-        <p style="font-weight: bold"> {{isset($student) ? 'Bulletin N° : '.$student->id.$event_id : "303"}}</p>
+        <p style="font-weight: bold"> {{isset($reference) ? 'Facture N° : '.$reference :'Facture N° : '. "303"}}</p>
 
         {{isset($club) ?  $club->name : 'Nom du club'}}
         <br> {{isset($club) ? $club->email : 'example@gmail.com'}}
@@ -137,26 +126,21 @@
         <br> {{date('d M. Y')}}
     </section>
 
-    <section class="objet">
-        <strong>Objet :</strong> Résultat de l’examen de
-        <strong>{{isset($grade) ? ' la ceinture '. $grade->beltName : 'passage de niveau'}}</strong>
-    </section>
+    {{-- <section class="objet">
+         <strong>Objet :</strong> Récépissé de
+         <strong>{{isset($grade) ? ' la ceinture '. $grade->beltName : 'passage de niveau'}}</strong>
+     </section>--}}
 
-    {{--<section class="salutation">
+    <section class="salutation">
         @if(isset($student))
             {{($student->genre == 'Homme') ? 'Monsieur '.$student->lastName.',' : 'Madame '.$student->lastName.','}}
         @else
             Monsieur/Madame,
         @endif
     </section>
---}}
     <section class="plaintext">
 
-        Nous avons le plaisir de vous informer que les résultats de
-        l'examen  <strong>{{isset($grade) ? 'de la ceinture '. $grade->beltName : ' de passage de niveau'}}</strong>,
-        qui s'est tenu le {{isset($event) ? $event->startDate->format('d M. Y') : '1 er janvier 2025'}} sont désormais
-        disponibles.
-        Vous trouverez ci-joint votre bulletin de résultats détaillé.
+        Veuillez retrouver ci-dessous les détails de votre paiement.
 
     </section>
 
@@ -164,29 +148,29 @@
     <section class="bindingData">
         <table>
             <tr>
-                <th>Matières</th>
-                <th>KATA</th>
-                <th>KIHON</th>
-                <th>KUMITE</th>
-                <th>TOTAL</th>
+                <th colspan="2" style="text-align: center">FACTURE</th>
+
             </tr>
             <tr>
-                <td>Notes</td>
-                <td>{{isset($student) ? $student->pivot->noteKata : '12'}}</td>
-                <td>{{isset($student) ? $student->pivot->noteKihon : '12'}}</td>
-                <td>{{isset($student) ? $student->pivot->noteKumite : '12'}}</td>
-                <td>{{isset($student) ?
-                    ($student->pivot->noteKa + $student->pivot->noteKihon + $student->pivot->noteKumite)
-                    : '36'}}</td>
-
+                <td>Référence</td>
+                <td>{{isset($reference) ? strtoupper($reference) : 'No ref'}}</td>
             </tr>
 
-            <tr class="verdict">
-                <td>Verdict</td>
-                <td  colspan="5">{{isset($verdict) && $verdict >= 10 ? 'Succès' : 'Échec' }}</td>
+            <tr>
+                <td>Motif</td>
+                <td>{{isset($motif) ? strtoupper($motif) : 'No motif'}}</td>
             </tr>
 
 
+            <tr>
+                <td>Montant</td>
+                <td>{{isset($montant) ? $montant.' XOF' : '154 XOF'}}</td>
+            </tr>
+
+            <tr>
+                <td>Date de paiement</td>
+                <td>{{isset($date_payment) ? $date_payment: 'Never'}}</td>
+            </tr>
 
         </table>
 
@@ -194,11 +178,10 @@
 
 
     <section class="rules">
-        Nous vous remercions pour vos efforts et votre engagement, et nous vous souhaitons beaucoup de succès
-        pour la suite de votre parcours.
+
     </section>
     <section class="breakaleg">
-        Pour toute question concernant votre bulletin ou vos résultats, n’hésitez pas à nous contacter.
+        Pour toute question concernant votre faturation, n’hésitez pas à nous contacter.
     </section>
 
     <section class="agreement">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TransactionStatus;
+use App\Jobs\ReceiptFeesProcess;
 use App\Models\Payment;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 
 use Kkiapay\Kkiapay;
+use Mockery\Exception;
 
 class TransactionController extends Controller
 {
@@ -42,6 +44,11 @@ class TransactionController extends Controller
                     Transaction::REFERENCE => $request->kkia_transaction_id,
                 ]);
 
+
+                ReceiptFeesProcess::dispatch($completedTransaction->id);
+
+
+
                 return response()->json([
                     'success' => true,
                 ], 200);
@@ -52,8 +59,8 @@ class TransactionController extends Controller
                     'success' => false,
                 ], 400);
             }
-        } catch (QueryException $e) {
-            Log::critical("Verifying transaction id: " . $e->getMessage());
+        } catch (Exception $e) {
+            Log::error("Verifying transaction id: " . $e->getMessage());
             return response()->json([
                 'error' => $e->getMessage()
             ], 400);
