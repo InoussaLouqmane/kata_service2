@@ -3,6 +3,7 @@ $(document).ready(function() {
 
     const requestTable = $('#requestTable').DataTable({
 
+
         bDestroy: true,
         dom: 'ltip',
     });

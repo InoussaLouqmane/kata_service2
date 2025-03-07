@@ -19,8 +19,8 @@
                     <div class="page-sub-header">
                         <h3 class="page-title"></h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="students.html">Student</a></li>
-                            <li class="breadcrumb-item active">Student Details</li>
+                            <li class="breadcrumb-item"><a href="">Utilisateurs / Détails</a></li>
+
                         </ul>
                     </div>
                 </div>

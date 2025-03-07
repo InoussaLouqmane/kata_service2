@@ -7,10 +7,9 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Edit Exam</h3>
+                    <h3 class="page-title">Events</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="exam.html">Exam</a></li>
-                        <li class="breadcrumb-item active">Edit Exam</li>
+                        <li class="breadcrumb-item"><a href="{{route('main.exam.exams')}}">Examens / Détails </a></li>
                     </ul>
                 </div>
             </div>

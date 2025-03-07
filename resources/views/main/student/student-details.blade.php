@@ -12,6 +12,7 @@
 
 
 
+
     {{--modals--}}
 
     <div id="confirm-modal" class="modal fade" tabindex="-1" role="dialog"
@@ -102,8 +103,7 @@
                     <div class="page-sub-header">
                         <h3 class="page-title">Détails sur la demande</h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="students.blade.php">Student</a></li>
-                            <li class="breadcrumb-item active">Student Details</li>
+                            <li class="breadcrumb-item"><a href="students.blade.php">Utilisateurs / Détails </a></li>
                         </ul>
                     </div>
                 </div>

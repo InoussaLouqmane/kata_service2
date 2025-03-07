@@ -29,8 +29,8 @@
                     <div class="page-sub-header">
                         <h3 class="page-title">Demandes</h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('main.adminDashboard')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Liste</li>
+                            <li class="breadcrumb-item"><a href="{{route('main.adminDashboard')}}">Dashboard / Demandes</a></li>
+
                         </ul>
                     </div>
                 </div>

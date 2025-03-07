@@ -176,7 +176,7 @@
                 <td>{{isset($student) ? $student->pivot->noteKihon : '12'}}</td>
                 <td>{{isset($student) ? $student->pivot->noteKumite : '12'}}</td>
                 <td>{{isset($student) ?
-                    ($student->pivot->noteKa + $student->pivot->noteKihon + $student->pivot->noteKumite)
+                    ($student->pivot->noteKata + $student->pivot->noteKihon + $student->pivot->noteKumite)
                     : '36'}}</td>
 
             </tr>

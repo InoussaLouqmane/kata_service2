@@ -345,8 +345,8 @@ Route::middleware(['auth'])->group(function () {
         })->name('fees-details');
 
         Route::get('/payments/{id}', function ($id) {
-            $selectedPayment = Payment::findOrFail($id);
-            return view('main.fee.student-fees-details', ['selectedPayment' => $selectedPayment]);
+
+            return view('main.fee.student-fees-details');
         })->name('student-fees-details');
 
         Route::get('/transactions/{id}', function ($id) {

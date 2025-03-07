@@ -104,13 +104,15 @@
     <div class="content container-fluid">
 
         <div class="page-header">
-            <div class="row align-items-center">
-                <div class="col">
-                    <h3 class="page-title">Dojos</h3>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{route('main.adminDashboard')}}">Dojos</a></li>
-                        <li class="breadcrumb-item active">Dojos</li>
-                    </ul>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-sub-header">
+                        <h3 class="page-title"></h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="">Dashboard / Dojos</a></li>
+
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

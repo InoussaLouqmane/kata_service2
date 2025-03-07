@@ -35,8 +35,7 @@
                     <div class="page-sub-header">
                         <h3 class="page-title">Éditer élève</h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="students.html">Éleves</a></li>
-                            <li class="breadcrumb-item active">Éditer élève</li>
+                            <li class="breadcrumb-item"><a href="students.html">Éleves / Modifier </a></li>
                         </ul>
                     </div>
                 </div>

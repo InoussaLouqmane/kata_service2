@@ -6,19 +6,19 @@ Version      : 1.0
 
 (function($) {
     "use strict";
-	
+
 	// Variables declarations
-	
+
 	var $wrapper = $('.main-wrapper');
 	var $pageWrapper = $('.page-wrapper');
 	var $slimScrolls = $('.slimscroll');
-	
+
 	// Sidebar
-	
+
 	var Sidemenu = function() {
 		this.$menuItem = $('#sidebar-menu a');
 	};
-	
+
 	function init() {
 		var $this = Sidemenu;
 		$('#sidebar-menu a').on('click', function(e) {
@@ -37,12 +37,12 @@ Version      : 1.0
 		});
 		$('#sidebar-menu ul li.submenu a.active').parents('li:last').children('a:first').addClass('active').trigger('click');
 	}
-	
+
 	// Sidebar Initiate
 	init();
-	
+
 	// Mobile menu sidebar overlay
-	
+
 	$('body').append('<div class="sidebar-overlay"></div>');
 	$(document).on('click', '#mobile_btn', function() {
 		$wrapper.toggleClass('slide-nav');
@@ -50,9 +50,9 @@ Version      : 1.0
 		$('html').addClass('menu-opened');
 		return false;
 	});
-	
+
 	// toggle-password
-	
+
 	if($('.toggle-password').length > 0) {
 		$(document).on('click', '.toggle-password', function() {
 			$(this).toggleClass("feather-eye feather-eye-off");
@@ -75,46 +75,46 @@ Version      : 1.0
 			}
 		});
 	}
-	
+
 	// Sidebar overlay
-	
+
 	$(".sidebar-overlay").on("click", function () {
 		$wrapper.removeClass('slide-nav');
 		$(".sidebar-overlay").removeClass("opened");
 		$('html').removeClass('menu-opened');
 	});
-	
+
 	// Logo Hide Btn
 
 	$(document).on("click",".logo-hide-btn",function () {
 		$(this).parent().hide();
 	});
-	
+
 	// Page Content Height
-	
+
 	if($('.page-wrapper').length > 0 ){
-		var height = $(window).height();	
+		var height = $(window).height();
 		$(".page-wrapper").css("min-height", height);
 	}
-	
+
 	// Page Content Height Resize
-	
+
 	$(window).resize(function(){
 		if($('.page-wrapper').length > 0 ){
 			var height = $(window).height();
 			$(".page-wrapper").css("min-height", height);
 		}
 	});
-	
+
 	// Select 2
-	
+
 	if ($('.select').length > 0) {
 		$('.select').select2({
 			minimumResultsForSearch: -1,
 			width: '100%'
 		});
 	}
-	
+
 	// editor
 	if ($('#editor').length > 0) {
 		ClassicEditor
@@ -144,9 +144,9 @@ Version      : 1.0
 			console.error( err.stack );
 		} );
 	}
-	
+
 	// Experience Add More
-	
+
     $(".settings-form").on('click','.trash', function () {
 		$(this).closest('.links-cont').remove();
 		return false;
@@ -160,13 +160,13 @@ Version      : 1.0
 				'<div><a href="#" class="btn trash"><i class="feather-trash-2"></i></a></div>' +
 			'</div>' +
 		'</div>';
-		
+
         $(".settings-form").append(experiencecontent);
         return false;
     });
-	
+
 	// Datetimepicker
-	
+
 	if($('.datetimepicker').length > 0 ){
 		$('.datetimepicker').datetimepicker({
 			format: 'DD-MM-YYYY',
@@ -185,11 +185,11 @@ Version      : 1.0
 	}
 
 	// Tooltip
-	
+
 	if($('[data-toggle="tooltip"]').length > 0 ){
 		$('[data-toggle="tooltip"]').tooltip();
 	}
-	
+
     // Datatable
 
 	if ($('.datatable').length > 0) {
@@ -202,9 +202,9 @@ Version      : 1.0
             "bFilter": true,
         });
     }
-	
+
 	// Zoom in
-	
+
 	if($('.zoom-screen .header-nav-list').length > 0) {
         $('.zoom-screen .header-nav-list').on('click', function(e){
             if (!document.fullscreenElement) {
@@ -218,7 +218,7 @@ Version      : 1.0
     }
 
 	// Check all email
-	
+
 	$(document).on('click', '#check_all', function() {
 		$('.checkmail').click();
 		return false;
@@ -234,15 +234,15 @@ Version      : 1.0
 			});
 		});
 	}
-	
+
 	// Mail important
-	
+
 	$(document).on('click', '.mail-important', function() {
 		$(this).find('i.fa').toggleClass('fa-star').toggleClass('fa-star-o');
 	});
-	
+
 	// Summernote
-	
+
 	if($('.summernote').length > 0) {
 		$('.summernote').summernote({
 			height: 300,                 // set editor height
@@ -251,8 +251,8 @@ Version      : 1.0
 			focus: false                 // set focus to editable area after initializing summernote
 		});
 	}
-	
-	
+
+
 	// Sidebar Slimscroll
 
 	if($slimScrolls.length > 0) {
@@ -275,7 +275,7 @@ Version      : 1.0
 			$('.sidebar .slimScrollDiv').height(rHeight);
 		});
 	}
-	
+
 	// Small Sidebar
 
 	$(document).on('click', '#toggle_btn', function() {
@@ -286,8 +286,8 @@ Version      : 1.0
 			$('body').addClass('mini-sidebar');
 			$('.subdrop + ul').slideUp();
 		}
-		setTimeout(function(){ 
-			
+		setTimeout(function(){
+
 		}, 300);
 		return false;
 	});
@@ -359,24 +359,24 @@ Version      : 1.0
 				});
 			}
 		});
-	}	
-	
+	}
+
 	if($('.circle-bar').length > 0) {
 		animateElements();
 	}
 	$(window).scroll(animateElements);
-	
+
 	// Preloader
-	
+
 	$(window).on('load', function () {
 		if($('#loader').length > 0) {
 			$('#loader').delay(350).fadeOut('slow');
 			$('body').delay(350).css({ 'overflow': 'visible' });
 		}
 	})
-	
+
 	// Checkbox Select
-	
+
 	$('.app-listing .selectBox').on("click", function() {
         $(this).parent().find('#checkBoxes').fadeToggle();
         $(this).parent().parent().siblings().find('#checkBoxes').fadeOut();
@@ -388,12 +388,12 @@ Version      : 1.0
     });
 
 	//Checkbox Select
-	
+
 	if($('.SortBy').length > 0) {
 		var show = true;
 		var checkbox1 = document.getElementById("checkBox");
 		$('.selectBoxes').on("click", function() {
-			
+
 			if (show) {
 				checkbox1.style.display = "block";
 				show = false;
@@ -401,7 +401,7 @@ Version      : 1.0
 				checkbox1.style.display = "none";
 				show = true;
 			}
-		});		
+		});
 	}
 
 	// Invoices Checkbox Show
@@ -417,7 +417,7 @@ Version      : 1.0
 	});
 
 	// Invoices Add More
-	
+
     $(".links-info-one").on('click','.service-trash', function () {
 		$(this).closest('.links-cont').remove();
 		return false;
@@ -429,7 +429,7 @@ Version      : 1.0
 				'<a href="#" class="service-trash"><i class="fe fe-minus-circle me-1"></i>Service Charge</a> <span>$ 4</span' +
 			'</div>' +
 		'</div>';
-		
+
         $(".links-info-one").append(experiencecontent);
         return false;
     });
@@ -445,13 +445,13 @@ Version      : 1.0
 				'<a href="#" class="service-trash-one"><i class="fe fe-minus-circle me-1"></i>Offer new</a> <span>$ 4 %</span' +
 			'</div>' +
 		'</div>';
-		
+
         $(".links-info-discount").append(experiencecontent);
         return false;
     });
-	
+
 	// Form Wizard
-	
+
 	$(".seller-next-btn").on('click', function () { // Function Runs On NEXT Button Click
 		$(this).closest('.tab-pane').next().css("display" , "block").css("opacity" , "1");
 		$(this).closest('.tab-pane').css({
@@ -470,7 +470,7 @@ Version      : 1.0
 	});
 
 	// Summernote
-	
+
 	if($('#summernote').length > 0) {
         $('#summernote').summernote({
 		  height: 300,                 // set editor height
@@ -479,16 +479,16 @@ Version      : 1.0
 		  focus: true                  // set focus to editable area after initializing summernote
 		});
     }
-	
-	// Counter 
-	
+
+	// Counter
+
 	if($('.counter').length > 0) {
 	   $('.counter').counterUp({
 			delay: 20,
             time: 2000
        });
 	}
-	
+
 	if($('#timer-countdown').length > 0) {
 		$( '#timer-countdown' ).countdown( {
 			from: 180, // 3 minutes (3*60)
@@ -499,64 +499,64 @@ Version      : 1.0
 			autostart: true
 		});
 	}
-	
+
 	if($('#timer-countup').length > 0) {
 		$( '#timer-countup' ).countdown( {
 			from: 0,
-			to: 180 
+			to: 180
 		});
 	}
-	
+
 	if($('#timer-countinbetween').length > 0) {
 		$( '#timer-countinbetween' ).countdown( {
 			from: 30,
-			to: 20 
+			to: 20
 		});
 	}
-	
+
 	if($('#timer-countercallback').length > 0) {
 		$( '#timer-countercallback' ).countdown( {
 			from: 10,
 			to: 0,
 			timerEnd: function() {
 				this.css( { 'text-decoration':'line-through' } ).animate( { 'opacity':.5 }, 500 );
-			} 
+			}
 		});
 	}
-	
+
 	if($('#timer-outputpattern').length > 0) {
 		$( '#timer-outputpattern' ).countdown( {
 			outputPattern: '$day Days $hour Hour $minute Min $second Sec..',
 			from: 60 * 60 * 24 * 3
 		});
 	}
-	
+
 	// Tooltip
-	
+
 	if($('[data-bs-toggle="tooltip"]').length > 0) {
 		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 		  return new bootstrap.Tooltip(tooltipTriggerEl)
 		})
 	}
-	
+
 	// Popover
-	
+
 	if($('.popover-list').length > 0) {
 		var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
 		var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
 		  return new bootstrap.Popover(popoverTriggerEl)
 		})
 	}
-	
-	// Clipboard 
-	
+
+	// Clipboard
+
 	if($('.clipboard').length > 0) {
 		var clipboard = new Clipboard('.btn');
 	}
 
     // Invoices Table Add More
-	
+
     $(".add-table-items").on('click','.remove-btn', function () {
 		$(this).closest('.add-row').remove();
 		return false;
@@ -588,12 +588,12 @@ Version      : 1.0
 				'<a href="javascript:void(0);" class="remove-btn"><i class="fe fe-trash-2"></i></a>' +
 			'</td>' +
 		'</tr>';
-		
+
         $(".add-table-items").append(experiencecontent);
         return false;
     });
-		
+
 	feather.replace();
-	
-	
+
+
 })(jQuery);

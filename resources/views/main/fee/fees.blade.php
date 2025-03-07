@@ -5,7 +5,7 @@
 
     $authUser= Auth::user();
     $userClub = $authUser->clubs->first()->id;
-    $fees = Fees::where('club_id', $userClub)->get();
+    $fees = Fees::all();
 
 @endphp
 
@@ -17,10 +17,9 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Frais</h3>
+                    <h3 class="page-title">Events</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="../index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Frais</li>
+                        <li class="breadcrumb-item"><a href="{{route('main.fee.fees')}}">Frais </a></li>
                     </ul>
                 </div>
             </div>

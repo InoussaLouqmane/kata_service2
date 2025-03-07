@@ -10,7 +10,7 @@ $(document).ready(function () {
     };
 
 
-
+    alertify.set('notifier','position', 'top-center');
     function createDiscipline(disciplineData) {
         return $.ajax({
             url: DisciplineUrl + '/store',
@@ -18,8 +18,11 @@ $(document).ready(function () {
             contentType: "application/json",
             data: JSON.stringify(disciplineData),
             success: function(response){
-                alert('Discipline Created');
-                location.reload();
+                alertify.success('Discipline créée avec succès');
+
+                setTimeout(()=>{
+                    window.location.replace("http://localhost:8000/main/subject/subjects");
+                }, "2000" )
             },
             error: function(xhr, status, error) {
                 alert("Une erreur s'est produite :", xhr.responseJSON);
@@ -48,7 +51,10 @@ $(document).ready(function () {
             method: 'DELETE',
 
             success: function(response){
-                alert('Delete successfuly');
+                alertify.error('Discipline supprimé avec succès');
+                setTimeout(()=>{
+                    window.location.replace("http://localhost:8000/main/subject/subjects");
+                }, "2000" )
             },
             error: function(xhr, status, error) {
                 console.log("Une erreur s'est produite :", xhr.responseJSON);
@@ -63,8 +69,10 @@ $(document).ready(function () {
             contentType: "application/json",
             data: JSON.stringify(disciplineData),
             success: function(response){
-                alert('Discipline updated');
-                location.reload();
+                alertify.success('Discipline update avec succès');
+                setTimeout(()=>{
+                    window.location.replace("http://localhost:8000/main/subject/subjects");
+                }, "2000" )
             },
             error: function(xhr, status, error) {
                 alert("Une erreur s'est produite :", xhr.responseJSON);

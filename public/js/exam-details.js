@@ -24,6 +24,7 @@ $(document).ready(function (){
     var AllGrades = [];
     getAllGrades();*/
 
+    alertify.set('notifier','position', 'top-center');
     function endExam(examData){
         return $.ajax({
             url: ExamBaseUrl + '/end-exam',
@@ -31,8 +32,11 @@ $(document).ready(function (){
             contentType: "application/json",
             data: JSON.stringify(examData),
             success: function(response){
-                alert('Saved with success');
-                location.reload();
+                alertify.success('Enregistré avec succès !');
+
+                setTimeout(()=>{
+                    window.reload();
+                }, "2000" );
 
             },
             error: function(xhr, status, error) {
@@ -47,8 +51,11 @@ $(document).ready(function (){
             url: ExamBaseUrl + `/close/${examID}`,
             method: 'POST',
             success: function(response){
-                alert('Saved with success');
-                location.reload();
+                alertify.success('Sauvegardé avec succès !');
+
+                setTimeout(()=>{
+                    window.reload();
+                }, "2000" );
 
             },
             error: function(xhr, status, error) {
@@ -65,8 +72,11 @@ $(document).ready(function (){
             contentType: "application/json",
             data: JSON.stringify(examData),
             success: function(response){
-                alert('Saved with success');
-                location.reload();
+                alertify.success('Examen terminé !');
+
+                setTimeout(()=>{
+                    location.reload();
+                }, "2000" )
 
             },
             error: function(xhr, status, error) {
@@ -82,11 +92,18 @@ $(document).ready(function (){
             contentType: "application/json",
             data: JSON.stringify(examData),
             success: function(response){
-                alert('Student Added');
-                location.reload();
+                alertify.success('Elève ajouté !');
+
+                setTimeout(()=>{
+                    location.reload();
+                }, "2000" )
             },
             error: function(xhr, status, error) {
-                alert("Une erreur s'est produite :", error);
+                alertify.error('Une erreur s\'est produite!');
+
+                setTimeout(()=>{
+                    window.reload();
+                }, "2000" );
             }
         });
     }
@@ -97,13 +114,19 @@ $(document).ready(function (){
             contentType: "application/json",
             data: JSON.stringify(examData),
             success: function(response){
-                alert('Supprimé avec succès');
-                location.reload();
+                alertify.error('Supprimé avec succès !');
+
+                setTimeout(()=>{
+                    window.reload();
+                }, "2000" )
 
             },
             error: function(xhr, status, error) {
-                alert("Une erreur s'est produite :", error);
-                location.reload();
+                alertify.error('Examen terminé !');
+
+                setTimeout(()=>{
+                    window.reload();
+                }, "2000" )
             }
         });
     }

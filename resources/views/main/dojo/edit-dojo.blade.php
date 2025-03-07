@@ -33,18 +33,21 @@
             </div>
         @endif
 
-        <div class="page-header">
-            <div class="row align-items-center">
-                <div class="col">
-                    <h3 class="page-title">Editer un dojo</h3>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{route('main.dojo.dojos')}}">Dojo</a>
-                        </li>
-                        <li class="breadcrumb-item active">Editer les informations du Dojo</li>
-                    </ul>
+            <div class="content container-fluid">
+
+                <div class="page-header">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="page-sub-header">
+                                <h3 class="page-title"></h3>
+                                <ul class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="">Dojos / Modifier</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
         <div class="row">
             <div class="col-sm-12">

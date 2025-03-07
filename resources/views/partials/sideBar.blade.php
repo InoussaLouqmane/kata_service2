@@ -461,11 +461,13 @@
                         <a href="#"><i class="fas fa-comment-dollar"></i> <span> Mes frais </span> <span
                                 class="menu-arrow"></span></a>
                         <ul>
+                            <li class=""><a href="{{route('main.fee.fees')}}">Tous les frais</a></li>
                             @foreach(Fees::all() as $fee)
                                 <li><a href="{{route('main.fee.fees-details', [$fee->id])}}">{{$fee->name}}</a></li>
                             @endforeach
 
                             <li class="addFeePlusButton"><a>Ajouter un frais</a></li>
+
                         </ul>
                     </li>
 
@@ -643,6 +645,8 @@
                          </ul>
                      </li>--}}
                 </ul>
+
+
             @elseif($user->role  === Role::STUDENT->value)
                 <ul>
                     <li class="menu-title">

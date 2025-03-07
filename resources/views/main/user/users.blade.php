@@ -7,6 +7,8 @@
 @section('title', 'Utilisateurs');
 
 @section('content')
+
+
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
@@ -24,6 +26,19 @@
     @endif
     <div class="content container-fluid">
 
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-sub-header">
+                        <h3 class="page-title"></h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="">Dashboard / Utilisateurs</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
         <div class="row">

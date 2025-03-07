@@ -12,6 +12,21 @@
 @section('title', 'Eleves');
 
 @section('content')
+
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-sub-header">
+                    <h3 class="page-title">Welcome Jonathan!</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="students.blade.php">Utilisateurs</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}

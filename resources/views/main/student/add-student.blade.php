@@ -39,8 +39,8 @@
                     <div class="page-sub-header">
                         <h3 class="page-title">Ajouter élève</h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="students.html">Eleves</a></li>
-                            <li class="breadcrumb-item active">Ajouter élève</li>
+                            <li class="breadcrumb-item"><a href="students.html">Eleves / Ajouter</a></li>
+
                         </ul>
                     </div>
                 </div>

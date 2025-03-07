@@ -7,6 +7,7 @@ $(document).ready(function (){
         'Authorization': 'Bearer ' + $("meta[name='csrf-token']").attr('content')
     };
 
+    alertify.set('notifier','position', 'top-center');
 
 
     function extractYouTubeID(url) {
@@ -22,12 +23,17 @@ $(document).ready(function (){
             contentType: "application/json",
             data: JSON.stringify(resourceData),
             success: function(response){
-                alert('Resource Added');
-                location.reload();
+                alertify.success('Vidéo ajoutée !');
+                setTimeout(()=>{
+                    location.reload();
+                }, "2000" );
             },
 
             error: function(xhr, status, error) {
-                alert("Une erreur s'est produite :", error);
+                alertify.error('Une erreur s\'est produite');
+                setTimeout(()=>{
+                    location.reload();
+                }, "2000" );
             }
         });
     }
@@ -37,12 +43,18 @@ $(document).ready(function (){
             url: resourceBaseUrl + `/delete/${id}`,
             method: 'DELETE',
             success: function(response){
-                alert('Resource Deleted');
-                location.reload();
+
+                alertify.success('Vidéo supprimée !');
+                setTimeout(()=>{
+                    location.reload();
+                }, "2000" );
             },
 
             error: function(xhr, status, error) {
-                alert("Une erreur s'est produite :", error);
+                lertify.error('Une erreur s\'est produite');
+                setTimeout(()=>{
+                    location.reload();
+                }, "2000" );
             }
         });
     }
@@ -55,9 +67,10 @@ $(document).ready(function (){
             contentType: "application/json",
             data: JSON.stringify(resourceData),
             success: function(response){
-                alert('Modified with success');
-                location.reload();
-
+                alertify.success('Vidéo modifiée !');
+                setTimeout(()=>{
+                    location.reload();
+                }, "2000" );
             },
             error: function(xhr, status, error) {
                 console.log("Une erreur s'est produite :", error, );
@@ -174,7 +187,8 @@ $(document).ready(function (){
        let videoID = extractYouTubeID(videoLink);
 
        if(!videoID){
-           alert('Url non valide');
+           alertify.errpr('Url non valide !');
+
            return;
 
        }else{

@@ -63,8 +63,7 @@
                 <div class="col">
                     <h3 class="page-title">Disciplines</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="../index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Subjects</li>
+                        <li class="breadcrumb-item"><a href="../index.html">Dashboard / Disciplines</a></li>
                     </ul>
                 </div>
             </div>

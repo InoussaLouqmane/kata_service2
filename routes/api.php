@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\UserRegisterController;
 use App\Http\Controllers\ClubController;
 use App\Http\Controllers\DisciplineController;
 use App\Http\Controllers\DojoController;
+use App\Http\Controllers\EventApiController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ExamControllerWeb;
 use App\Http\Controllers\feesController;
@@ -67,6 +68,11 @@ Route::PATCH ('/discipline-register', [DisciplineController::class, 'activateDis
 
 Route::group(['prefix' => 'students'], function (){
     Route::get('/all/{id}', [StudentApiController::class, 'list']);
+});
+
+Route::group(['prefix' => 'events'], function (){
+
+    Route::get('/all/{id}', [EventApiController::class, 'list']);
 });
 
 Route::group(['prefix' => 'pdfs', 'as' => 'generatedPdf.'], function () {

@@ -25,13 +25,13 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Détails de l'examen</h3>
+                    <h3 class="page-title">Events</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="exam.html">Exam</a></li>
-                        <li class="breadcrumb-item active">Add Exam</li>
+                        <li class="breadcrumb-item"><a href="{{route('main.exam.exams')}}">Examens / Détails </a></li>
                     </ul>
                 </div>
             </div>
+        </div>
             <div class="row py-4">
                 <div class="d-flex flex-row gap-3 justify-content-start">
 
@@ -486,7 +486,7 @@
                                             @endif
                                             @if($selectedExam->examStatus == ExamStatus::ARCHIEVED->value)
                                                 <td>
-                                                    
+
                                                     <a
                                                         href="{{ asset($result->pivot->bulletin) }}"
                                                         class=" btn btn-circle btn-sm bg-success-light me-2 " download>

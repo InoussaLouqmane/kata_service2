@@ -32,8 +32,7 @@
                 <div class="col">
                     <h3 class="page-title">{{isset($selectedDiscipline) ? 'Modifier ': 'Ajouter ' }} discipline</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="subjects.html">Discipline</a></li>
-                        <li class="breadcrumb-item active">Ajouter discipline</li>
+                        <li class="breadcrumb-item"><a href="">Discipline/Ajouter</a></li>
                     </ul>
                 </div>
             </div>

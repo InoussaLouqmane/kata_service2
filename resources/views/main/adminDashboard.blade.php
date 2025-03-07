@@ -18,8 +18,7 @@
                             <h3 class="page-title">Welcome {{Auth::user()->firstName}}!</h3>
                         @endauth
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('main.adminDashboard')}}">Home</a></li>
-                            <li class="breadcrumb-item active"><a href="#">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('main.adminDashboard')}}">Dashboard</a></li>
                         </ul>
                     </div>
                 </div>

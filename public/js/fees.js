@@ -6,6 +6,7 @@ $(document).ready(function (){
         'Authorization': 'Bearer ' + $("meta[name='csrf-token']").attr('content')
     };
 
+    alertify.set('notifier','position', 'top-center');
     function createFees(feeData) {
 
         return $.ajax({
@@ -14,11 +15,16 @@ $(document).ready(function (){
             contentType: "application/json",
             data: JSON.stringify(feeData),
             success: function(response){
-                alert('Fees Initiated');
-                location.reload();
+                alertify.success('Frais enregistrés !');
+                setTimeout(()=>{
+                    location.reload();
+                }, "2000" )
             },
             error: function(xhr, status, error) {
-                alert("Une erreur s'est produite :", error);
+                alertify.error('Une erreur est survenue !');
+                setTimeout(()=>{
+                    location.reload();
+                }, "2000" );
                 console.log(xhr.responseJSON);
             }
         });
@@ -32,11 +38,16 @@ $(document).ready(function (){
             contentType: "application/json",
             data: JSON.stringify(feeData),
             success: function(response){
-                alert('Fees Updated');
-                location.reload();
+                alertify.success('Frais mis à jour !');
+                setTimeout(()=>{
+                    location.reload();
+                }, "2000" );
             },
             error: function(xhr, status, error) {
-                alert("Une erreur s'est produite :", error);
+                alertify.error('Une erreur est survenue !');
+                setTimeout(()=>{
+                    location.reload();
+                }, "2000" );
                 console.log(xhr.responseJSON);
             }
         });
@@ -48,11 +59,16 @@ $(document).ready(function (){
             url: FeesBaseUrl + `/delete/${id}`,
             method: 'DELETE',
             success: function(response){
-                alert('Fees Deleted');
-                location.reload();
+                alertify.warning('Frais supprimé !');
+                setTimeout(()=>{
+                    location.reload();
+                }, "2000" );
             },
             error: function(xhr, status, error) {
-                alert("Une erreur s'est produite :", xhr.responseJSON);
+                alertify.error('Une erreur est survenue !');
+                setTimeout(()=>{
+                    location.reload();
+                }, "2000" );
                 console.log(xhr.responseJSON);
             }
         });
