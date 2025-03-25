@@ -138,26 +138,28 @@ class feesController extends Controller
     {
         $payment = Payment::findOrFail($paymentId);
 
-
-        if ($payment) {
-            $transactions = Transaction::where('payment_id', $paymentId)->get();
+        $transactions = $payment->transactions()->get();
 
 
-            $response = [];
+        $formattedTransactions = $transactions->map(function ($transaction) {
+            return [
+                'student_id' => $transaction->payer_id,
+                'student_name' => $transaction->user ?
+                    $transaction->user->firstName . ' ' . $transaction->user->lastName :
+                    'Utilisateur inconnu',
+                'status' => !empty($transaction->bill) ? 'paid' : 'unpaid',
+                'payment_date' => !empty($transaction->bill) ? $transaction->updated_at->format('d/m/Y') : null,
+                'receipt_url' => !empty($transaction->bill) ? asset('storage/' . $transaction->bill) : null,
+                'amount' => $transaction->amount,
+            ];
+        });
 
-
-
-                $response[] = [
-                    'payment_id' => $payment->id,
-                    'date' => $payment->created_at,
-                    'transactions' => $transactions, // Laravel va automatiquement convertir en JSON
-                ];
-
-
-            return response()->json($response);
-        }
-
-        return response()->json(['error' => 'No fees found'], 404);
+        return response()->json([
+            'payment_id' => $payment->id,
+            'payment_name' => $payment->name,
+            'payment_amount' => $payment->amount,
+            'transactions' => $formattedTransactions,
+        ]);
     }
 
 }
