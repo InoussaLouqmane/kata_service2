@@ -130,4 +130,7 @@ Route::POST('/fees/create', [feesController::class,'store']);
 Route::PATCH('/fees/update/{id}', [feesController::class,'update']);
 Route::DELETE('/fees/delete/{id}', [feesController::class,'delete']);
 
+Route::GET('/fees/payments/{id}', [feesController::class, 'getPayments']);
+Route::GET('/fees/transactions/{id}', [feesController::class, 'getTransactions']);
+
 Route::POST('/transactions/verify', [TransactionController::class, 'verifyTransaction']);

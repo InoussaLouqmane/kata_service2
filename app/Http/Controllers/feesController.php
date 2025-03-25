@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Fees;
+use App\Models\Payment;
+use App\Models\Transaction;
+use App\Models\User;
 use GPBMetadata\Google\Api\Log;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -33,6 +36,7 @@ class feesController extends Controller
             ]);
            return response()->json([
                'success'=>true,
+               'fees' =>$fees
            ], 201);
         }catch (\Exception | QueryException $exception){
             return response()->json([
@@ -102,4 +106,58 @@ class feesController extends Controller
             ], 400);
         }
     }
+
+    public function getPayments($userId)
+    {
+        $user = User::findOrFail($userId);
+        $user_club = $user->clubs()->first()->id;
+
+        if ($user_club) {
+            $fees = Fees::where('club_id', $user_club)->get();
+
+            $response = [];
+
+            foreach ($fees as $fee) {
+                $payments = Payment::where('fee_id', $fee->id)->get();
+
+                $response[] = [
+                    'fee_id' => $fee->id,
+                    'fee_name' => $fee->name,
+                    'amount' => $fee->amount,
+                    'payments' => $payments, // Laravel va automatiquement convertir en JSON
+                ];
+            }
+
+            return response()->json($response);
+        }
+
+        return response()->json(['error' => 'No fees found'], 404);
+    }
+
+    public function getTransactions($paymentId)
+    {
+        $payment = Payment::findOrFail($paymentId);
+
+
+        if ($payment) {
+            $transactions = Transaction::where('payment_id', $paymentId)->get();
+
+
+            $response = [];
+
+
+
+                $response[] = [
+                    'payment_id' => $payment->id,
+                    'date' => $payment->created_at,
+                    'transactions' => $transactions, // Laravel va automatiquement convertir en JSON
+                ];
+
+
+            return response()->json($response);
+        }
+
+        return response()->json(['error' => 'No fees found'], 404);
+    }
+
 }

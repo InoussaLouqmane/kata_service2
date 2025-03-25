@@ -12,6 +12,7 @@ class EventApiController extends Controller
     {
 
 
+
         try {
             $events = Event::all();
             return response()->json([

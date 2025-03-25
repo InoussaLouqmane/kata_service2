@@ -45,7 +45,7 @@ class StudentApiController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            $userClub = $user->clubs()->first();
+            $club_id = $user->clubs()->first();
             $elligibleStudents = User::where('role', Role::STUDENT)
                 ->get();
             return response()->json([
@@ -58,6 +58,31 @@ class StudentApiController extends Controller
             ],401);
         }
     }
+
+    public function listM($id): JsonResponse
+    {
+        try {
+            $user = User::findOrFail($id);
+
+            // Récupérer tous les clubs de l'utilisateur
+            $clubIds = $user->clubs()->pluck('clubs.id');
+
+            // Trouver tous les étudiants appartenant aux mêmes clubs
+            $elligibleStudents = User::where('role', Role::STUDENT)
+                ->whereHas('clubs', function ($query) use ($clubIds) {
+                    $query->whereIn('clubs.id', $clubIds);
+                })
+                ->get();
+
+            return response()->json($elligibleStudents, 200);
+        } catch (QueryException $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'message' => 'Erreur lors de la récupération des étudiants.',
+            ], 500);
+        }
+    }
+
 }
 
 /*
